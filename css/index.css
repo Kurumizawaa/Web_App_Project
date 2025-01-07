@@ -99,6 +99,14 @@ body{
     background-position: center;
     background-attachment: fixed;
 }
+
+/* make the posts stay centered */
+.row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
 .col{
     float: left;
     width: 22%;
