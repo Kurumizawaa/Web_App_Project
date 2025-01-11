@@ -91,6 +91,28 @@ header{
 }
 /* ---------------------------- NAV BAR ---------------------------- */
 
+/* ---------------------------- TOP SECTION ---------------------------- */
+.topsec {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0px 20px 0px;
+}
+#search-bar{
+    width: 50vw;
+    font-size: 30px;
+    height: 50px;
+    padding: 0 0 5px 10px;
+    box-sizing: border-box;
+    border-radius: 10px 0px 0px 10px;
+    border: none;
+}
+#search-submit{
+    border-radius: 0px 10px 10px 0px;
+    border: none;
+    background-color: aqua;
+}
+/* ---------------------------- TOP SECTION ---------------------------- */
+
 /* ---------------------------- BODY ---------------------------- */
 body{
     padding-top: 80px;
@@ -99,13 +121,11 @@ body{
     background-position: center;
     background-attachment: fixed;
 }
-
-/* make the posts stay centered */
 .row {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
-
 .col{
     float: left;
     width: 22%;
