@@ -91,17 +91,36 @@ header{
 }
 /* ---------------------------- NAV BAR ---------------------------- */
 
+/* ---------------------------- CREATE POST ---------------------------- */
+.create-post {
+    position: fixed;
+    bottom: 5vh;
+    right: 5vw;
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    border: none;
+    background-color: rgb(150, 150, 150);
+}
+.create-post:hover{
+    background-color: #cccccc;
+}
+.create-post:active{
+    background-color: rgb(100, 100, 100);
+}
+/* ---------------------------- CREATE POST ---------------------------- */
+
 /* ---------------------------- TOP SECTION ---------------------------- */
-.topsec {
+.search {
     display: flex;
     justify-content: center;
     margin: 20px 0px 20px 0px;
 }
 #search-bar{
     width: 50vw;
-    font-size: 30px;
-    height: 50px;
-    padding: 0 0 5px 10px;
+    font-size: 24px;
+    height: 40px;
+    padding: 0 0 4px 10px;
     box-sizing: border-box;
     border-radius: 10px 0px 0px 10px;
     border: none;
@@ -109,7 +128,44 @@ header{
 #search-submit{
     border-radius: 0px 10px 10px 0px;
     border: none;
-    background-color: aqua;
+    background-color: rgb(150, 150, 150);
+}
+#search-submit:active{
+    border-radius: 0px 10px 10px 0px;
+    background-color: #cccccc;
+}
+
+.tagsearch {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0px 10px 0px;
+    gap: 1vw;
+}
+.tag-btn {
+    font-size: 20px;
+    width: 10vw;
+    color: aliceblue;
+    background-color: rgba(150, 150, 150, 0.50);
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    padding: 0px 10px 3px 10px;
+}
+.tag-btn:hover {
+    background-color: rgba(150, 150, 150, 0.8);
+}
+.tag-btn:active {
+    background-color: rgba(110, 110, 110, 1);
+}
+@media only screen and (max-width: 900px) {
+    .tagsearch{
+        display: inline-block;
+        text-align: center;
+    }
+    .tag-btn{
+        width: 40vw;
+        transition: 1s;
+    }
 }
 /* ---------------------------- TOP SECTION ---------------------------- */
 
