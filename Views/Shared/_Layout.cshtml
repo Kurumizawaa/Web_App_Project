@@ -10,7 +10,6 @@
     <title>@ViewData["Title"]</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/web_app_project.styles.css" asp-append-version="true" />
     @RenderSection("Styles", required: false)
 </head>
 <body>
@@ -23,10 +22,10 @@
         </div>
         <nav class="nav-bar">
             <ul>
-                <li><a href="" class="active">Home</a></li>
-                <li><a href="">Appointment(s)</a></li>
-                <li><a href="">About</a></li>
-                <li><a href="">Account</a></li>
+                <li><a href="@Url.Action("Index", "Home")" class="@(ViewData["Page"] == "Home" ? "active" : "")">Home</a></li>
+                <li><a href="@Url.Action("Index", "Home")" class="@(ViewData["Page"] == "???" ? "active" : "")">Appointment(s)</a></li>
+                <li><a href="@Url.Action("About", "Home")" class="@(ViewData["Page"] == "About" ? "active" : "")">About</a></li>
+                <li><a href="@Url.Action("Profile", "Account")" class="@(ViewData["Page"] == "Profile" ? "active" : "")">Account</a></li>
             </ul>
         </nav>
     </header>

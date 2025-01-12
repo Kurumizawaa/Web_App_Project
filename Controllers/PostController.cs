@@ -4,23 +4,11 @@ using web_app_project.Models;
 
 namespace web_app_project.Controllers;
 
-public class HomeController : Controller
+public class PostController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public IActionResult PostSection()
     {
-        _logger = logger;
-    }
-
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    public IActionResult About()
-    {
-        return View();
+        return PartialView();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -4,21 +4,9 @@ using web_app_project.Models;
 
 namespace web_app_project.Controllers;
 
-public class HomeController : Controller
+public class AccountController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    public IActionResult About()
+    public IActionResult Profile()
     {
         return View();
     }
