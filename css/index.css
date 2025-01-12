@@ -151,10 +151,10 @@ header{
     height: 30px;
     padding: 0px 10px 3px 10px;
 }
-.tag-btn:hover {
+.tag-btn:hover, .post-tag-btn:hover{
     background-color: rgba(150, 150, 150, 0.8);
 }
-.tag-btn:active {
+.tag-btn:active, .post-tag-btn:active {
     background-color: rgba(110, 110, 110, 1);
 }
 @media only screen and (max-width: 900px) {
@@ -214,8 +214,45 @@ body{
   .container {
     padding: 2px 16px;
   }
-.post-card img{
+.post-card .post-img{
     border-radius: 5px;
     margin-bottom: 5px;
 }
+.post-tag{
+    display: block;
+    justify-content: center;
+    margin: 5px 0px 15px 0px;
+    gap: 1vw;
+}
+.post-tag-btn {
+    font-size: 20px;
+    color: aliceblue;
+    background-color: rgba(150, 150, 150, 0.50);
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    padding: 0px 10px 3px 10px;
+}
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.post-info {
+    display: flex;
+    flex-direction: column; /* Stack h2 and p vertically */
+}
+@media only screen and (max-width: 900px) {
+    .posttag{
+        display: inline-block;
+        text-align: center;
+    }
+}
+.post-pfp{
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    position: relative;
+}   
 /* ---------------------------- BODY ---------------------------- */
