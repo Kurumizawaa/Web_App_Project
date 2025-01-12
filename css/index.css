@@ -104,6 +104,7 @@ header{
 }
 .create-post:hover{
     background-color: #cccccc;
+    cursor: pointer;
 }
 .create-post:active{
     background-color: rgb(100, 100, 100);
@@ -153,6 +154,7 @@ header{
 }
 .tag-btn:hover, .post-tag-btn:hover{
     background-color: rgba(150, 150, 150, 0.8);
+    cursor: pointer;
 }
 .tag-btn:active, .post-tag-btn:active {
     background-color: rgba(110, 110, 110, 1);
@@ -205,11 +207,6 @@ body{
     font-size: 20px;
   }
   
-  /* On mouse-over, add a deeper shadow */
-  .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-  }
-  
   /* Add some padding inside the card container */
   .container {
     padding: 2px 16px;
@@ -233,6 +230,12 @@ body{
     height: 30px;
     padding: 0px 10px 3px 10px;
 }
+.post-pfp{
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    position: relative;
+}  
 .post-header {
     display: flex;
     align-items: center;
@@ -243,16 +246,41 @@ body{
     display: flex;
     flex-direction: column; /* Stack h2 and p vertically */
 }
+.post-join-info {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    font-size: 25px;
+}
+.headcount {
+    display: flex;
+    align-items: center;
+    gap: 10%;
+}
+.post-redirect {
+    font-size: 20px;
+    color: aliceblue;
+    background-color: rgba(0, 150, 0, 0.25);
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    padding: 0px 10px 1px 10px;
+}
+.post-redirect:hover {
+    background-color: rgba(0, 150, 0, 0.5);
+    cursor: pointer;
+}
+.post-redirect:active {
+    background-color: rgba(0, 150, 0, 1);
+}
 @media only screen and (max-width: 900px) {
     .posttag{
         display: inline-block;
         text-align: center;
     }
 }
-.post-pfp{
-    border-radius: 50%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    position: relative;
-}   
+
 /* ---------------------------- BODY ---------------------------- */
