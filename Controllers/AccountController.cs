@@ -6,7 +6,7 @@ namespace web_app_project.Controllers;
 
 public class AccountController : Controller
 {
-    public IActionResult Profile()
+    public IActionResult Account()
     {
         return View();
     }
