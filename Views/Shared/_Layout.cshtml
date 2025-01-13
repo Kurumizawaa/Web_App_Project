@@ -23,7 +23,6 @@
         <nav class="nav-bar">
             <ul>
                 <li><a href="@Url.Action("Index", "Home")" class="@((string?)ViewData["Page"] == "Home" ? "active" : "")">Home</a></li>
-                <li><a href="@Url.Action("Index", "Home")" class="@((string?)ViewData["Page"] == "???" ? "active" : "")">Appointment(s)</a></li>
                 <li><a href="@Url.Action("About", "Home")" class="@((string?)ViewData["Page"] == "About" ? "active" : "")">About</a></li>
                 <li><a href="@Url.Action("Profile", "Account")" class="@((string?)ViewData["Page"] == "Profile" ? "active" : "")">Account</a></li>
             </ul>
