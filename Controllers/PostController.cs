@@ -19,9 +19,17 @@ public class PostController : Controller
         return PartialView();
     }
 
+    [HttpPost]
     public IActionResult CreatePost()
     {
-        return PartialView();
+        if (ModelState.IsValid)
+        {
+            return PartialView();
+        }
+        else 
+        {
+            return PartialView();
+        }
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

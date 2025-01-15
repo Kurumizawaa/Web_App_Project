@@ -9,5 +9,23 @@ public class ApplicationDbContext : DbContext
     {
         
     }
-    public DbSet<Post> Post { get; set;}
+     protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Enrollment>()
+            .HasKey(e => new { e.AccountId, e.PostId });
+
+        modelBuilder.Entity<Enrollment>()
+            .HasOne(e => e.Account)
+            .WithMany(a => a.Enrollments)
+            .HasForeignKey(e => e.AccountId);
+
+        modelBuilder.Entity<Enrollment>()
+            .HasOne(e => e.Post)
+            .WithMany(p => p.Enrollments)
+            .HasForeignKey(e => e.PostId);
+    }
+
+    public DbSet<Post> Posts { get; set;}
+    public DbSet<Account> Accounts { get; set;}
+    public DbSet<Enrollment> Enrollments { get; set;}
 }

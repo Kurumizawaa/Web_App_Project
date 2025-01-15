@@ -191,3 +191,114 @@ body{
 }
 
 /* ---------------------------- BODY ---------------------------- */
+
+/* ---------------------------- POPUP ---------------------------- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 1200px;
+    margin: 10vh auto;
+    text-align: center;
+    max-height: 80vh;
+    overflow-y: auto;
+    font-size: 20px;
+}
+
+.create-post-header {
+    font-size: 50px;
+    margin: 10px 0px;
+}
+
+.cancel-post {
+    font-size: 20px;
+    color: aliceblue;
+    background-color: rgba(180, 6, 6, 0.8);
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    padding: 0px 10px 1px 10px;
+    cursor: pointer;
+}
+
+.confirm-post {
+    font-size: 20px;
+    color: aliceblue;
+    background-color: rgba(0, 150, 0, 0.8);
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    padding: 0px 10px 1px 10px;
+    cursor: pointer;
+}
+
+.cancel-post:hover, .cancel-post:focus {
+    background-color: rgba(180, 6, 6, 1);
+    cursor: pointer;
+}
+
+.confirm-post:hover, .confirm-post:focus {
+    background-color: rgba(0, 150, 0, 1);
+    cursor: pointer;
+}
+
+.create-post-form {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    /* column-gap: 50px; */
+    /* justify-content: space-around; */
+}
+
+.create-post-form > div {
+    flex: 1;
+    margin: 0px 50px;
+    /* min-width: 400px; */
+}
+
+.create-post-form div label {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 15px 0px;
+}
+
+.create-post-form div label input{
+    font-size: 20px;
+}
+
+.create-post-display {
+    border: 2px solid black;
+    max-width: 300px;
+    /* width: 300px; */
+    height: 300px;
+    margin: auto;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.create-post-image input {
+    flex-grow: 1;
+}
+
+.create-post-title input{
+    flex-grow: 1;
+}
+
+.create-post-desc textarea{
+    font-size: 20px;
+    width: 100%;
+    resize: none;
+}
+/* ---------------------------- POPUP ---------------------------- */
