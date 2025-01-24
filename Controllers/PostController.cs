@@ -20,15 +20,18 @@ public class PostController : Controller
     }
 
     [HttpPost]
-    public IActionResult CreatePost()
+    public IActionResult CreatePost(Post post)
     {
+        var CreateDate = DateTime.Now; 
+        post.CreateDate = CreateDate;
+        Console.WriteLine(post.CreaterId);
         if (ModelState.IsValid)
         {
-            return PartialView();
+            return RedirectToAction("Index","Home");
         }
         else 
         {
-            return PartialView();
+            return RedirectToAction("Account","Account");
         }
     }
 

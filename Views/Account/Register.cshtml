@@ -1,0 +1,13 @@
+@model web_app_project.Models.Account
+
+@{
+    ViewData["Title"] = "Register page";
+    Layout = null;
+}
+
+<form method="post" action="@Url.Action("Register","Account")" id="register-form">
+    <label>Username: <input type="text" name="Username"></label><br>
+    <label>Password: <input type="text" name="Password"> <span>WARNING: DO NOT USE REAL PASSWORD!</span></label><br>
+    <button type="submit" form="register-form">Register</button>
+    @Html.ValidationMessageFor(m => m.Username, "")
+</form>

@@ -11,7 +11,6 @@ public class Post
     public string? Title { get; set;}
     [Required]
     public string? Description { get; set;}
-    [Required]
     public string? Picture { get; set;}
     public List<string>? Tags { get; set;} 
     public int EnrolledCount { get; set;}
@@ -21,6 +20,7 @@ public class Post
     public string? AcceptType { get; set;}
     [Required]
     public DateTime CreateDate { get; set;}
+    [Required]
     public DateTime CloseDate { get; set;}
 
     public int CreaterId { get; set;}

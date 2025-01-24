@@ -16,21 +16,21 @@
 <div class="modal" id="modal">
     <div class="modal-content">
         <h2 class="create-post-header">Create new post</h2>
-        <form method="Post" action="/Post/CreatePost" class="create-post-form">
+        <form method="post" action="@Url.Action("CreatePost","Post")" class="create-post-form" id="create-post-form">
             <div>
                 <div class="create-post-display"></div>
-                <label class="create-post-image">Image: <input type="url" name="image-url" placeholder="https://example.com/image.jpg"></label>
-                <label class="create-post-tags">Tags: <input type="checkbox" name="tags"></label>
+                <label class="create-post-image">Image: <input type="url" name="Picture" placeholder="https://example.com/image.jpg"></label>
+                <label class="create-post-tags">Tags: <input type="checkbox" name="Tags"></label>
             </div>
             <div>
-                <label class="create-post-title">Title: <input type="text" name="title" required></label>
-                <label class="create-post-desc">Description:<br><textarea name="description" rows="12" cols="40" required></textarea></label>
-                <label class="create-post-amount">Amount accept: <input type="number" name="amountaccept" required></label>
-                <label class="create-post-type">Accept type: <input type="checkbox" name="accepttype" required></label>
-                <label class="create-post-cdate">Close date: <input type="date" name="closedate" required></label>
+                <label class="create-post-title">Title: <input type="text" name="Title" required></label>
+                <label class="create-post-desc">Description:<br><textarea name="Description" rows="12" cols="40" required></textarea></label>
+                <label class="create-post-amount">Amount accept: <input type="number" name="AmountAccept" required></label>
+                <label class="create-post-type">Accept type: <input type="checkbox" name="AcceptType" required></label>
+                <label class="create-post-cdate">Close date: <input type="date" name="CloseDate" required></label>
             </div>
         </form>
-        <button type="button" class="confirm-post" id="confirm-post">Confirm</button>
+        <button type="submit" form="create-post-form" class="confirm-post" id="confirm-post">Confirm</button>
         <button type="button" class="cancel-post" id="cancel-post">Cancel</button>
     </div>
 </div>

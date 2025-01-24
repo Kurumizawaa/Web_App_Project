@@ -5,9 +5,11 @@ namespace web_app_project.Models;
 
 public class Account
 {
+    [Key]
     public int Id { get; set; }
+    [Required(ErrorMessage = "Username cannot be empty!")]
     public string? Username { get; set; }
-    public string? PasswordHash { get; set; }
+    public string? Password { get; set; }
     public string? ProfilePicture { get; set; }
     public string? Bio { get; set; }
 

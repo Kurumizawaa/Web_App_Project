@@ -16,37 +16,70 @@ public class AccountController : Controller
 
     public IActionResult Account()
     {
+        var Id = HttpContext.Session.GetInt32("ID");
+        if (Id != null)
+        {
+            ViewBag.Account = _Dbcontext.Accounts.FirstOrDefault(x => x.Id == Id);
+            return View();
+        }
+        else
+        {
+            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            return RedirectToAction("Login","Account");
+        }
+    }
+
+    public IActionResult Login()
+    {
         return View();
     }
 
-    public IActionResult Login(string username)
+    public IActionResult Register()
     {
-        bool isValidUser = ValidateUser(username);
-        if (isValidUser)
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult Login(Account account)
+    {
+        var User = GetValidateUser(account.Username, account.Password);
+        if (User != null)
         {
-            return View();
+            HttpContext.Session.SetInt32("ID", User.Id);
+            return RedirectToAction("Index","Home");
         }
         else
         {
-            return View();
+            return View(account);
         }
     }
 
-    private bool ValidateUser(string username)
+    private Account? GetValidateUser(string? username, string? Password)
     {
-        var user = _Dbcontext.Accounts.FirstOrDefault(a => a.Username == username);
-        return user != null;
+        var user = _Dbcontext.Accounts.FirstOrDefault(a => a.Username == username && a.Password == Password);
+        return user;
     }
 
-    public IActionResult CreateAccount(Account account)
+    [HttpPost]
+    public IActionResult Register(Account account)
     {
         if (ModelState.IsValid)
         {
-            return RedirectToAction("Index","Home");
+            if (!_Dbcontext.Accounts.Any(a => a.Username == account.Username))
+            {
+                _Dbcontext.Accounts.Add(account);
+                _Dbcontext.SaveChanges();
+                return RedirectToAction("Login","Account");
+            }
+            else
+            {
+                ModelState.AddModelError("Username", "This name has already been used! Try something else.");
+                return View(account);
+            }
         }
         else
         {
-            return RedirectToAction("Index","Home");
+            return View(account);
         }
     }
 

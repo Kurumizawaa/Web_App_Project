@@ -1,0 +1,11 @@
+@{
+    ViewData["Title"] = "Login page";
+    Layout = null;
+}
+
+<h2>@TempData["Info"]</h2>
+<form method="post" action="@Url.Action("Login","Account")" id="login-form">
+    <label>Username: <input type="text" name="Username"></label><br>
+    <label>Password: <input type="text" name="Password"></label><br>
+    <button type="submit" form="login-form">Login</button>
+</form>
