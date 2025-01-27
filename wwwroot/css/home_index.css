@@ -124,7 +124,6 @@ body{
 }
 .post-tag{
     display: block;
-    justify-content: center;
     margin: 5px 0px 15px 0px;
     gap: 1vw;
 }
@@ -132,10 +131,12 @@ body{
     font-size: 20px;
     color: aliceblue;
     background-color: rgba(150, 150, 150, 0.50);
+    width: flex;
     border: none;
     border-radius: 5px;
     height: 30px;
     padding: 0px 10px 3px 10px;
+    margin-right: 10px;
 }
 .post-pfp{
     border-radius: 50%;
@@ -201,11 +202,14 @@ body{
     top: 0;
     width: 100%;
     min-height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.75);
 }
 
 .modal-content {
-    background-color: white;
+    border-radius: 6px;
+    border: aliceblue solid;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: aliceblue;
     padding: 20px;
     border-radius: 5px;
     max-width: 1200px;
@@ -214,6 +218,31 @@ body{
     max-height: 80vh;
     overflow-y: auto;
     font-size: 20px;
+    input, textarea{
+        color: aliceblue;
+        background-color: rgba(110, 110, 110, 0.5);
+        padding-left: 5px;
+    }
+    .checkbox-container input {
+        opacity: 0;
+    }
+    .checkmark {
+        font-size: 20px;
+        width: flex;
+        color: rgba(150, 150, 150, 0.8);
+        background-color: rgba(150, 150, 150, 0.50);
+        border: none;
+        border-radius: 5px;
+        height: 30px;
+        padding: 0px 10px 3px 10px;
+    }
+    .checkbox-container:hover input ~ .checkmark {
+        background-color: rgba(150, 150, 150, 0.8);
+        cursor: pointer;
+    }
+    .checkbox-container input:checked ~ .checkmark {
+        color:aliceblue
+    }
 }
 
 .create-post-header {
@@ -281,11 +310,12 @@ body{
 .create-post-display {
     border: 2px solid black;
     max-width: 300px;
-    /* width: 300px; */
-    height: 300px;
     margin: auto;
     box-sizing: border-box;
     overflow: hidden;
+    img{
+        max-width: 300px;
+    }
 }
 
 .create-post-image input {
@@ -302,7 +332,37 @@ body{
     resize: none;
 }
 
-.create-post-tags, .create-post-type {
-    justify-content: space-between;
+.create-post-tags {
+    display: flex;
+    justify-content: center;
+}
+
+.create-post-type {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.create-post-type label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    color: black;
+    background-color: #696969;
+}
+
+/* .create-post-type input[type="radio"] {
+    display: none;
+} */
+
+.create-post-type label:hover {
+    background-color: #ffffffb0;
+}
+
+.create-post-type input[type="radio"]:checked + label {
+    background-color: green;
 }
 /* ---------------------------- POPUP ---------------------------- */

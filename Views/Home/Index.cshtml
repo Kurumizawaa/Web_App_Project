@@ -20,12 +20,12 @@
         <h2 class="create-post-header">Create new post</h2>
         <form method="post" action="@Url.Action("CreatePost","Post")" class="create-post-form" id="create-post-form">
             <div>
-                <div class="create-post-display"></div>
-                <label class="create-post-image">Image: <input type="url" name="Picture" placeholder="https://example.com/image.jpg"></label>
-                <label class="create-post-tags">Tags: 
+                <div id="create-post-display" class="create-post-display"></div>
+                <label class="create-post-image">Image: <input id="image-url" type="url" name="Picture" placeholder="https://example.com/image.jpg"></label>
+                <label class="create-post-tags">
                     @foreach (var Tags in Model)
                     {
-                        <label>@Tags <input type="checkbox" name="Tags" value="@Tags"></label>
+                        <label class="checkbox-container"><input class="checkbox" type="checkbox" name="Tags" value="@Tags"><span class="checkmark">@Tags</span></label>
                     }
                 </label>
                 <p>At least 1 tag is required!</p>
@@ -34,10 +34,20 @@
                 <label class="create-post-title">Title: <input type="text" name="Title" required></label>
                 <label class="create-post-desc">Description:<br><textarea name="Description" rows="12" cols="40"></textarea></label>
                 <label class="create-post-amount">Amount accept: <input type="number" name="AmountAccept" required></label>
-                <label class="create-post-type">Accept type: 
-                    <label>Close on full queue <input type="radio" name="AcceptType" value="OnFull" required></label>
-                    <label>On selection <input type="radio" name="AcceptType" value="OnSelect" required></label>
-                    <label>Random <input type="radio" name="AcceptType" value="OnRandom" required></label>
+                <label>Accept type:</label>
+                <label class="create-post-type">
+                    <label>
+                        Close on full queue
+                        <input type="radio" name="AcceptType" value="OnFull" required>
+                    </label>
+                    <label>
+                        On selection
+                        <input type="radio" name="AcceptType" value="OnSelect" required>
+                    </label>
+                    <label>
+                        Random
+                        <input type="radio" name="AcceptType" value="OnRandom" required>
+                    </label>
                 </label>
                 <label class="create-post-cdate">Close date: <input type="date" name="CloseDate" required></label>
             </div>
@@ -159,5 +169,29 @@
         responsive_post_column();
 
         var page_number = 1;
+        
+        // Realtime Image Preview
+        const image_input = document.getElementById('image-url');
+        const image_preview = document.getElementById('create-post-display');
+        image_preview.style.height = '300px';
+
+        image_input.addEventListener('input', () => {
+            const image_url = image_input.value;
+            if (image_url) {
+                const img = document.createElement('img');
+                img.src = image_url;
+                img.alt = 'Image preview';
+                img.onload = () => {
+                    image_preview.innerHTML = '';
+                    image_preview.appendChild(img);
+                    image_preview.style.height = 'auto';
+                };
+                img.onerror = () => {
+                };
+            } else {
+                image_preview.innerHTML = '';
+                image_preview.style.height = '300px';
+            }
+        });
     </script>
 }
