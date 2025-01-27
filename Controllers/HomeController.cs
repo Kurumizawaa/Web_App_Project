@@ -18,7 +18,8 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        var Tag_List = new List<string> {"Travel", "Workout", "Eating", "Party"};
+        return View(Tag_List);
     }
 
     public IActionResult About()

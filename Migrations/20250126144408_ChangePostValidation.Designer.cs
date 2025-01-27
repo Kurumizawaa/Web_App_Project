@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using web_app_project.Data;
 
@@ -10,9 +11,11 @@ using web_app_project.Data;
 namespace web_app_project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250126144408_ChangePostValidation")]
+    partial class ChangePostValidation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -84,6 +87,9 @@ namespace web_app_project.Migrations
                     b.Property<int>("CreaterId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("CreatorId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -104,7 +110,7 @@ namespace web_app_project.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreaterId");
+                    b.HasIndex("CreatorId");
 
                     b.ToTable("Posts");
                 });
@@ -132,9 +138,7 @@ namespace web_app_project.Migrations
                 {
                     b.HasOne("web_app_project.Models.Account", "Creator")
                         .WithMany("Posts")
-                        .HasForeignKey("CreaterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CreatorId");
 
                     b.Navigation("Creator");
                 });

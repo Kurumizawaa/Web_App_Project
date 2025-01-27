@@ -1,5 +1,8 @@
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using web_app_project.Data;
 using web_app_project.Models;
 
@@ -14,24 +17,45 @@ public class PostController : Controller
         _Dbcontext = dbcontext;
     }
     
-    public IActionResult PostSection()
+    public JsonResult GetPost()
     {
-        return PartialView();
+        var Post_list = _Dbcontext.Posts.Include(x => x.Creator).ToList();
+        return Json(Post_list);
     }
 
     [HttpPost]
     public IActionResult CreatePost(Post post)
     {
-        var CreateDate = DateTime.Now; 
-        post.CreateDate = CreateDate;
-        Console.WriteLine(post.CreaterId);
-        if (ModelState.IsValid)
+        var Id = HttpContext.Session.GetInt32("ID");
+        if (Id != null)
         {
-            return RedirectToAction("Index","Home");
+            post.CreateDate = DateTime.Now;
+            post.CreaterId = (int)Id;
+            if (ModelState.IsValid)
+            {
+                _Dbcontext.Posts.Add(post);
+                _Dbcontext.SaveChanges();
+                return RedirectToAction("Index","Home");
+            }
+            else 
+            {
+                var errors = ModelState.Values
+                            .SelectMany(v => v.Errors)
+                            .Select(e => e.ErrorMessage)
+                            .ToList();
+
+                foreach (var error in errors)
+                {
+                    Console.WriteLine(error);
+                }
+                TempData["ErrorMessage"] = "At least 1 tag is required!";
+                return RedirectToAction("Index","Home");
+            }
         }
-        else 
+        else
         {
-            return RedirectToAction("Account","Account");
+            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            return RedirectToAction("Login","Account");
         }
     }
 

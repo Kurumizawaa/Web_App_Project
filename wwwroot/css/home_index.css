@@ -267,7 +267,7 @@ body{
     /* min-width: 400px; */
 }
 
-.create-post-form div label {
+.create-post-form div > label {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
@@ -300,5 +300,9 @@ body{
     font-size: 20px;
     width: 100%;
     resize: none;
+}
+
+.create-post-tags, .create-post-type {
+    justify-content: space-between;
 }
 /* ---------------------------- POPUP ---------------------------- */

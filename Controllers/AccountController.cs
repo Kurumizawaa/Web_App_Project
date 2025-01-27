@@ -39,6 +39,42 @@ public class AccountController : Controller
         return View();
     }
 
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Remove("ID");
+        return RedirectToAction("Login","Account");
+    }
+
+    [HttpPost]
+    public IActionResult Account(Account account) 
+    {
+        var Id = HttpContext.Session.GetInt32("ID");
+        if (Id != null)
+        {
+            var DBaccount = _Dbcontext.Accounts.FirstOrDefault(x => x.Id == Id);
+            if (DBaccount != null)
+            {
+                DBaccount.Username = account.Username;
+                DBaccount.ProfilePicture = account.ProfilePicture;
+                DBaccount.Bio = account.Bio;
+                DBaccount.Password = account.Password;
+                _Dbcontext.SaveChanges();
+                ViewBag.Account = DBaccount;
+                return View();
+            }
+            else 
+            {
+                TempData["Info"] = "Your session id has been expired! Login again to continue.";
+                return RedirectToAction("Login","Account");
+            }
+        }
+        else
+        {
+            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            return RedirectToAction("Login","Account");
+        }
+    }
+
     [HttpPost]
     public IActionResult Login(Account account)
     {

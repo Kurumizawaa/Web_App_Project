@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<string>
+
+@{
     ViewData["Title"] = "Home page";
     ViewData["Page"] = "Home";
 }
@@ -20,13 +22,23 @@
             <div>
                 <div class="create-post-display"></div>
                 <label class="create-post-image">Image: <input type="url" name="Picture" placeholder="https://example.com/image.jpg"></label>
-                <label class="create-post-tags">Tags: <input type="checkbox" name="Tags"></label>
+                <label class="create-post-tags">Tags: 
+                    @foreach (var Tags in Model)
+                    {
+                        <label>@Tags <input type="checkbox" name="Tags" value="@Tags"></label>
+                    }
+                </label>
+                <p>At least 1 tag is required!</p>
             </div>
             <div>
                 <label class="create-post-title">Title: <input type="text" name="Title" required></label>
-                <label class="create-post-desc">Description:<br><textarea name="Description" rows="12" cols="40" required></textarea></label>
+                <label class="create-post-desc">Description:<br><textarea name="Description" rows="12" cols="40"></textarea></label>
                 <label class="create-post-amount">Amount accept: <input type="number" name="AmountAccept" required></label>
-                <label class="create-post-type">Accept type: <input type="checkbox" name="AcceptType" required></label>
+                <label class="create-post-type">Accept type: 
+                    <label>Close on full queue <input type="radio" name="AcceptType" value="OnFull" required></label>
+                    <label>On selection <input type="radio" name="AcceptType" value="OnSelect" required></label>
+                    <label>Random <input type="radio" name="AcceptType" value="OnRandom" required></label>
+                </label>
                 <label class="create-post-cdate">Close date: <input type="date" name="CloseDate" required></label>
             </div>
         </form>
@@ -48,205 +60,15 @@
         </button>
     </section>
     <section class="tagsearch">
-        <button type="button" class="tag-btn">Tags#1</button>
-        <button type="button" class="tag-btn">Tags#2</button>
-        <button type="button" class="tag-btn">Tags#3</button>
-        <button type="button" class="tag-btn">Tags#4</button>
+        @foreach (var Tags in Model)
+        {
+            <button type="button" class="tag-btn">@Tags</button>
+        }
     </section>
-    <div class="row">
-        <div class="col">
-            <div class="post-card">
-                <img class="post-img"
-                    src="https://img.ifunny.co/images/87a51a9f76ac89422fd0a8afc59779c39bec300301641e7a643d57471ca3a29e_1.jpg"
-                    alt="post-img" style="width:100%">
-                <div class="container">
-                    <section class="post-tag">
-                        <button type="button" class="post-tag-btn">Tags#1</button>
-                        <button type="button" class="post-tag-btn">Tags#2</button>
-                    </section>
-                    <div class="post-header">
-                        <img class="post-pfp"
-                            src="https://i.pinimg.com/originals/1e/0a/8e/1e0a8e6336fc13b134a5b4fa5fcd10ce.jpg"
-                            alt="post-pfp" style="width:15%">
-                        <div class="post-info">
-                            <h2>I am humgry</h2>
-                            <p>aliquam</p>
-                        </div>
-                    </div>          
-                    <p>eat</p>
-                    <section class="post-join-info">
-                        <div class="headcount">
-                        <h2>1/2</h2>
-                        <p>joined</p>
-                        </div>
-                        <button type="button" class="post-redirect">See Details</button>
-                    </section>
-                </div>
-            </div>
-            <div class="post-card">
-                <img class="post-img"
-                    src="https://ih1.redbubble.net/image.5467602758.8453/raf,360x360,075,t,fafafa:ca443f4786.jpg"
-                    alt="post-img" style="width:100%">
-                <div class="container">
-                    <section class="post-tag">
-                        <button type="button" class="post-tag-btn">Tags#3</button>
-                        <button type="button" class="post-tag-btn">Tags#4</button>
-                    </section>
-                    <div class="post-header">
-                        <img class="post-pfp"
-                            src="https://th.bing.com/th/id/OIP.1aO3gRaDN2nxbIWnflRaRAHaEK?rs=1&pid=ImgDetMain"
-                            alt="post-pfp" style="width:15%">
-                        <div class="post-info">
-                            <h2>Lorem ipsum</h2>
-                            <p>pretium</p>
-                        </div>
-                    </div>          
-                    <p>dolor sit amet</p>
-                    <section class="post-join-info">
-                        <div class="headcount">
-                        <h2>69/420</h2>
-                        <p>joined</p>
-                        </div>
-                        <button type="button" class="post-redirect">See Details</button>
-                    </section>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="post-card">
-                <img class="post-img"
-                    src="https://th.bing.com/th/id/OIP.AG32KvELuwMPxmGQzqmJdAHaEK?rs=1&pid=ImgDetMain"
-                    alt="post-img" style="width:100%">
-                <div class="container">
-                    <section class="post-tag">
-                        <button type="button" class="post-tag-btn">Driving</button>
-                    </section>
-                    <div class="post-header">
-                        <img class="post-pfp"
-                            src="https://tse3.mm.bing.net/th?id=OIP.31ZQ1Y6ON6wgH1wvlyixRgHaEK&rs=1&pid=ImgDetMain"
-                            alt="post-pfp" style="width:15%">
-                        <div class="post-info">
-                            <h2>I Drive</h2>
-                            <p>Ryan</p>
-                        </div>
-                    </div>          
-                    <p>No problem! Here's the information about the Mercedes CLR GTR: The Mercedes CLR GTR is a remarkable racing car celebrated for its outstanding performance and sleek design. Powder by a potent 6.0-liter V12 engine, it delivers over 600 horsepower.📷 Acceleration from 0 to 100km/h takes approximately 3.7 seconds, with a remarkable top speed surpassing 320km/h. 📷 Incorporation advanced aerodynamic features and cutting-edge stability technologies, the ClR GTR ensures exceptional stability and control, particularly during high-speed maneuvers. 📷 Originally priced around $1.5 million, the Mercedes CLR GTR is considered one of the most exclusive and prestigious racing cars ever produced. 📷 It's limited production run of just five units adds to its rarity, making it highly sought after by racing enthusiasts and collectors worldwide. 📷</p>
-                    <section class="post-join-info">
-                        <div class="headcount">
-                        <h2>4/5</h2>
-                        <p>joined</p>
-                        </div>
-                        <button type="button" class="post-redirect">See Details</button>
-                    </section>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="post-card">
-                <img class="post-img"
-                    src="https://www.atimedesign.com/webdesign/wp-content/uploads/2019/11/test_ttp_big-1.jpg"
-                    alt="post-img" style="width:100%">
-                <div class="container">
-                    <section class="post-tag">
-                        <button type="button" class="post-tag-btn">Tags#1</button>
-                        <button type="button" class="post-tag-btn">Tags#3</button>
-                        <button type="button" class="post-tag-btn">Tags#4</button>
-                    </section>
-                    <div class="post-header">
-                        <img class="post-pfp"
-                            src="https://i.pinimg.com/236x/4d/04/73/4d047300ef8955abbfdc273a9b9b6aac.jpg"
-                            alt="post-pfp" style="width:15%">
-                        <div class="post-info">
-                            <h2>finibus dictum velit</h2>
-                            <p>Drake</p>
-                        </div>
-                    </div>          
-                    <p>sed efficitur ipsum purus eget velit</p>
-                    <section class="post-join-info">
-                        <div class="headcount">
-                        <h2>0/3</h2>
-                        <p>joined</p>
-                        </div>
-                        <button type="button" class="post-redirect">See Details</button>
-                    </section>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="post-card">
-                <img class="post-img"
-                    src="https://blog.lipsumhub.com/wp-content/uploads/2024/07/lorem-ipsum-meaning-in-english-lipsumhub.jpg"
-                    alt="post-img" style="width:100%">
-                <div class="container">
-                    <section class="post-tag">
-                        <button type="button" class="post-tag-btn">Tags#1</button>
-                        <button type="button" class="post-tag-btn">Tags#2</button>
-                        <button type="button" class="post-tag-btn">Tags#3</button>
-                        <button type="button" class="post-tag-btn">Tags#4</button>                 
-                    </section>
-                    <div class="post-header">
-                        <img class="post-pfp"
-                            src="https://th.bing.com/th/id/R.c64436e5f34e22e345ff5f539eb5e778?rik=W%2bO3F4J5blBZjw&pid=ImgRaw&r=0"
-                            alt="post-pfp" style="width:15%">
-                        <div class="post-info">
-                            <h2>nec cursus nisl</h2>
-                            <p>HairyMen2135</p>
-                        </div>
-                    </div>          
-                    <p>Fusce tristique arcu sed turpis laoreet,</p>
-                    <p>pharetra venenatis ex cursus.</p>
-                    <section class="post-join-info">
-                        <div class="headcount">
-                        <h2>1/2</h2>
-                        <p>joined</p>
-                        </div>
-                        <button type="button" class="post-redirect">See Details</button>
-                    </section>
-                </div>
-            </div>
-            <div class="post-card">
-                <img class="post-img"
-                    src="https://img.uxcel.com/practices/lorem-ipsum-1629200698112/a-1704914000276-2x.jpg"
-                    alt="post-img" style="width:100%">
-                <div class="container">
-                    <section class="post-tag">
-                        <button type="button" class="post-tag-btn">Tags#2</button>
-                        <button type="button" class="post-tag-btn">Tags#3</button>
-                        <button type="button" class="post-tag-btn">Tags#4</button>
-                    </section>
-                    <div class="post-header">
-                        <img class="post-pfp"
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-nWdgeahZSNXZwR4cCBpZYtZ_BRbF9z0o_w&s"
-                            alt="post-pfp" style="width:15%">
-                        <div class="post-info">
-                            <h2>Maecenas finibus</h2>
-                            <p>OilyMen5312</p>
-                        </div>
-                    </div>          
-                    <p>Nullam finibus facilisis neque,</p>
-                    <p>at interdum diam maximus a.</p>
-                    <p>Nunc porttitor</p>
-                    <section class="post-join-info">
-                        <div class="headcount">
-                        <h2>6/9</h2>
-                        <p>joined</p>
-                        </div>
-                        <button type="button" class="post-redirect">See Details</button>
-                    </section>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="row" id="post-display-container"></div>
 </section>
 
 @section Scripts {
-    @* <script>
-        portrait_menu = document.querySelector(".portrait-menu");
-        portrait_menu.onclick = function(){
-            nav_bar = document.querySelector(".nav-bar");
-            nav_bar.classList.toggle("active");
-        }
-    </script> *@
     <script>
         const create_post_button = document.getElementById("create-post");
         const cancel_post_button = document.getElementById("cancel-post");
@@ -261,5 +83,81 @@
         confirm_post_button.addEventListener("click",()=>{
             
         })
+
+        const post_display_container = document.getElementById("post-display-container");
+        var number_of_column_div;
+        var column_div;
+
+        function responsive_post_column() {
+            let screen_width = window.innerWidth;
+            number_of_column_div = (screen_width >= 900) ? 4 : 1;
+            post_display_container.innerHTML = "";
+            for (let i = 0; i < number_of_column_div; i++){
+                let div = document.createElement("div");
+                div.className = "col";
+                post_display_container.appendChild(div);
+            }
+            column_div = post_display_container.querySelectorAll("div");
+            get_post();
+        }
+
+        function get_post() {
+            fetch("@Url.Action("GetPost","Post")")
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(response.status);
+                }
+            })
+            .then(json => {
+                console.log(json);
+                column_div.forEach((div, div_index) => {
+                    json.forEach((post, post_index) => {
+                        if (post_index % number_of_column_div == div_index) {
+                            let post_card = document.createElement("div");
+                            post_card.className = "post-card";
+                            post_card.innerHTML =
+                            `<img class="post-img" src="${post.picture}" alt="post-img" style="width:100%">
+                            <div class="container">
+                                <section class="post-tag">
+                                    ${post.tags.map(tag => `<button type="button" class="post-tag-btn">${tag}</button>`).join('')}
+                                </section>
+                                <div class="post-header">
+                                    <img class="post-pfp" src="${post.creator.profilePicture}" alt="post-pfp" style="width:15%">
+                                    <div class="post-info">
+                                        <h2>${post.title}</h2>
+                                        <p>${post.creator.username}</p>
+                                    </div>
+                                </div>          
+                                <p>${post.description.replace(/\r\n/g,"<br>")}</p>
+                                <section class="post-join-info">
+                                    <div class="headcount">
+                                        <h2>${post.enrolledCount}/${post.amountAccept}</h2>
+                                        <p>joined</p>
+                                    </div>
+                                    <button type="button" class="post-redirect">See Details</button>
+                                </section>
+                            </div>`;
+                            div.appendChild(post_card);
+                        }
+                    });
+                });
+            })
+            .catch(error => {console.error("fetch post error:", error);});
+        }
+
+        var last_resize_event = 0;
+        const resize_threshold = 500;
+        window.addEventListener("resize", () => {
+            let now = Date.now();
+            if (now - last_resize_event >= resize_threshold) {
+                last_resize_event = now;
+                responsive_post_column();
+            }
+        });
+        responsive_post_column();
+
+        var page_number = 1;
     </script>
 }

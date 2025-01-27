@@ -23,6 +23,12 @@ public class ApplicationDbContext : DbContext
             .HasOne(e => e.Post)
             .WithMany(p => p.Enrollments)
             .HasForeignKey(e => e.PostId);
+
+        modelBuilder.Entity<Post>()
+            .HasOne(p => p.Creator)
+            .WithMany(a => a.Posts)
+            .HasForeignKey(p => p.CreaterId);
+            // .OnDelete(DeleteBehavior.Cascade);
     }
 
     public DbSet<Post> Posts { get; set;}

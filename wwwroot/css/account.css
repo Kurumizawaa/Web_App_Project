@@ -197,3 +197,116 @@ body{
     }
 }
 /* ---------------------------- BODY ---------------------------- */
+
+/* ---------------------------- POPUP ---------------------------- */
+.logout-button {
+    font-size: 20px;
+    color: aliceblue;
+    background-color: rgba(180, 6, 6, 0.8);
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    padding: 0px 10px 1px 10px;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+.edit-account-button {
+    font-size: 20px;
+    color: aliceblue;
+    background-color: rgba(0, 150, 0, 0.8);
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    padding: 0px 10px 1px 10px;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+.logout-button:hover, .logout-button:focus {
+    background-color: rgba(180, 6, 6, 1);
+    cursor: pointer;
+}
+
+.edit-account-button:hover, .edit-account-button:focus {
+    background-color: rgba(0, 150, 0, 1);
+    cursor: pointer;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 1200px;
+    margin: 10vh auto;
+    text-align: center;
+    max-height: 80vh;
+    overflow-y: auto;
+    font-size: 20px;
+}
+
+.edit-account {
+    font-size: 50px;
+    margin: 10px 0px;
+}
+
+.cancel-edit-account {
+    font-size: 20px;
+    color: aliceblue;
+    background-color: rgba(180, 6, 6, 0.8);
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    padding: 0px 10px 1px 10px;
+    cursor: pointer;
+}
+
+.confirm-edit-account {
+    font-size: 20px;
+    color: aliceblue;
+    background-color: rgba(0, 150, 0, 0.8);
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    padding: 0px 10px 1px 10px;
+    cursor: pointer;
+}
+
+.cancel-edit-account:hover, .cancel-edit-account:focus {
+    background-color: rgba(180, 6, 6, 1);
+    cursor: pointer;
+}
+
+.confirm-edit-account:hover, .confirm-edit-account:focus {
+    background-color: rgba(0, 150, 0, 1);
+    cursor: pointer;
+}
+
+.modal-content form > label {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    margin: 15px auto;
+}
+
+.modal-content label input{
+    font-size: 20px;
+}
+
+.modal-content label textarea{
+    font-size: 20px;
+    resize: none;
+}
+/* ---------------------------- POPUP ---------------------------- */
