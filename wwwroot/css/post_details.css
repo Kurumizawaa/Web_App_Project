@@ -1,0 +1,137 @@
+.post-title {
+    color: aliceblue;
+    font-size: 72px;
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+    margin-bottom: 20px;
+}
+body{
+    padding-top: 80px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/images/guy_looking_at_girl.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+.post-section {
+    display: flex;
+    justify-content: center;
+}
+.post-card {
+    border-radius: 20px;
+    border: solid aliceblue;
+    width: 75vw;
+    padding: 15px 30px 30px 30px;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: aliceblue;
+    font-size: 50px;
+}
+.post-header {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0px 0px 0px;
+}
+.post-pfp{
+    width: 175px;
+    height: 175px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: relative;
+    margin-right: 20px;
+}  
+.post-info {
+    display: flex;
+    flex-direction: column; /* Stack h2 and p vertically */
+}
+.post-time{
+    font-size: 30px;
+    color: rgba(150, 150, 150, 0.75);
+}
+.post-enroll {
+    display: flex;
+    align-items: center;
+}
+.post-tag {
+    display: block;
+    gap: 1vw;
+    margin: 0px 0px 30px 0px;
+}
+.post-tag-btn {
+    font-size: 24px;
+    color: aliceblue;
+    background-color: rgba(150, 150, 150, 0.50);
+    width: flex;
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    padding: 0px 10px 3px 10px;
+    margin-right: 10px;
+}
+.post-tag-btn:hover{
+    background-color: rgba(150, 150, 150, 0.8);
+    cursor: pointer;
+}
+.post-tag-btn:active {
+    background-color: rgba(110, 110, 110, 1);
+}
+.post-signup {
+    font-size: 30px;
+    color: aliceblue;
+    background-color: rgba(0, 150, 0, 0.25);
+    border: none;
+    border-radius: 5px;
+    height: 50px;
+    margin-left: 20px;
+    padding: 0px 10px 1px 10px;
+}
+.post-signup:hover {
+    background-color: rgba(0, 150, 0, 0.5);
+    cursor: pointer;
+}
+.post-signup:active {
+    background-color: rgba(0, 150, 0, 1);
+}
+.post-abandon {
+    display: none;
+    font-size: 30px;
+    color: aliceblue;
+    background-color: rgba(255, 0, 0, 0.25);
+    border: none;
+    border-radius: 5px;
+    height: 50px;
+    margin-left: 20px;
+    padding: 0px 10px 1px 10px;
+}
+.post-abandon:hover {
+    background-color: rgba(255, 0, 0, 0.5);
+    cursor: pointer;
+}
+.post-abandon:active {
+    background-color: rgb(255, 0, 0);
+}
+.post-details {
+    margin-top: 20px;
+    display: flex;
+    font-weight: lighter;
+    font-size: 24px;
+}
+.post-image {
+    border-radius: 20px;
+    width: 25%;
+    object-fit: cover; 
+    margin-right: 20px;
+}
+@media only screen and (max-width: 900px) {
+    .post-header, .post-details{
+        flex-direction: column;
+    }
+    .post-image {
+        width: 100%;
+        object-fit: cover; 
+        margin-bottom: 10px;
+    }
+    .post-tag-btn {
+        padding: 0px 10px 3px 10px;
+        margin: 0px 10px 10px 0px;
+    }
+}

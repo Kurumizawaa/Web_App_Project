@@ -25,7 +25,9 @@
                 <label class="create-post-tags">
                     @foreach (var Tags in Model)
                     {
-                        <label class="checkbox-container"><input class="checkbox" type="checkbox" name="Tags" value="@Tags"><span class="checkmark">@Tags</span></label>
+                        <label class="checkbox-container"><input class="checkbox" type="checkbox" name="Tags" value="@Tags">
+                            <span class="checkmark">@Tags</span>
+                        </label>
                     }
                 </label>
                 <p>At least 1 tag is required!</p>
@@ -84,9 +86,14 @@
         const cancel_post_button = document.getElementById("cancel-post");
         const confirm_post_button = document.getElementById("confirm-post");
         const popup = document.getElementById("modal");
-        create_post_button.addEventListener("click",()=>{
+        create_post_button.addEventListener("click", () => {
             popup.style.display = "block";
-        })
+        });
+        popup.addEventListener("click", (event) => {
+            if (!event.target.closest(".modal-content")) {
+                popup.style.display = "none";
+            }
+        });
         cancel_post_button.addEventListener("click",()=>{
             popup.style.display = "none";
         })
@@ -127,6 +134,11 @@
                         if (post_index % number_of_column_div == div_index) {
                             let post_card = document.createElement("div");
                             post_card.className = "post-card";
+                            const preview_char_limit = 500;
+                            let post_description = post.description;
+                            if (post_description.length > preview_char_limit) {
+                                post_description = `${post_description.slice(0,preview_char_limit + 1)}...`;
+                            }
                             post_card.innerHTML =
                             `<img class="post-img" src="${post.picture}" alt="post-img" style="width:100%">
                             <div class="container">
@@ -140,16 +152,21 @@
                                         <p>${post.creator.username}</p>
                                     </div>
                                 </div>          
-                                <p>${post.description.replace(/\r\n/g,"<br>")}</p>
+                                <p>${post_description.replace(/\r\n/g,"<br>")}</p>
                                 <section class="post-join-info">
                                     <div class="headcount">
                                         <h2>${post.enrolledCount}/${post.amountAccept}</h2>
                                         <p>joined</p>
                                     </div>
-                                    <button type="button" class="post-redirect">See Details</button>
+                                    <button type="button" class="post-redirect" id="post-redirect-${post.id}">See Details</button>
                                 </section>
                             </div>`;
                             div.appendChild(post_card);
+                            const post_redirect_button = document.getElementById(`post-redirect-${post.id}`);
+                            console.log(post_redirect_button);
+                            post_redirect_button.addEventListener("click",()=>{
+                                window.location.href = `@Url.Action("Post", "Home")?post=${post.id}`
+                            });
                         }
                     });
                 });

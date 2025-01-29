@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = "Post page";
+    ViewData["Page"] = "Post";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/post_details.css" asp-append-version="true" />
+}
+
+<section>
+    <section class="post-title" id="post-title">
+        <b>Post by Bin Laden<b>
+    </section>
+    <section class="post-section">
+        <section class="post-card">
+            <h2>Boeing 767 Flight Crew</h2>
+            <section class="post-header">
+                <img class="post-pfp" src="https://i.pinimg.com/originals/1e/0a/8e/1e0a8e6336fc13b134a5b4fa5fcd10ce.jpg" alt="post-pfp">
+                <div class="post-info">
+                    <p>Bin Laden</p>
+                    <p class="post-time">Sep 11, 2001 9:03 AM</p>
+                    <div class="post-enroll">
+                        <p>9/11 Joined</p>
+                        <button type="button" class="post-signup" id="post-signup">Join</button>
+                        <button type="button" class="post-abandon" id="post-abandon">Leave</button>
+                    </div>
+                </div>
+            </section>
+            <section class="post-tag">
+                <button type="button" class="post-tag-btn">Aviation</button>
+                <button type="button" class="post-tag-btn">Terrorism</button>
+                <button type="button" class="post-tag-btn">Trolling Obama</button>
+            </section>
+            <section class="post-details">
+                <img class="post-image" src="https://www.willbhurd.com/wp-content/uploads/2024/01/a9df4191-8f9f-4ca8-8836-f2b9e00a277c.png" alt="post-omage">
+                <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspThe morning of September 11, 2001, began like any other-a crisp, clear sky stretching over New York City as people hurried to work,
+                unaware that history was about to change. At 8:46 AM, the first plane struck the North Tower of the World Trade Center,
+                sending a fireball into the sky and shattering the routine of a city that never slept. Confusion turned to horror when,
+                just 17 minutes later, a second plane crashed into the South Tower, confirming what many had feared-this was no accident.
+                As thick, black smoke billowed over Manhattan, chaos unfolded below, with firefighters and police rushing toward the inferno while thousands fled in terror.
+                Then, at 9:59 AM, the unthinkable happened-the South Tower crumbled in a deafening roar, followed by the North Tower at 10:28 AM, burying the hopes
+                and lives of countless souls beneath the rubble. Elsewhere, the Pentagon burned, and a fourth plane, United 93, crashed into a Pennsylvania field,
+                its passengers sacrificing themselves to prevent further devastation. In just a few hours, America was forever changed-a nation brought to its knees,
+                yet rising with resilience, unity, and an unbreakable spirit.
+                <p>
+            </section>
+        </section>
+    </section>
+</section>
+
+@section Scripts {
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const post_id = urlParams.get('post');
+        const post_signup_btn = document.getElementById("post-signup")
+        const post_abandon_btn = document.getElementById("post-abandon")
+        post_signup_btn.addEventListener("click",()=>{
+            post_signup_btn.style.display = "none";
+            post_abandon_btn.style.display = "block";
+        });
+        post_abandon_btn.addEventListener("click",()=>{
+            post_signup_btn.style.display = "block";
+            post_abandon_btn.style.display = "none";
+        });
+    </script>
+}
