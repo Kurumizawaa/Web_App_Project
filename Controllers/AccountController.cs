@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using web_app_project.Data;
 using web_app_project.Models;
 
@@ -73,6 +74,14 @@ public class AccountController : Controller
             TempData["Info"] = "Your session id has been expired! Login again to continue.";
             return RedirectToAction("Login","Account");
         }
+    }
+
+    public JsonResult GetAllPostsOfAccount(){
+        var Id = HttpContext.Session.GetInt32("ID");
+        var post_list = _Dbcontext.Posts.Where(x => x.CreaterId == Id)
+                                        .ToList();
+        
+        return Json(post_list);
     }
 
     [HttpPost]

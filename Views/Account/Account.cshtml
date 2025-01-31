@@ -27,7 +27,7 @@
         <button type="button" class="edit-account-button" id="edit-account-button">Edit profile</button>
         <form method="get" action="@Url.Action("Logout","Account")" id="logout-form" hidden></form>
         <button type="submit" form="logout-form" class="logout-button" id="logout-button">Logout</button>
-    </div>   
+    </div>
     <div class="modal" id="modal">
         <div class="modal-content">
             <h2 class="edit-account">Edit profile</h2>
@@ -45,7 +45,7 @@
 <div class="row">
     <div class="col">
         <h1>My Post(s)</h1>
-        <div class="post-list">
+        <div class="post-list" id="my-post-list">
             @*post template*@
             <div class="post-card">
                 <img class="post-img"
@@ -58,55 +58,58 @@
                 <button type="button" class="post-redirect">See Details</button>
             </div>
             @*post template*@
-            <div class="post-card">
-                <img class="post-img"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLhPyR8vrk3u_upM2IwsTGlHGR5o4quBBz8Q&s"
-                alt="post-img">
-                <div class="post-info">
-                    <h2>Post Title</h2>
-                    <p>Post Descriptions</p>
-                </div>
-                <button type="button" class="post-redirect">See Details</button>
-            </div>
-            <div class="post-card">
-                <img class="post-img"
-                src="https://cdn.bbopokertables.com/template/asset/2024/ks/arena/gallery/6.webp"
-                alt="post-img">
-                <div class="post-info">
-                    <h2>Post Title</h2>
-                    <p>Post Descriptions</p>
-                </div>
-                <button type="button" class="post-redirect">See Details</button>
-            </div>
-            <div class="post-card">
-                <img class="post-img"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEfKjsft9327JnZ6EaA44nsSgnJ38XJ_1G5w&s"
-                alt="post-img">
-                <div class="post-info">
-                    <h2>Post Title</h2>
-                    <p>Post Descriptions</p>
-                </div>
-                <button type="button" class="post-redirect">See Details</button>
-            </div>
         </div>
     </div>
     <div class="col">
         <h1>Activities Joined</h1>
-        <div class="post-card">
-            <img class="post-img"
-            src="https://www.trip-attractive.com/wp-content/uploads/2019/12/gun-thum.jpg"
-            alt="post-img">
-            <div class="post-info">
-                <h2>Post Title</h2>
-                <p>Post Descriptions</p>
+        <div class="post-list" id="joined-post-list">
+            <div class="post-card">
+                <img class="post-img"
+                src="https://www.trip-attractive.com/wp-content/uploads/2019/12/gun-thum.jpg"
+                alt="post-img">
+                <div class="post-info">
+                    <h2>Post Title</h2>
+                    <p>Post Descriptions</p>
+                </div>
+                <button type="button" class="post-redirect">See Details</button>
             </div>
-            <button type="button" class="post-redirect">See Details</button>
         </div>
     </div>
 </div>
 
 @section Scripts {
     <script>
+        function get_account_posts(){
+            fetch("@Url.Action("GetAllPostsOfAccount", "Account")")
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(response.status);
+                }
+            })
+            .then(data => {
+                console.log("Parsed JSON data:", data);
+                post_container = document.getElementById("my-post-list");
+                data.forEach(post => {
+                    let post_card = document.createElement("div");
+                    post_card.className = "post-card";
+                    post_card.innerHTML =   `<img class="post-img"
+                                            src=${post.picture}
+                                            alt="post-img">
+                                            <div class="post-info">
+                                                <h2>${post.title}</h2>
+                                                <p>${post.description}</p>
+                                            </div>
+                                            <button type="button" class="post-redirect">See Details</button>`
+                post_container.appendChild(post_card);
+                })
+            })
+            .catch(error => {
+                console.error("Error fetching posts:", error);
+            });
+        }
+
         const edit_account_button = document.getElementById("edit-account-button");
         const cancel_edit_account_button = document.getElementById("cancel-edit-account");
         const confirm_edit_account_button = document.getElementById("confirm-edit-account");
@@ -118,7 +121,8 @@
             popup.style.display = "none";
         })
         confirm_edit_account_button.addEventListener("click",()=>{
-            
+
         })
+        get_account_posts();
     </script>
 }
