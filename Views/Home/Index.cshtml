@@ -51,7 +51,7 @@
                         <input type="radio" name="AcceptType" value="OnRandom" required>
                     </label>
                 </label>
-                <label class="create-post-cdate">Close date: <input type="date" name="CloseDate" required></label>
+                <label class="create-post-cdate">Close date: <input type="datetime-local" name="CloseDate" required></label>
             </div>
         </form>
         <button type="submit" form="create-post-form" class="confirm-post" id="confirm-post">Confirm</button>
@@ -165,7 +165,7 @@
                             const post_redirect_button = document.getElementById(`post-redirect-${post.id}`);
                             console.log(post_redirect_button);
                             post_redirect_button.addEventListener("click",()=>{
-                                window.location.href = `@Url.Action("Post", "Home")?post=${post.id}`
+                                window.location.href = `@Url.Action("Post", "Post")?id=${post.id}`
                             });
                         }
                     });

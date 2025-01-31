@@ -3,17 +3,19 @@
     ViewData["Page"] = "Post";
 }
 
+@model Post
+
 @section Styles {
     <link rel="stylesheet" href="~/css/post_details.css" asp-append-version="true" />
 }
 
 <section>
     <section class="post-title" id="post-title">
-        <b>Post by Bin Laden<b>
+        <b>Post by @Model.Creator.Username<b>
     </section>
     <section class="post-section">
         <section class="post-card">
-            <h2>Boeing 767 Flight Crew</h2>
+            <h2>@Model.Title</h2>
             <section class="post-header">
                 <img class="post-pfp" src="https://i.pinimg.com/originals/1e/0a/8e/1e0a8e6336fc13b134a5b4fa5fcd10ce.jpg" alt="post-pfp">
                 <div class="post-info">

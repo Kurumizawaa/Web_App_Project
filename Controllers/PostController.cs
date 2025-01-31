@@ -23,6 +23,12 @@ public class PostController : Controller
         return Json(Post_list);
     }
 
+        public IActionResult Post(int id)
+    {
+        var post = _Dbcontext.Posts.Include(a => a.Creator).FirstOrDefault(x => x.Id == id);
+        return View(post);
+    }
+
     [HttpPost]
     public IActionResult CreatePost(Post post)
     {
