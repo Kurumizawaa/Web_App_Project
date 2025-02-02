@@ -28,10 +28,10 @@
     
 /* ---------------------------- HEADER ---------------------------- */
 .account-header {
-    display: flex;
-    /* align-items: center; */
+    width: 80%;
     gap: 2%;
-    margin: 20px 0 0 20px
+    margin: 20px 0 0 20px;
+    padding: 20px;
 }
 
 .account-pfp{
@@ -39,23 +39,24 @@
     aspect-ratio: 1 / 1;
     object-fit: cover;
     position: relative;
-    width: 10%;
-    height: 10%;
+    width: 20%;
+    height: 20%;
 }   
 
 .account-info {
+    width: 90%;
+    height: 25vh;
+    
     font-size: 30px;
     color: aliceblue;
-    padding-top: 10px;
-    width: 100vh;
-    height: 20vh;
+    padding: 10px;
     overflow: hidden;
 }
 
 .account-info p {
     color: rgba(240, 248, 255, 0.69);
     font-size: 15px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.75);
     padding: 10px;
     border-radius: 5px;
     width: 100%;
@@ -77,28 +78,25 @@
 /* ---------------------------- HEADER ---------------------------- */
 
 /* ---------------------------- BODY ---------------------------- */
-body{
+body {
     padding-top: 80px;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.75),
-                                      rgba(0, 0, 0, 0.75)),
-                                        url('/images/guy_looking_at_girl.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/images/guy_looking_at_girl.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
 
-.row {
+.all-lists-container {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    margin-top: 20px;
-    margin-bottom: 40px;
+    justify-content: center;
+    gap: 2%;
 }
 .col{
-    float: left;
-    width: 40vw;
-    min-height: 40vh;
-    margin: 10px;
+    min-width: 40%;
+    min-height: 40%;
+    max-width: 90%;
+    margin: 10px 0;
     padding: 10px 10px;
     border-radius: 10px;
     background: linear-gradient(to bottom,
@@ -109,21 +107,23 @@ body{
     border-width: 2px;
     transition: 1s;
 
-    font-size: 25px;
+    font-size: 1rem;
     color: aliceblue;
 }
 
+
 /* ------------------------- POSTS LIST ------------------------- */
-.post-list{
-    display: flexbox;
+.post-list {
+    display: flex;
     flex-direction: column;
-    width: 90%;
-    max-height: 300px;
-    padding-right: 50px;
+    width: 95%;
+    max-height: 350px;
     overflow-y: auto;
+    padding-right: 5%;
 }
 .post-card {
     display: flex;
+    position: relative;
     align-items: center;
     border-radius: 20px;
     border: solid aliceblue;
@@ -134,7 +134,6 @@ body{
     padding: 10px;
     margin: 5px 0;
     height: 30%;
-    position: relative; /* Ensure positioning context for absolute elements */
 }
 .post-img {
     float: left;
@@ -164,20 +163,20 @@ body{
     height: 80%;
     font-size: 15px;
     color: rgba(240, 248, 255, 0.69);
-    /* overflow: hidden; Hide any overflowing content */
     overflow-y: hidden;
-    text-overflow: ellipsis; /* Display ellipsis (...) for overflowing text */
-    white-space: normal; /* Allow text to wrap to the next line */
+    text-overflow: ellipsis;
+    white-space: normal;
 }
 
 /* "see details" buttons */
 .post-redirect {
-    font-size: 15px;
+    width: 15%;
+    height: 20%;
+    font-size: 0.6rem;
     color: aliceblue;
     background-color: rgba(0, 150, 0, 0.25);
     border: none;
     border-radius: 5px;
-    height: 25px;
     padding: 0px 10px 1px 10px;
     /* position to bottom-right */
     position: absolute;
@@ -194,18 +193,18 @@ body{
 
 /* WebKit browsers (Chrome, Safari, Edge)*/
 .post-list::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
+    width: 10px;
 }
 .post-list::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Background of the scrollbar track */
-    border-radius: 10px; /* Rounded corners for the track */
+    background: #f1f1f1;
+    border-radius: 10px;
 }
 .post-list::-webkit-scrollbar-thumb {
-    background: #888; /* Color of the scrollbar thumb */
-    border-radius: 10px; /* Rounded corners for the thumb */
+    background: #888;
+    border-radius: 10px;
 }
 .post-list::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Color of the scrollbar thumb on hover */
+    background: #555;
 }
 /* ------------------------- POSTS LIST ------------------------- */
 
