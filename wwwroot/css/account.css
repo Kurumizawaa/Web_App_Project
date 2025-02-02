@@ -27,11 +27,19 @@
 /* ---------------------------- CREATE POST ---------------------------- */
     
 /* ---------------------------- HEADER ---------------------------- */
+section {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
 .account-header {
     width: 80%;
     gap: 2%;
-    margin: 20px 0 0 20px;
+    /* margin: 20px 0 0 20px; */
     padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .account-pfp{
@@ -47,6 +55,7 @@
     width: 90%;
     height: 25vh;
     
+    margin: 0 auto;
     font-size: 30px;
     color: aliceblue;
     padding: 10px;
