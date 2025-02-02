@@ -10,8 +10,6 @@ public class Account
     [Required(ErrorMessage = "Username cannot be empty!")]
     public string? Username { get; set; }
     public string? Password { get; set; }
-    [Compare("Password", ErrorMessage = "Passwords do not match!")]
-    public string? ConfirmPassword { get; set; }
     public string? ProfilePicture { get; set; }
     public string? Bio { get; set; }
 
