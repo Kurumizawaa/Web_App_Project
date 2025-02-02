@@ -1,0 +1,66 @@
+body{
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/images/guy_looking_at_girl.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    color: rgba(255, 255, 255,0.75);
+}
+.register-form {
+    display: flex;
+    flex-direction: column;
+    
+    gap: 10px;
+}
+.page-title {
+    color: aliceblue;
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+.input-username, .input-password, .input-password-confirm {
+    height: 40px;
+    width: 15vw;
+    border-radius: 10px;
+    border: 2px aliceblue solid;
+    padding: 0px 5px 0px 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: aliceblue;
+
+    font-size: 25px;
+}
+
+.register-btn, .register-redirect {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    border-radius: 10px;
+    border: 2px aliceblue solid;
+    
+    color: aliceblue;
+    font-size: 20px;
+    height: 36px;
+}
+
+.register-btn {
+    background-color: rgba(0, 150, 0, 0.25);
+}
+.register-btn:hover {
+    background-color: rgba(0, 150, 0, 0.5);
+}
+.register-btn:active {
+    background-color: rgba(0, 150, 0, 1);
+}
+
+.input-username::placeholder, .input-password::placeholder, .input-password-confirm::placeholder {
+    font-size: 16px;
+}

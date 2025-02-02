@@ -2,12 +2,21 @@
 
 @{
     ViewData["Title"] = "Register page";
-    Layout = null;
+    ViewData["Page"] = "Register";
 }
 
-<form method="post" action="@Url.Action("Register","Account")" id="register-form">
-    <label>Username: <input type="text" name="Username"></label><br>
-    <label>Password: <input type="text" name="Password"> <span>WARNING: DO NOT USE REAL PASSWORD!</span></label><br>
-    <button type="submit" form="register-form">Register</button>
-    @Html.ValidationMessageFor(m => m.Username, "")
-</form>
+@section Styles {
+    <link rel="stylesheet" href="~/css/register.css" asp-append-version="true" />
+}
+
+<section class="register-body">
+    <form class="register-form" method="post" action="@Url.Action("Register","Account")" id="register-form">
+        <h2 class="page-title">Sign Up</h2>
+        <input type="text" class="input-username" id="input-username" name="Username" placeholder="Username">
+        <input type="password" class="input-password" name="Password" placeholder="Password">
+        <input type="password" class="input-password-confirm" name="Password" placeholder="Password">
+        <button id="register-btn" class="register-btn" type="submit">Sign Up</button>
+        @Html.ValidationMessageFor(m => m.Username, "")
+        @Html.ValidationMessageFor(m => m.ConfirmPassword, "")
+    </form>
+<section>
