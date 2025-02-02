@@ -101,8 +101,12 @@
                                                 <h2>${post.title}</h2>
                                                 <p>${post.description}</p>
                                             </div>
-                                            <button type="button" class="post-redirect">See Details</button>`
+                                            <button type="button" class="post-redirect" id="post-redirect-${post.id}">See Details</button>`
                 post_container.appendChild(post_card);
+                const post_redirect_button = document.getElementById(`post-redirect-${post.id}`);
+                post_redirect_button.addEventListener("click",()=>{
+                    window.open(`@Url.Action("Post", "Post")?id=${post.id}`, "_blank")
+                });
                 })
             })
             .catch(error => {
