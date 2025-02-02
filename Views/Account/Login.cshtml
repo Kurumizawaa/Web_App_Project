@@ -1,11 +1,35 @@
 @{
     ViewData["Title"] = "Login page";
-    Layout = null;
+    ViewData["Page"] = "Login";
 }
 
-<h2>@TempData["Info"]</h2>
-<form method="post" action="@Url.Action("Login","Account")" id="login-form">
-    <label>Username: <input type="text" name="Username"></label><br>
-    <label>Password: <input type="text" name="Password"></label><br>
-    <button type="submit" form="login-form">Login</button>
-</form>
+@section Styles {
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+}
+
+<!-- What the fuck is this -->
+<h2>@TempData["Info"]</h2> 
+<section class="login-body">
+    <form class="login-form" method="post" action="@Url.Action("Login","Account")" id="login-form">
+        <h2 class="page-title">Log in</h2>
+        <input type="text" class="input-username" id="input-username" name="Username" placeholder="Username">
+        <input type="password" class="input-password" name="Password" placeholder="Password">
+        <button id="login-btn" class="login-btn" type="submit">Log in</button>
+        <button id="register-redirect" class="register-redirect" type="button">Sign Up</button>
+    </form>
+<section>
+
+@section Scripts {
+    <script>
+        const login_btn = document.getElementById("login-btn");
+        const register_redirect = document.getElementById("register-redirect");
+
+        login_btn.addEventListener("click", ()=> {
+            console.log("penis");
+        });
+
+        register_redirect.addEventListener("click", ()=> {
+            window.location.href = "@Url.Action("Register", "Account")"
+        });
+    </script>
+}

@@ -91,7 +91,7 @@ public class AccountController : Controller
         if (User != null)
         {
             HttpContext.Session.SetInt32("ID", User.Id);
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Account","Account");
         }
         else
         {
@@ -114,7 +114,7 @@ public class AccountController : Controller
             {
                 _Dbcontext.Accounts.Add(account);
                 _Dbcontext.SaveChanges();
-                return RedirectToAction("Login","Account");
+                return RedirectToAction("Account","Account");
             }
             else
             {

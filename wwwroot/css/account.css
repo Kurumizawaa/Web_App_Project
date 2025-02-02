@@ -6,32 +6,20 @@
     margin: 0;
     padding: 0;
 }
-
-/* ---------------------------- CREATE POST ---------------------------- */
-.create-post {
-    position: fixed;
-    bottom: 5vh;
-    right: 5vw;
-    border-radius: 50%;
-    width: 75px;
-    height: 75px;
-    border: none;
-    background-color: rgb(150, 150, 150);
-}
-.create-post:hover{
-    background-color: #cccccc;
-}
-.create-post:active{
-    background-color: rgb(100, 100, 100);
-}
-/* ---------------------------- CREATE POST ---------------------------- */
     
 /* ---------------------------- HEADER ---------------------------- */
-.account-header {
+section {
+    justify-content: center;
+    align-items: center;
     display: flex;
-    /* align-items: center; */
+}
+.account-header {
+    width: 80%;
     gap: 2%;
-    margin: 20px 0 0 20px
+    /* margin: 20px 0 0 20px; */
+    padding: 20px;
+    display: flex;
+    align-items: center;
 }
 
 .account-pfp{
@@ -39,20 +27,26 @@
     aspect-ratio: 1 / 1;
     object-fit: cover;
     position: relative;
-    width: 10%;
+    width: 20%;
+    height: 20%;
 }   
 
 .account-info {
+    width: 90%;
     font-size: 30px;
     color: aliceblue;
-    padding-top: 10px;
-    width: 100vh;
-    height: 150px;
+    padding: 10px;
     overflow: hidden;
 }
-
+.account-info-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 20px;
+}
 .account-info p {
     color: rgba(240, 248, 255, 0.69);
+    min-height: 10vh;
     font-size: 15px;
     background-color: rgba(0, 0, 0, 0.5);
     padding: 10px;
@@ -60,6 +54,11 @@
     width: 100%;
     height: 60%;
     box-sizing: border-box;
+}
+.sm-account-button {
+    align-items: center;
+    gap: 20px;
+    display: none;
 }
 
 @media only screen and (max-width: 900px){
@@ -72,79 +71,94 @@
             width: 25%;
         }
     }
+    .account-info-header {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .lg-account-button {
+        display: none;
+    }
+    .sm-account-button {
+        display: flex;
+    }
 }
 /* ---------------------------- HEADER ---------------------------- */
 
 /* ---------------------------- BODY ---------------------------- */
-body{
+body {
     padding-top: 80px;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.75),
-                                      rgba(0, 0, 0, 0.75)),
-                                        url('/images/guy_looking_at_girl.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/images/guy_looking_at_girl.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
 
-.row {
+.all-lists-container {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    margin-top: 20px;
-    margin-bottom: 40px;
+    justify-content: center;
+    gap: 2%;
 }
 .col{
-    float: left;
-    width: 40vw;
-    height: 40vh;
-    margin: 10px;
-    padding: 10px 10px;
+    gap: 50px;
+    min-width: 40%;
+    min-height: 40%;
+    max-width: 90%;
+    margin: 10px 0;
+    padding: 10px 15px;
     border-radius: 10px;
     background: linear-gradient(to bottom,
                         rgba(0, 0, 0, 0.5),
                         rgba(50, 50, 50, 0));
-
+    border-radius: 20px;
+    border: solid aliceblue;
+    border-width: 2px;
     transition: 1s;
 
-    font-size: 25px;
+    font-size: 1rem;
     color: aliceblue;
 }
 
+
 /* ------------------------- POSTS LIST ------------------------- */
-.post-list{
+.post-list {
     display: flex;
     flex-direction: column;
-    width: 90%;
-    max-height: 300px;
-    padding-right: 50px;
+    width: 95%;
+    max-height: 350px;
     overflow-y: auto;
+    padding-right: 5%;
+    margin-top: 5px;
 }
 .post-card {
     display: flex;
+    position: relative;
     align-items: center;
+    border-radius: 20px;
+    border: solid aliceblue;
+    border-width: 1px;
     font-size: 20px;
     background: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(50, 50, 50, 0.5));
     border-radius: 10px;
     padding: 10px;
     margin: 5px 0;
     height: 30%;
-    position: relative; /* Ensure positioning context for absolute elements */
 }
 .post-img {
-    height: 100%;
-    max-width: 25%;
-    max-height: 100%; /* Ensure the image does not exceed the container's height */
-    object-fit: contain;
+    float: left;
+    width:  30%;
+    height: 100px;
+    object-fit: cover;
     border-radius: 10px;
-    background-color: rgba(200, 200, 200, 0.5); /* Placeholder background color */
 }
 .post-info {
     position: absolute;
-    top: 10%;
-    left: 30%; /* Start the text 30% from the left of the container */
-    width: 45%; /* Ensure the text container takes the remaining width */
+    top: 5%;
+    left: 35%; /* Start the text 30% from the left of the container */
+    width: 40%; /* Ensure the text container takes the remaining width */
     height: 80%;
-    overflow: hidden;
+    overflow: none;
 }
 
 .post-info h2 {
@@ -159,20 +173,28 @@ body{
     height: 80%;
     font-size: 15px;
     color: rgba(240, 248, 255, 0.69);
-    /* overflow: hidden; Hide any overflowing content */
     overflow-y: hidden;
-    text-overflow: ellipsis; /* Display ellipsis (...) for overflowing text */
-    white-space: normal; /* Allow text to wrap to the next line */
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+.joined_number {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 15px;
+    color: rgba(240, 248, 255, 0.69);
+    overflow-y: hidden;
 }
 
 /* "see details" buttons */
 .post-redirect {
-    font-size: 15px;
+    width: 15%;
+    height: 20%;
+    font-size: 0.6rem;
     color: aliceblue;
     background-color: rgba(0, 150, 0, 0.25);
     border: none;
     border-radius: 5px;
-    height: 25px;
     padding: 0px 10px 1px 10px;
     /* position to bottom-right */
     position: absolute;
@@ -189,18 +211,18 @@ body{
 
 /* WebKit browsers (Chrome, Safari, Edge)*/
 .post-list::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
+    width: 10px;
 }
 .post-list::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Background of the scrollbar track */
-    border-radius: 10px; /* Rounded corners for the track */
+    background: #f1f1f1;
+    border-radius: 10px;
 }
 .post-list::-webkit-scrollbar-thumb {
-    background: #888; /* Color of the scrollbar thumb */
-    border-radius: 10px; /* Rounded corners for the thumb */
+    background: #888;
+    border-radius: 10px;
 }
 .post-list::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Color of the scrollbar thumb on hover */
+    background: #555;
 }
 /* ------------------------- POSTS LIST ------------------------- */
 
@@ -216,35 +238,42 @@ body{
 .logout-button {
     font-size: 20px;
     color: aliceblue;
-    background-color: rgba(180, 6, 6, 0.8);
+    background-color: rgba(255, 0, 0, 0.25);
     border: none;
     border-radius: 5px;
     height: 40px;
     padding: 0px 10px 1px 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
     cursor: pointer;
-    align-self: flex-end;
 }
 
 .edit-account-button {
     font-size: 20px;
     color: aliceblue;
-    background-color: rgba(0, 150, 0, 0.8);
+    background-color: rgba(0, 150, 0, 0.25);
     border: none;
     border-radius: 5px;
     height: 40px;
     padding: 0px 10px 1px 10px;
-    cursor: pointer;
-    align-self: flex-end;
-}
-
-.logout-button:hover, .logout-button:focus {
-    background-color: rgba(180, 6, 6, 1);
+    white-space: nowrap;
+    flex-shrink: 0;
     cursor: pointer;
 }
 
-.edit-account-button:hover, .edit-account-button:focus {
+.logout-button:hover {
+    background-color: rgba(255, 0, 0, 0.5);
+    cursor: pointer;
+}
+.logout-button:active {
+    background-color: rgb(255, 0, 0);
+}
+.edit-account-button:hover {
+    background-color: rgba(0, 150, 0, 0.5);
+    cursor: pointer;
+}
+.edit-account-button:active {
     background-color: rgba(0, 150, 0, 1);
-    cursor: pointer;
 }
 
 .modal {

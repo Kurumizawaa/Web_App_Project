@@ -6,14 +6,6 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
 }
-
-<button type="button" class="create-post" id="create-post">
-    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-pen"
-        viewBox="0 0 16 16">
-        <path
-            d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z" />
-    </svg>
-</button>
 <section>
     <div class="account-header">
         <img class="account-pfp"
@@ -21,12 +13,21 @@
             alt="account-pfp"
             id="account-pfp">
         <div class="account-info">
-            <h2>@ViewBag.Account.Username</h2>
-            <p>@ViewBag.Account.Bio</p>
+            <div class="account-info-header">
+                <h2>@ViewBag.Account.Username</h2>
+                <div class="lg-account-button">
+                    <button type="button" class="edit-account-button" id="edit-account-button">Edit Profile</button>
+                    <form method="get" action="@Url.Action("Logout","Account")" id="logout-form" hidden></form>
+                    <button type="submit" form="logout-form" class="logout-button" id="logout-button">Log out</button>
+                </div>
+            </div>
+            <p id="account-bio">@ViewBag.Account.Bio</p>
         </div>
-        <button type="button" class="edit-account-button" id="edit-account-button">Edit profile</button>
-        <form method="get" action="@Url.Action("Logout","Account")" id="logout-form" hidden></form>
-        <button type="submit" form="logout-form" class="logout-button" id="logout-button">Logout</button>
+        <div class="sm-account-button">
+            <button type="button" class="edit-account-button" id="edit-account-button">Edit Profile</button>
+            <form method="get" action="@Url.Action("Logout","Account")" id="logout-form" hidden></form>
+            <button type="submit" form="logout-form" class="logout-button" id="logout-button">Log out</button>
+        </div>
     </div>
     <div class="modal" id="modal">
         <div class="modal-content">
@@ -42,12 +43,12 @@
         </div>
     </div>
 </section>
-<div class="row">
+<div class="all-lists-container">
     <div class="col">
         <h1>My Post(s)</h1>
         <div class="post-list" id="my-post-list">
             @*post template*@
-            <div class="post-card">
+            @* <div class="post-card">
                 <img class="post-img"
                 src="https://images.contentstack.io/v3/assets/bltcedd8dbd5891265b/bltfc207f0f782976b1/6670821ec00ba0921486e3d2/backyard-party-hero-1.jpg"
                 alt="post-img">
@@ -55,15 +56,16 @@
                     <h2>Post Title</h2>
                     <p>Post Descriptions</p>
                 </div>
+                <p class="joined_number">9/11</p>
                 <button type="button" class="post-redirect">See Details</button>
-            </div>
+            </div> *@
             @*post template*@
         </div>
     </div>
     <div class="col">
         <h1>Activities Joined</h1>
         <div class="post-list" id="joined-post-list">
-            <div class="post-card">
+            @* <div class="post-card">
                 <img class="post-img"
                 src="https://www.trip-attractive.com/wp-content/uploads/2019/12/gun-thum.jpg"
                 alt="post-img">
@@ -71,8 +73,9 @@
                     <h2>Post Title</h2>
                     <p>Post Descriptions</p>
                 </div>
+                <p class="joined_number">9/11</p>
                 <button type="button" class="post-redirect">See Details</button>
-            </div>
+            </div> *@
         </div>
     </div>
 </div>
@@ -101,13 +104,26 @@
                                                 <h2>${post.title}</h2>
                                                 <p>${post.description}</p>
                                             </div>
-                                            <button type="button" class="post-redirect">See Details</button>`
+                                            <p class="joined_number">${post.enrolledCount}/${post.amountAccept}</p>
+                                            <button type="button" class="post-redirect" id="post-redirect-${post.id}">See Details</button>`
                 post_container.appendChild(post_card);
+                const post_redirect_button = document.getElementById(`post-redirect-${post.id}`);
+                post_redirect_button.addEventListener("click",()=>{
+                    window.open(`@Url.Action("Post", "Post")?id=${post.id}`, "_blank")
+                });
                 })
             })
             .catch(error => {
                 console.error("Error fetching posts:", error);
             });
+        }
+        function account_bio() {
+            const bio_box = document.getElementById("account-bio");
+            let bio = "@ViewBag.Account.Bio";
+            if (bio == "") {
+                bio = "No Bio";
+            }
+            bio_box.innerHTML = bio;
         }
 
         const edit_account_button = document.getElementById("edit-account-button");
@@ -124,5 +140,6 @@
 
         })
         get_account_posts();
+        account_bio()
     </script>
 }
