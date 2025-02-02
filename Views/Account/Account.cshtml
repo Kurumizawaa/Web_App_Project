@@ -6,14 +6,6 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
 }
-
-<button type="button" class="create-post" id="create-post">
-    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-pen"
-        viewBox="0 0 16 16">
-        <path
-            d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z" />
-    </svg>
-</button>
 <section>
     <div class="account-header">
         <img class="account-pfp"
@@ -21,12 +13,21 @@
             alt="account-pfp"
             id="account-pfp">
         <div class="account-info">
-            <h2>@ViewBag.Account.Username</h2>
-            <p>@ViewBag.Account.Bio</p>
+            <div class="account-info-header">
+                <h2>@ViewBag.Account.Username</h2>
+                <div class="lg-account-button">
+                    <button type="button" class="edit-account-button" id="edit-account-button">Edit Profile</button>
+                    <form method="get" action="@Url.Action("Logout","Account")" id="logout-form" hidden></form>
+                    <button type="submit" form="logout-form" class="logout-button" id="logout-button">Log out</button>
+                </div>
+            </div>
+            <p id="account-bio">@ViewBag.Account.Bio</p>
         </div>
-        <button type="button" class="edit-account-button" id="edit-account-button">Edit profile</button>
-        <form method="get" action="@Url.Action("Logout","Account")" id="logout-form" hidden></form>
-        <button type="submit" form="logout-form" class="logout-button" id="logout-button">Logout</button>
+        <div class="sm-account-button">
+            <button type="button" class="edit-account-button" id="edit-account-button">Edit Profile</button>
+            <form method="get" action="@Url.Action("Logout","Account")" id="logout-form" hidden></form>
+            <button type="submit" form="logout-form" class="logout-button" id="logout-button">Log out</button>
+        </div>
     </div>
     <div class="modal" id="modal">
         <div class="modal-content">
@@ -113,6 +114,14 @@
                 console.error("Error fetching posts:", error);
             });
         }
+        function account_bio() {
+            const bio_box = document.getElementById("account-bio");
+            let bio = "@ViewBag.Account.Bio";
+            if (bio == "") {
+                bio = "No Bio";
+            }
+            bio_box.innerHTML = bio;
+        }
 
         const edit_account_button = document.getElementById("edit-account-button");
         const cancel_edit_account_button = document.getElementById("cancel-edit-account");
@@ -128,5 +137,6 @@
 
         })
         get_account_posts();
+        account_bio()
     </script>
 }
