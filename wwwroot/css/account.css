@@ -177,6 +177,14 @@ body {
     text-overflow: ellipsis;
     white-space: normal;
 }
+.joined_number {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 15px;
+    color: rgba(240, 248, 255, 0.69);
+    overflow-y: hidden;
+}
 
 /* "see details" buttons */
 .post-redirect {

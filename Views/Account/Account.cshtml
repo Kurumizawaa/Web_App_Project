@@ -56,6 +56,7 @@
                     <h2>Post Title</h2>
                     <p>Post Descriptions</p>
                 </div>
+                <p class="joined_number">9/11</p>
                 <button type="button" class="post-redirect">See Details</button>
             </div> *@
             @*post template*@
@@ -64,7 +65,7 @@
     <div class="col">
         <h1>Activities Joined</h1>
         <div class="post-list" id="joined-post-list">
-            <div class="post-card">
+            @* <div class="post-card">
                 <img class="post-img"
                 src="https://www.trip-attractive.com/wp-content/uploads/2019/12/gun-thum.jpg"
                 alt="post-img">
@@ -72,8 +73,9 @@
                     <h2>Post Title</h2>
                     <p>Post Descriptions</p>
                 </div>
+                <p class="joined_number">9/11</p>
                 <button type="button" class="post-redirect">See Details</button>
-            </div>
+            </div> *@
         </div>
     </div>
 </div>
@@ -102,6 +104,7 @@
                                                 <h2>${post.title}</h2>
                                                 <p>${post.description}</p>
                                             </div>
+                                            <p class="joined_number">${post.enrolledCount}/${post.amountAccept}</p>
                                             <button type="button" class="post-redirect" id="post-redirect-${post.id}">See Details</button>`
                 post_container.appendChild(post_card);
                 const post_redirect_button = document.getElementById(`post-redirect-${post.id}`);
