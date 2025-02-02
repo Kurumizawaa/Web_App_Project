@@ -78,7 +78,7 @@ public class AccountController : Controller
 
     public JsonResult GetAllPostsOfAccount(){
         var Id = HttpContext.Session.GetInt32("ID");
-        var post_list = _Dbcontext.Posts.Where(x => x.CreaterId == Id)
+        var post_list = _Dbcontext.Posts.Where(x => x.CreatorId == Id)
                                         .ToList();
         
         return Json(post_list);

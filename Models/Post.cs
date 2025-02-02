@@ -12,11 +12,9 @@ public class Post
     [Required]
     public string? Description { get; set;}
     public string? Picture { get; set;}
-    [Required]
-    public List<string> Tags { get; set;} = new List<string>();
-    [Range(0, 99, ErrorMessage = "Accept amount must be within range 0 - 99")]
     public int EnrolledCount { get; set;} = 0;
     [Required]
+    [Range(0, 99, ErrorMessage = "Accept amount must be within range 0 - 99")]
     public int AmountAccept { get; set;}
     [Required]
     public string AcceptType { get; set;} = null!;
@@ -25,7 +23,8 @@ public class Post
     [Required]
     public DateTime? CloseDate { get; set;} = null;
 
-    public int CreaterId { get; set;}
-    public Account? Creator { get; set; } = null!;
-    public ICollection<Enrollment>? Enrollments { get; set; }
+    public int CreatorId { get; set;}
+    public virtual Account? Creator { get; set; } = null!;
+    public virtual ICollection<Tag> Tags { get; set;} = new List<Tag>();
+    public virtual ICollection<Enrollment>? Enrollments { get; set; }
 }

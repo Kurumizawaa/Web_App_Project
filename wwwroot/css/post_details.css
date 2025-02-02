@@ -135,3 +135,195 @@ body{
         margin: 0px 10px 10px 0px;
     }
 }
+
+/* ---------------------------- POPUP ---------------------------- */
+.edit-post {
+    font-size: 30px;
+    color: aliceblue;
+    background-color: rgba(0, 150, 0, 0.25);
+    border: none;
+    border-radius: 5px;
+    height: 50px;
+    margin-left: 20px;
+    padding: 0px 10px 1px 10px;
+}
+.edit-post:hover {
+    background-color: rgba(0, 150, 0, 0.5);
+    cursor: pointer;
+}
+.edit-post:active {
+    background-color: rgba(0, 150, 0, 1);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.modal-content {
+    border-radius: 6px;
+    border: aliceblue solid;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: aliceblue;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 1200px;
+    margin: 10vh auto;
+    text-align: center;
+    max-height: 80vh;
+    overflow-y: auto;
+    font-size: 20px;
+    input, textarea{
+        color: aliceblue;
+        background-color: rgba(110, 110, 110, 0.5);
+        padding-left: 5px;
+    }
+    .checkbox-container input {
+        display: none;
+    }
+    .checkmark {
+        font-size: 20px;
+        width: flex;
+        color: rgba(150, 150, 150, 0.8);
+        background-color: rgba(150, 150, 150, 0.50);
+        border: none;
+        border-radius: 5px;
+        height: 30px;
+        padding: 0px 10px 3px 10px;
+    }
+    .checkbox-container:hover input ~ .checkmark {
+        background-color: rgba(150, 150, 150, 0.8);
+        cursor: pointer;
+    }
+    .checkbox-container input:checked ~ .checkmark {
+        color:aliceblue
+    }
+}
+
+.edit-post-header {
+    font-size: 50px;
+    margin: 10px 0px;
+}
+
+.cancel-edit-post {
+    font-size: 20px;
+    color: aliceblue;
+    background-color: rgba(180, 6, 6, 0.8);
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    padding: 0px 10px 1px 10px;
+    cursor: pointer;
+}
+
+.confirm-edit-post {
+    font-size: 20px;
+    color: aliceblue;
+    background-color: rgba(0, 150, 0, 0.8);
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    padding: 0px 10px 1px 10px;
+    cursor: pointer;
+}
+
+.cancel-edit-post:hover, .cancel-post:focus {
+    background-color: rgba(180, 6, 6, 1);
+    cursor: pointer;
+}
+
+.confirm-edit-post:hover, .confirm-post:focus {
+    background-color: rgba(0, 150, 0, 1);
+    cursor: pointer;
+}
+
+.edit-post-form {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    /* column-gap: 50px; */
+    /* justify-content: space-around; */
+}
+
+.edit-post-form > div {
+    flex: 1;
+    margin: 0px 50px;
+    /* min-width: 400px; */
+}
+
+.edit-post-form div > label {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 15px 0px;
+}
+
+.edit-post-form div label input{
+    font-size: 20px;
+}
+
+.edit-post-display {
+    border: 2px solid black;
+    max-width: 300px;
+    margin: auto;
+    box-sizing: border-box;
+    overflow: hidden;
+    img{
+        max-width: 300px;
+    }
+}
+
+.edit-post-image input {
+    flex-grow: 1;
+}
+
+.edit-post-title input{
+    flex-grow: 1;
+}
+
+.edit-post-desc textarea{
+    font-size: 20px;
+    width: 100%;
+    resize: none;
+}
+
+.edit-post-tags {
+    display: flex;
+    justify-content: center;
+}
+
+.edit-post-type {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.edit-post-type label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    color: black;
+    background-color: #696969;
+}
+
+/* .create-post-type input[type="radio"] {
+    display: none;
+} */
+
+.edit-post-type label:hover {
+    background-color: #ffffffb0;
+}
+
+.edit-post-type input[type="radio"]:checked + label {
+    background-color: green;
+}
+/* ---------------------------- POPUP ---------------------------- */

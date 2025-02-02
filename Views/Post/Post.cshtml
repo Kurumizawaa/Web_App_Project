@@ -3,48 +3,85 @@
     ViewData["Page"] = "Post";
 }
 
-@model Post
+@model (List<Tag>, Post)
 
 @section Styles {
     <link rel="stylesheet" href="~/css/post_details.css" asp-append-version="true" />
 }
 
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h2 class="edit-post-header">Edit post</h2>
+        <form method="post" action="@Url.Action("Post","Post")" class="edit-post-form" id="edit-post-form">
+            <div>
+                <div id="edit-post-display" class="edit-post-display"></div>
+                <label class="edit-post-image">Image: <input id="image-url" type="url" name="Picture" value="@Model.Item2.Picture" placeholder="https://example.com/image.jpg"></label>
+                <label class="edit-post-tags">
+                    @foreach (var Tag in Model.Item1)
+                    {
+                        <label class="checkbox-container"><input class="checkbox" type="checkbox" name="Tags" value="@Tag.Id" @(Model.Item2.Tags.Contains(Tag) ? "checked" : "")>
+                            <span class="checkmark">@Tag.Name</span>
+                        </label>
+                    }
+                </label>
+                <p>At least 1 tag is required!</p>
+            </div>
+            <div>
+                <label class="edit-post-title">Title: <input type="text" name="Title" value="@Model.Item2.Title" required></label>
+                <label class="edit-post-desc">Description:<br><textarea name="Description" rows="12" cols="40">@Model.Item2.Description</textarea></label>
+                <label class="edit-post-amount">Amount accept: <input type="number" name="AmountAccept" value="@(Model.Item2.AmountAccept != 0 ? Model.Item2.AmountAccept : "")" required></label>
+                <label>Accept type:</label>
+                <label class="edit-post-type">
+                    <label>
+                        Close on full queue
+                        <input type="radio" name="AcceptType" value="OnFull" @(Model.Item2.AcceptType == "OnFull" ? "Checked" : "") required>
+                    </label>
+                    <label>
+                        On selection
+                        <input type="radio" name="AcceptType" value="OnSelect" @(Model.Item2.AcceptType == "OnSelect" ? "Checked" : "") required>
+                    </label>
+                    <label>
+                        Random
+                        <input type="radio" name="AcceptType" value="OnRandom" @(Model.Item2.AcceptType == "OnRandom" ? "Checked" : "") required>
+                    </label>
+                </label>
+                <label class="create-post-cdate">Close date: <input type="datetime-local" name="CloseDate" value="@(Model.Item2.CloseDate != null ? Model.Item2.CloseDate?.ToString("yyyy-MM-ddTHH:mm") : "")" required></label>
+                <input type="number" name="Id" value="@Model.Item2.Id" hidden>
+            </div>
+        </form>
+        <button type="submit" form="edit-post-form" class="confirm-edit-post" id="confirm-edit-post">Confirm</button>
+        <button type="button" class="cancel-edit-post" id="cancel-edit-post">Cancel</button>
+    </div>
+</div>
 <section>
     <section class="post-title" id="post-title">
-        <b>Post by @((Model.Creator != null) ? Model.Creator.Username : "???")<b>
+        <b>Post by @((Model.Item2.Creator != null) ? Model.Item2.Creator.Username : "???")<b>
     </section>
     <section class="post-section">
         <section class="post-card">
-            <h2>@Model.Title</h2>
+            <h2>@Model.Item2.Title</h2>
             <section class="post-header">
-                <img class="post-pfp" src="https://i.pinimg.com/originals/1e/0a/8e/1e0a8e6336fc13b134a5b4fa5fcd10ce.jpg" alt="post-pfp">
+                <img class="post-pfp" src="@((Model.Item2.Creator != null) ? Model.Item2.Creator.ProfilePicture : "")" alt="post-pfp">
                 <div class="post-info">
-                    <p>Bin Laden</p>
-                    <p class="post-time">Sep 11, 2001 9:03 AM</p>
+                    <p>@((Model.Item2.Creator != null) ? Model.Item2.Creator.Username : "???")</p>
+                    <p class="post-time">@Model.Item2.CreateDate</p>
                     <div class="post-enroll">
-                        <p>9/11 Joined</p>
+                        <p>@Model.Item2.EnrolledCount/@Model.Item2.AmountAccept Joined</p>
                         <button type="button" class="post-signup" id="post-signup">Join</button>
                         <button type="button" class="post-abandon" id="post-abandon">Leave</button>
+                        <button type="button" class="edit-post" id="edit-post">Edit post</button>
                     </div>
                 </div>
             </section>
             <section class="post-tag">
-                <button type="button" class="post-tag-btn">Aviation</button>
-                <button type="button" class="post-tag-btn">Terrorism</button>
-                <button type="button" class="post-tag-btn">Trolling Obama</button>
+                @foreach (Tag tag in Model.Item2.Tags)
+                {
+                    <button type="button" class="post-tag-btn">@tag.Name</button>
+                }
             </section>
             <section class="post-details">
-                <img class="post-image" src="https://www.willbhurd.com/wp-content/uploads/2024/01/a9df4191-8f9f-4ca8-8836-f2b9e00a277c.png" alt="post-omage">
-                <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspThe morning of September 11, 2001, began like any other-a crisp, clear sky stretching over New York City as people hurried to work,
-                unaware that history was about to change. At 8:46 AM, the first plane struck the North Tower of the World Trade Center,
-                sending a fireball into the sky and shattering the routine of a city that never slept. Confusion turned to horror when,
-                just 17 minutes later, a second plane crashed into the South Tower, confirming what many had feared-this was no accident.
-                As thick, black smoke billowed over Manhattan, chaos unfolded below, with firefighters and police rushing toward the inferno while thousands fled in terror.
-                Then, at 9:59 AM, the unthinkable happened-the South Tower crumbled in a deafening roar, followed by the North Tower at 10:28 AM, burying the hopes
-                and lives of countless souls beneath the rubble. Elsewhere, the Pentagon burned, and a fourth plane, United 93, crashed into a Pennsylvania field,
-                its passengers sacrificing themselves to prevent further devastation. In just a few hours, America was forever changed-a nation brought to its knees,
-                yet rising with resilience, unity, and an unbreakable spirit.
-                <p>
+                <img class="post-image" src="@Model.Item2.Picture" alt="post-omage">
+                <p>@Model.Item2.Description<p>
             </section>
         </section>
     </section>
@@ -64,5 +101,51 @@
             post_signup_btn.style.display = "block";
             post_abandon_btn.style.display = "none";
         });
+
+        const edit_post_button = document.getElementById("edit-post");
+        const cancel_edit_post_button = document.getElementById("cancel-edit-post");
+        const confirm_edit_post_button = document.getElementById("confirm-edit-post");
+        const popup = document.getElementById("modal");
+        edit_post_button.addEventListener("click", () => {
+            popup.style.display = "block";
+        });
+        popup.addEventListener("click", (event) => {
+            if (!event.target.closest(".modal-content")) {
+                popup.style.display = "none";
+            }
+        });
+        cancel_edit_post_button.addEventListener("click",()=>{
+            popup.style.display = "none";
+        })
+        confirm_edit_post_button.addEventListener("click",()=>{
+            
+        })
+
+        // Realtime Image Preview
+        const image_input = document.getElementById('image-url');
+        const image_preview = document.getElementById('edit-post-display');
+        image_preview.style.height = '300px';
+
+        function preview_image() {
+            const image_url = image_input.value;
+            if (image_url) {
+                const img = document.createElement('img');
+                img.src = image_url;
+                img.alt = 'Image preview';
+                img.onload = () => {
+                    image_preview.innerHTML = '';
+                    image_preview.appendChild(img);
+                    image_preview.style.height = 'auto';
+                };
+                img.onerror = () => {
+                };
+            } else {
+                image_preview.innerHTML = '';
+                image_preview.style.height = '300px';
+            }
+        }
+
+        image_input.addEventListener('input', preview_image); 
+        preview_image(); 
     </script>
 }

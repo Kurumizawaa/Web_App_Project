@@ -1,4 +1,4 @@
-﻿@model (List<string>, Post)
+﻿@model (List<Tag>, Post)
 
 @{
     ViewData["Title"] = "Home page";
@@ -25,8 +25,8 @@
                 <label class="create-post-tags">
                     @foreach (var Tag in Model.Item1)
                     {
-                        <label class="checkbox-container"><input class="checkbox" type="checkbox" name="Tags" value="@Tag" @(Model.Item2.Tags.Contains(Tag) ? "checked" : "")>
-                            <span class="checkmark">@Tag</span>
+                        <label class="checkbox-container"><input class="checkbox" type="checkbox" name="Tags" value="@Tag.Id" @(Model.Item2.Tags.Contains(Tag) ? "checked" : "")>
+                            <span class="checkmark">@Tag.Name</span>
                         </label>
                     }
                 </label>
@@ -74,8 +74,10 @@
     <section class="tagsearch">
         @foreach (var Tags in Model.Item1)
         {
-            <button type="button" class="tag-btn">@Tags</button>
+            <button type="button" class="tag-btn">@Tags.Name</button>
         }
+        <form method="get" action="@Url.Action("CreateTag","Home")" id="create-tag-form" hidden></form>
+        <button type="submit" form="create-tag-form" class="create-tag-button" id="create-tag-button" hidden>New tag</button>
     </section>
     <div class="row" id="post-display-container"></div>
     <div class="loading" id="loading">Loading...</div>
@@ -165,7 +167,7 @@
                         `<img class="post-img" src="${post.picture}" alt="post-img" style="width:100%">
                         <div class="container">
                             <section class="post-tag">
-                                ${post.tags.map(tag => `<button type="button" class="post-tag-btn">${tag}</button>`).join('')}
+                                ${post.tags.map(tag => `<button type="button" class="post-tag-btn">${tag.name}</button>`).join('')}
                             </section>
                             <div class="post-header">
                                 <img class="post-pfp" src="${post.creator.profilePicture}" alt="post-pfp" style="width:15%">
