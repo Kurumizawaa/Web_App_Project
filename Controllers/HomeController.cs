@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using web_app_project.Data;
 using web_app_project.Models;
@@ -19,7 +20,12 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         var Tag_List = new List<string> {"Travel", "Workout", "Eating", "Party"};
-        return View(Tag_List);
+        var Post_form = new Post();
+        if (TempData["Post"] != null)
+        {
+            Post_form = JsonSerializer.Deserialize<Post>(TempData["Post"]!.ToString()!);
+        }
+        return View((Tag_List, Post_form));
     }
 
     public IActionResult About()

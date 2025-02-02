@@ -11,7 +11,7 @@
 
 <section>
     <section class="post-title" id="post-title">
-        <b>Post by @Model.Creator.Username<b>
+        <b>Post by @((Model.Creator != null) ? Model.Creator.Username : "???")<b>
     </section>
     <section class="post-section">
         <section class="post-card">
