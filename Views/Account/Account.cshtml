@@ -55,6 +55,7 @@
                     <h2>Post Title</h2>
                     <p>Post Descriptions</p>
                 </div>
+                <p class="joined_number">9/11</p>
                 <button type="button" class="post-redirect">See Details</button>
             </div> *@
             @*post template*@
@@ -71,6 +72,7 @@
                     <h2>Post Title</h2>
                     <p>Post Descriptions</p>
                 </div>
+                <p class="joined_number">9/11</p>
                 <button type="button" class="post-redirect">See Details</button>
             </div> *@
         </div>
@@ -101,6 +103,7 @@
                                                 <h2>${post.title}</h2>
                                                 <p>${post.description}</p>
                                             </div>
+                                            <p class="joined_number">${post.enrolledCount}/${post.amountAccept}</p>
                                             <button type="button" class="post-redirect" id="post-redirect-${post.id}">See Details</button>`
                 post_container.appendChild(post_card);
                 const post_redirect_button = document.getElementById(`post-redirect-${post.id}`);
