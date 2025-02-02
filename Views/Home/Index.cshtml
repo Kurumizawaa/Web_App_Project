@@ -1,4 +1,4 @@
-﻿@model List<string>
+﻿@model (List<string>, Post)
 
 @{
     ViewData["Title"] = "Home page";
@@ -21,37 +21,37 @@
         <form method="post" action="@Url.Action("CreatePost","Post")" class="create-post-form" id="create-post-form">
             <div>
                 <div id="create-post-display" class="create-post-display"></div>
-                <label class="create-post-image">Image: <input id="image-url" type="url" name="Picture" placeholder="https://example.com/image.jpg"></label>
+                <label class="create-post-image">Image: <input id="image-url" type="url" name="Picture" value="@Model.Item2.Picture" placeholder="https://example.com/image.jpg"></label>
                 <label class="create-post-tags">
-                    @foreach (var Tags in Model)
+                    @foreach (var Tag in Model.Item1)
                     {
-                        <label class="checkbox-container"><input class="checkbox" type="checkbox" name="Tags" value="@Tags">
-                            <span class="checkmark">@Tags</span>
+                        <label class="checkbox-container"><input class="checkbox" type="checkbox" name="Tags" value="@Tag" @(Model.Item2.Tags.Contains(Tag) ? "checked" : "")>
+                            <span class="checkmark">@Tag</span>
                         </label>
                     }
                 </label>
                 <p>At least 1 tag is required!</p>
             </div>
             <div>
-                <label class="create-post-title">Title: <input type="text" name="Title" required></label>
-                <label class="create-post-desc">Description:<br><textarea name="Description" rows="12" cols="40"></textarea></label>
-                <label class="create-post-amount">Amount accept: <input type="number" name="AmountAccept" required></label>
+                <label class="create-post-title">Title: <input type="text" name="Title" value="@Model.Item2.Title" required></label>
+                <label class="create-post-desc">Description:<br><textarea name="Description" rows="12" cols="40">@Model.Item2.Description</textarea></label>
+                <label class="create-post-amount">Amount accept: <input type="number" name="AmountAccept" value="@(Model.Item2.AmountAccept != 0 ? Model.Item2.AmountAccept : "")" required></label>
                 <label>Accept type:</label>
                 <label class="create-post-type">
                     <label>
                         Close on full queue
-                        <input type="radio" name="AcceptType" value="OnFull" required>
+                        <input type="radio" name="AcceptType" value="OnFull" @(Model.Item2.AcceptType == "OnFull" ? "Checked" : "") required>
                     </label>
                     <label>
                         On selection
-                        <input type="radio" name="AcceptType" value="OnSelect" required>
+                        <input type="radio" name="AcceptType" value="OnSelect" @(Model.Item2.AcceptType == "OnSelect" ? "Checked" : "") required>
                     </label>
                     <label>
                         Random
-                        <input type="radio" name="AcceptType" value="OnRandom" required>
+                        <input type="radio" name="AcceptType" value="OnRandom" @(Model.Item2.AcceptType == "OnRandom" ? "Checked" : "") required>
                     </label>
                 </label>
-                <label class="create-post-cdate">Close date: <input type="datetime-local" name="CloseDate" required></label>
+                <label class="create-post-cdate">Close date: <input type="datetime-local" name="CloseDate" value="@(Model.Item2.CloseDate != null ? Model.Item2.CloseDate?.ToString("yyyy-MM-ddTHH:mm") : "")" required></label>
             </div>
         </form>
         <button type="submit" form="create-post-form" class="confirm-post" id="confirm-post">Confirm</button>
@@ -72,12 +72,13 @@
         </button>
     </section>
     <section class="tagsearch">
-        @foreach (var Tags in Model)
+        @foreach (var Tags in Model.Item1)
         {
             <button type="button" class="tag-btn">@Tags</button>
         }
     </section>
     <div class="row" id="post-display-container"></div>
+    <div class="loading" id="loading">Loading...</div>
 </section>
 
 @section Scripts {
@@ -102,8 +103,13 @@
         })
 
         const post_display_container = document.getElementById("post-display-container");
+        var current_page_width = (window.innerWidth >= 900) ? "Large" : "Small";
+        var current_buffered_post = [];
         var number_of_column_div;
         var column_div;
+        var page_number = 1;
+        var is_loading = false;
+        const loading = document.getElementById("loading");
 
         function responsive_post_column() {
             let screen_width = window.innerWidth;
@@ -115,11 +121,11 @@
                 post_display_container.appendChild(div);
             }
             column_div = post_display_container.querySelectorAll("div");
-            get_post();
+            post_arrange(current_buffered_post);
         }
 
         function get_post() {
-            fetch("@Url.Action("GetPost","Post")")
+            fetch(`@Url.Action("GetPost","Post")?page=${page_number}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -128,71 +134,97 @@
                 }
             })
             .then(json => {
+                if (json.length === 0) {
+                    window.removeEventListener("scroll", infinite_scrolling_handler);
+                    loading.innerText = "That's all for now!";
+                    return;
+                }
                 console.log(json);
-                column_div.forEach((div, div_index) => {
-                    json.forEach((post, post_index) => {
-                        if (post_index % number_of_column_div == div_index) {
-                            let post_card = document.createElement("div");
-                            post_card.className = "post-card";
-                            const preview_char_limit = 500;
-                            let post_description = post.description;
-                            if (post_description.length > preview_char_limit) {
-                                post_description = `${post_description.slice(0,preview_char_limit + 1)}...`;
-                            }
-                            post_card.innerHTML =
-                            `<img class="post-img" src="${post.picture}" alt="post-img" style="width:100%">
-                            <div class="container">
-                                <section class="post-tag">
-                                    ${post.tags.map(tag => `<button type="button" class="post-tag-btn">${tag}</button>`).join('')}
-                                </section>
-                                <div class="post-header">
-                                    <img class="post-pfp" src="${post.creator.profilePicture}" alt="post-pfp" style="width:15%">
-                                    <div class="post-info">
-                                        <h2>${post.title}</h2>
-                                        <p>${post.creator.username}</p>
-                                    </div>
-                                </div>          
-                                <p>${post_description.replace(/\r\n/g,"<br>")}</p>
-                                <section class="post-join-info">
-                                    <div class="headcount">
-                                        <h2>${post.enrolledCount}/${post.amountAccept}</h2>
-                                        <p>joined</p>
-                                    </div>
-                                    <button type="button" class="post-redirect" id="post-redirect-${post.id}">See Details</button>
-                                </section>
-                            </div>`;
-                            div.appendChild(post_card);
-                            const post_redirect_button = document.getElementById(`post-redirect-${post.id}`);
-                            console.log(post_redirect_button);
-                            post_redirect_button.addEventListener("click",()=>{
-                                window.location.href = `@Url.Action("Post", "Post")?id=${post.id}`
-                            });
-                        }
-                    });
-                });
+                current_buffered_post = current_buffered_post.concat(json);
+                post_arrange(json);
+                page_number++;
+                is_loading = false;
+                loading.style.display = "none";
+                infinite_scrolling_handler();
             })
             .catch(error => {console.error("fetch post error:", error);});
         }
 
-        var last_resize_event = 0;
-        const resize_threshold = 500;
+        function post_arrange(post_list) {
+            column_div.forEach((div, div_index) => {
+                post_list.forEach((post, post_index) => {
+                    if (post_index % number_of_column_div == div_index) {
+                        let post_card = document.createElement("div");
+                        post_card.className = "post-card";
+                        const preview_char_limit = 500;
+                        let post_description = post.description;
+                        if (post_description.length > preview_char_limit) {
+                            post_description = `${post_description.slice(0,preview_char_limit + 1)}...`;
+                        }
+                        post_card.innerHTML =
+                        `<img class="post-img" src="${post.picture}" alt="post-img" style="width:100%">
+                        <div class="container">
+                            <section class="post-tag">
+                                ${post.tags.map(tag => `<button type="button" class="post-tag-btn">${tag}</button>`).join('')}
+                            </section>
+                            <div class="post-header">
+                                <img class="post-pfp" src="${post.creator.profilePicture}" alt="post-pfp" style="width:15%">
+                                <div class="post-info">
+                                    <h2>${post.title}</h2>
+                                    <p>${post.creator.username}</p>
+                                </div>
+                            </div>          
+                            <p>${post_description.replace(/\r\n/g,"<br>")}</p>
+                            <section class="post-join-info">
+                                <div class="headcount">
+                                    <h2>${post.enrolledCount}/${post.amountAccept}</h2>
+                                    <p>joined</p>
+                                </div>
+                                <button type="button" class="post-redirect" id="post-redirect-${post.id}">See Details</button>
+                            </section>
+                        </div>`;
+                        div.appendChild(post_card);
+                        const post_redirect_button = document.getElementById(`post-redirect-${post.id}`);
+                        post_redirect_button.addEventListener("click",()=>{
+                            @* window.location.href = `@Url.Action("Post", "Post")?id=${post.id}` *@
+                            window.open(`@Url.Action("Post", "Post")?id=${post.id}`, "_blank")
+                        });
+                    }
+                });
+            });
+        }
+
+        function infinite_scrolling_handler() {
+            const scrollTop = window.pageYOffset;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            if (scrollTop + windowHeight >= documentHeight - 100) {
+                if (!is_loading) {
+                    is_loading = true;
+                    loading.style.display = "block";
+                    get_post();
+                }
+            }
+        }
+
+        window.addEventListener("scroll", infinite_scrolling_handler);
+
         window.addEventListener("resize", () => {
-            let now = Date.now();
-            if (now - last_resize_event >= resize_threshold) {
-                last_resize_event = now;
+            let screen_width = window.innerWidth;
+            if ((current_page_width === "Large" && screen_width < 900) || (current_page_width === "Small" && screen_width >= 900)) {
+                current_page_width = (window.innerWidth >= 900) ? "Large" : "Small";
                 responsive_post_column();
             }
         });
         responsive_post_column();
+        infinite_scrolling_handler();
 
-        var page_number = 1;
-        
         // Realtime Image Preview
         const image_input = document.getElementById('image-url');
         const image_preview = document.getElementById('create-post-display');
         image_preview.style.height = '300px';
 
-        image_input.addEventListener('input', () => {
+        function preview_image() {
             const image_url = image_input.value;
             if (image_url) {
                 const img = document.createElement('img');
@@ -209,6 +241,10 @@
                 image_preview.innerHTML = '';
                 image_preview.style.height = '300px';
             }
-        });
+        }
+
+        image_input.addEventListener('input', preview_image); 
+        preview_image(); 
+        
     </script>
 }

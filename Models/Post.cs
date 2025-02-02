@@ -13,7 +13,8 @@ public class Post
     public string? Description { get; set;}
     public string? Picture { get; set;}
     [Required]
-    public List<string> Tags { get; set;} = null!;
+    public List<string> Tags { get; set;} = new List<string>();
+    [Range(0, 99, ErrorMessage = "Accept amount must be within range 0 - 99")]
     public int EnrolledCount { get; set;} = 0;
     [Required]
     public int AmountAccept { get; set;}
@@ -22,7 +23,7 @@ public class Post
     [Required]
     public DateTime CreateDate { get; set;}
     [Required]
-    public DateTime CloseDate { get; set;}
+    public DateTime? CloseDate { get; set;} = null;
 
     public int CreaterId { get; set;}
     public Account? Creator { get; set; } = null!;

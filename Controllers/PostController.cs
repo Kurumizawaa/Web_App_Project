@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,13 +18,14 @@ public class PostController : Controller
         _Dbcontext = dbcontext;
     }
     
-    public JsonResult GetPost()
+    public JsonResult GetPost(int page)
     {
-        var Post_list = _Dbcontext.Posts.Include(x => x.Creator).ToList();
+        var page_size = 4;
+        var Post_list = _Dbcontext.Posts.Skip((page - 1) * page_size).Take(page_size).Include(x => x.Creator).ToList();
         return Json(Post_list);
     }
 
-        public IActionResult Post(int id)
+    public IActionResult Post(int id)
     {
         var post = _Dbcontext.Posts.Include(a => a.Creator).FirstOrDefault(x => x.Id == id);
         return View(post);
@@ -61,6 +63,7 @@ public class PostController : Controller
         else
         {
             TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            TempData["Post"] = JsonSerializer.Serialize(post);
             return RedirectToAction("Login","Account");
         }
     }
