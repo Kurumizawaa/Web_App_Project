@@ -13,6 +13,6 @@ public class Account
     public string? ProfilePicture { get; set; }
     public string? Bio { get; set; }
 
-    public ICollection<Post>? Posts { get; set; }
-    public ICollection<Enrollment>? Enrollments { get; set; }
+    public virtual ICollection<Post>? Posts { get; set; }
+    public virtual ICollection<Enrollment>? Enrollments { get; set; }
 }

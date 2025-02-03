@@ -131,6 +131,70 @@ public class PostController : Controller
         }
     }
 
+    public JsonResult Enroll(int PostId) 
+    {
+        var AccountId = HttpContext.Session.GetInt32("ID");
+        if (AccountId != null)
+        {
+            if (!_Dbcontext.Enrollments.Any(e => e.AccountId == AccountId && e.PostId == PostId))
+            {
+                var post = _Dbcontext.Posts.FirstOrDefault(x => x.Id == PostId);
+                if (post != null)
+                {
+                    if (post.CreatorId == AccountId) 
+                    {
+                        return Json(new { enroll_successful = false });
+                    }
+                    post.EnrolledCount++;
+                }
+                Enrollment enrollment = new Enrollment() {AccountId = (int)AccountId, PostId = PostId, EnrolledAt = DateTime.Now};
+                _Dbcontext.Enrollments.Add(enrollment);
+                _Dbcontext.SaveChanges();
+                return Json(new { enroll_successful = true });
+            }
+            else
+            {
+                //handle this later
+                return Json(new { enroll_successful = false });
+            }
+        }
+        else
+        {
+            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            return Json(new { enroll_successful = false });
+        }
+    }
+
+    public JsonResult Unroll(int PostId)
+    {
+        var AccountId = HttpContext.Session.GetInt32("ID");
+        if (AccountId != null)
+        {
+            var enrollment = _Dbcontext.Enrollments.FirstOrDefault(x => x.AccountId == AccountId && x.PostId == PostId);
+            if (enrollment != null)
+            {
+                _Dbcontext.Remove(enrollment);
+                var post = _Dbcontext.Posts.FirstOrDefault(x => x.Id == PostId);
+                if (post != null)
+                {
+                    post.EnrolledCount--;
+                }
+                _Dbcontext.SaveChanges();
+                return Json(new { unroll_successful = true });
+            }
+            else
+            {
+                //handle this later
+                return Json(new { unroll_successful = false });
+            }
+        }
+        else
+        {
+            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            return Json(new { unroll_successful = false });
+        }
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

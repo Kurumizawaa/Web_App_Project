@@ -94,13 +94,52 @@
         const post_signup_btn = document.getElementById("post-signup")
         const post_abandon_btn = document.getElementById("post-abandon")
         post_signup_btn.addEventListener("click",()=>{
-            post_signup_btn.style.display = "none";
-            post_abandon_btn.style.display = "block";
+            @* fetch("@Url.Action("Enroll","Post")", {method: "Post", headers: { "Content-Type": "application/json" }, body: JSON.stringify({PostId: @Model.Item2.Id})}) *@
+            fetch("@Url.Action("Enroll","Post", new { PostId = @Model.Item2.Id })")
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(response.status);
+                }
+            })
+            .then(json => {
+                console.log(json);
+                if (json.enroll_successful == true) {
+                    @* post_signup_btn.style.display = "none";
+                    post_abandon_btn.style.display = "block"; *@
+                }
+                else {
+                    window.location.href = "@Url.Action("Login", "Account")";
+                }
+            })
+            .catch(error => {console.error("enroll post error:", error);});
         });
+
         post_abandon_btn.addEventListener("click",()=>{
-            post_signup_btn.style.display = "block";
-            post_abandon_btn.style.display = "none";
+            @* fetch("@Url.Action("Unroll","Post")", {method: "Post", headers: { "Content-Type": "application/json" }, body: JSON.stringify({PostId: @Model.Item2.Id})}) *@
+            fetch("@Url.Action("Unroll","Post", new { PostId = @Model.Item2.Id })")
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(response.status);
+                }
+            })
+            .then(json => {
+                console.log(json);
+                if (json.unroll_successful == true) {
+                    @* post_signup_btn.style.display = "block";
+                    post_abandon_btn.style.display = "none"; *@
+                }
+                else {
+                    window.location.href = "@Url.Action("Login", "Account")";
+                }
+            })
+            .catch(error => {console.error("unroll post error:", error);});
         });
+        post_signup_btn.style.display = "block";
+        post_abandon_btn.style.display = "block";
 
         const edit_post_button = document.getElementById("edit-post");
         const cancel_edit_post_button = document.getElementById("cancel-edit-post");

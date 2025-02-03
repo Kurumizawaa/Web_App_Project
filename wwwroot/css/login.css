@@ -71,3 +71,7 @@ body{
 .input-username::placeholder, .input-password::placeholder {
     font-size: 16px;
 }
+
+.login-body {
+    display: inline-block;
+}
