@@ -20,12 +20,6 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         var Tag_List = _Dbcontext.Tags.ToList();
-        // var Tag_List = new List<Tag> {
-        //     new Tag {Id = 1, Name = "Travel"},
-        //     new Tag {Id = 2, Name = "Workout"},
-        //     new Tag {Id = 3, Name = "Eating"},
-        //     new Tag {Id = 4, Name = "Party"}
-        // };
         var Post_form = new Post();
         if (TempData["Post"] != null)
         {

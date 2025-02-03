@@ -43,7 +43,10 @@ public class PostController : Controller
             if (ModelState.IsValid)
             {
                 var tag_list = _Dbcontext.Tags.Where(x => Tags.Contains(x.Id)).ToList();
-                post.Tags = tag_list;
+                foreach (var tag in tag_list)
+                {
+                    post.Tags.Add(tag);
+                }
                 _Dbcontext.Posts.Add(post);
                 _Dbcontext.SaveChanges();
                 return RedirectToAction("Index","Home");
@@ -65,6 +68,8 @@ public class PostController : Controller
         }
         else
         {
+            var tag_list = _Dbcontext.Tags.Where(x => Tags.Contains(x.Id)).ToList();
+            post.Tags = tag_list;
             TempData["Info"] = "Your session id has been expired! Login again to continue.";
             TempData["Post"] = JsonSerializer.Serialize(post);
             return RedirectToAction("Login","Account");

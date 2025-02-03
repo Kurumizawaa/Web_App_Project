@@ -23,10 +23,10 @@
                 <div id="create-post-display" class="create-post-display"></div>
                 <label class="create-post-image">Image: <input id="image-url" type="url" name="Picture" value="@Model.Item2.Picture" placeholder="https://example.com/image.jpg"></label>
                 <label class="create-post-tags">
-                    @foreach (var Tag in Model.Item1)
+                    @foreach (var tag in Model.Item1)
                     {
-                        <label class="checkbox-container"><input class="checkbox" type="checkbox" name="Tags" value="@Tag.Id" @(Model.Item2.Tags.Contains(Tag) ? "checked" : "")>
-                            <span class="checkmark">@Tag.Name</span>
+                        <label class="checkbox-container"><input class="checkbox" type="checkbox" name="Tags" value="@tag.Id" @(Model.Item2.Tags.Any(t => t.Name == tag.Name) ? "checked" : "")>
+                            <span class="checkmark">@tag.Name</span>
                         </label>
                     }
                 </label>
