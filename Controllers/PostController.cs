@@ -18,9 +18,15 @@ public class PostController : Controller
         _Dbcontext = dbcontext;
     }
     
-    public JsonResult GetPost(int page)
+    public JsonResult GetPost(int page, string query)
     {
         var page_size = 4;
+        var tag_list = _Dbcontext.Tags.ToList();
+        // if (query != null){
+        //     var search_query = query.Split();
+        //     var Filtered_Post_list = new List<Post>();
+        //     var Post_list = _Dbcontext.Posts.Include(x => x.Tags);
+        // }
         var Post_list = _Dbcontext.Posts.Skip((page - 1) * page_size).Take(page_size).Include(x => x.Creator).Include(a => a.Tags).ToList();
         return Json(Post_list);
     }

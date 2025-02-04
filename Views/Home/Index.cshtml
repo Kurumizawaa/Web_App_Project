@@ -92,7 +92,12 @@
         const search_bar = document.getElementById("search-bar");
         const search_submit = document.getElementById("search-submit");
 
-        search_submit.addEventListener("click", search);
+        // search_submit.addEventListener("click", () => {
+        //     post_display_container.innerHTML = "";
+        //     page_number = 1;
+        //     current_buffered_post = [];
+        //     infinite_scrolling_handler();
+        // });
 
         create_post_button.addEventListener("click", () => {
             popup.style.display = "block";
@@ -150,7 +155,7 @@
                     infinite_scrolling_handler();
                 }
             };
-            xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}`, true);
+            xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}&query=${search_bar.value}`, true);
             xhttp.send();
         }
 
@@ -209,10 +214,6 @@
                     get_post();
                 }
             }
-        }
-
-        function search() {
-            
         }
 
         window.addEventListener("scroll", infinite_scrolling_handler);
