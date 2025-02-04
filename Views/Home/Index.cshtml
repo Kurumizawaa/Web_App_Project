@@ -89,6 +89,11 @@
         const cancel_post_button = document.getElementById("cancel-post");
         const confirm_post_button = document.getElementById("confirm-post");
         const popup = document.getElementById("modal");
+        const search_bar = document.getElementById("search-bar");
+        const search_submit = document.getElementById("search-submit");
+
+        search_submit.addEventListener("click", search);
+
         create_post_button.addEventListener("click", () => {
             popup.style.display = "block";
         });
@@ -127,29 +132,26 @@
         }
 
         function get_post() {
-            fetch(`@Url.Action("GetPost","Post")?page=${page_number}`)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error(response.status);
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    let post_list = JSON.parse(xhttp.response);
+                    console.log(post_list);
+                    if (post_list.length === 0) {
+                        window.removeEventListener("scroll", infinite_scrolling_handler);
+                        loading.innerText = "That's all for now!";
+                        return;
+                    }            
+                    current_buffered_post = current_buffered_post.concat(post_list);
+                    post_arrange(post_list);
+                    page_number++;
+                    is_loading = false;
+                    loading.style.display = "none";
+                    infinite_scrolling_handler();
                 }
-            })
-            .then(json => {
-                if (json.length === 0) {
-                    window.removeEventListener("scroll", infinite_scrolling_handler);
-                    loading.innerText = "That's all for now!";
-                    return;
-                }
-                console.log(json);
-                current_buffered_post = current_buffered_post.concat(json);
-                post_arrange(json);
-                page_number++;
-                is_loading = false;
-                loading.style.display = "none";
-                infinite_scrolling_handler();
-            })
-            .catch(error => {console.error("fetch post error:", error);});
+            };
+            xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}`, true);
+            xhttp.send();
         }
 
         function post_arrange(post_list) {
@@ -207,6 +209,10 @@
                     get_post();
                 }
             }
+        }
+
+        function search() {
+            
         }
 
         window.addEventListener("scroll", infinite_scrolling_handler);
