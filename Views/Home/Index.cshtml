@@ -72,9 +72,9 @@
         </button>
     </section>
     <section class="tagsearch">
-        @foreach (var Tags in Model.Item1)
+        @foreach (var tag in Model.Item1)
         {
-            <button type="button" class="tag-btn">@Tags.Name</button>
+            <button type="button" class="tag-btn">@tag.Name</button>
         }
         <form method="get" action="@Url.Action("CreateTag","Home")" id="create-tag-form" hidden></form>
         <button type="submit" form="create-tag-form" class="create-tag-button" id="create-tag-button" hidden>New tag</button>
@@ -92,12 +92,14 @@
         const search_bar = document.getElementById("search-bar");
         const search_submit = document.getElementById("search-submit");
 
-        // search_submit.addEventListener("click", () => {
-        //     post_display_container.innerHTML = "";
-        //     page_number = 1;
-        //     current_buffered_post = [];
-        //     infinite_scrolling_handler();
-        // });
+        search_submit.addEventListener("click", () => {
+            loading.innerText = "Loading...";
+            column_div.forEach(div => div.innerHTML = "");
+            page_number = 1;
+            current_buffered_post = [];
+            get_post();
+            window.addEventListener("scroll", infinite_scrolling_handler);
+        });
 
         create_post_button.addEventListener("click", () => {
             popup.style.display = "block";
@@ -149,6 +151,7 @@
                     }            
                     current_buffered_post = current_buffered_post.concat(post_list);
                     post_arrange(post_list);
+                    console.log("current page = ", page_number);
                     page_number++;
                     is_loading = false;
                     loading.style.display = "none";
