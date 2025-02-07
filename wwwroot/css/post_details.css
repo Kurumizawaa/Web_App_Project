@@ -92,7 +92,7 @@ body{
     background-color: rgba(0, 150, 0, 1);
 }
 .post-abandon {
-    display: none;
+    /* display: none; */
     font-size: 30px;
     color: aliceblue;
     background-color: rgba(255, 0, 0, 0.25);

@@ -37,9 +37,20 @@ public class PostController : Controller
 
     public IActionResult Post(int id)
     {
-        var tags = _Dbcontext.Tags.ToList();
-        var post = _Dbcontext.Posts.Include(a => a.Creator).Include(b => b.Tags).FirstOrDefault(x => x.Id == id);
-        return View((tags, post));
+        var Id = HttpContext.Session.GetInt32("ID");
+        if (Id != null)
+        {
+            var tags = _Dbcontext.Tags.ToList();
+            var post = _Dbcontext.Posts.Include(a => a.Creator).Include(b => b.Tags).FirstOrDefault(x => x.Id == id);
+            bool is_enrolled = _Dbcontext.Enrollments.FirstOrDefault(a => a.AccountId == Id && a.PostId == id) != null ? true : false;
+            bool is_creator = _Dbcontext.Posts.FirstOrDefault(a => a.CreatorId == Id && a.Id == id) != null ? true : false;
+            return View((tags, post, is_enrolled, is_creator));
+        }
+        else 
+        {
+            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            return RedirectToAction("Login","Account");
+        }
     }
 
     [HttpPost]
@@ -160,7 +171,7 @@ public class PostController : Controller
                 Enrollment enrollment = new Enrollment() {AccountId = (int)AccountId, PostId = PostId, EnrolledAt = DateTime.Now};
                 _Dbcontext.Enrollments.Add(enrollment);
                 _Dbcontext.SaveChanges();
-                return Json(new { enroll_successful = true });
+                return Json(new { enroll_successful = true, enroll_count = post?.EnrolledCount });
             }
             else
             {
@@ -190,7 +201,7 @@ public class PostController : Controller
                     post.EnrolledCount--;
                 }
                 _Dbcontext.SaveChanges();
-                return Json(new { unroll_successful = true });
+                return Json(new { unroll_successful = true, enroll_count = post?.EnrolledCount });
             }
             else
             {

@@ -3,7 +3,7 @@
     ViewData["Page"] = "Post";
 }
 
-@model (List<Tag>, Post)
+@model (List<Tag>, Post, bool, bool)
 
 @section Styles {
     <link rel="stylesheet" href="~/css/post_details.css" asp-append-version="true" />
@@ -66,10 +66,13 @@
                     <p>@((Model.Item2.Creator != null) ? Model.Item2.Creator.Username : "???")</p>
                     <p class="post-time">@Model.Item2.CreateDate</p>
                     <div class="post-enroll">
-                        <p>@Model.Item2.EnrolledCount/@Model.Item2.AmountAccept Joined</p>
-                        <button type="button" class="post-signup" id="post-signup">Join</button>
-                        <button type="button" class="post-abandon" id="post-abandon">Leave</button>
-                        <button type="button" class="edit-post" id="edit-post">Edit post</button>
+                        <p><span id="enroll-counter">@Model.Item2.EnrolledCount</span>/@Model.Item2.AmountAccept Joined</p>
+                        <button type="button" class="post-signup" id="post-signup" @(Model.Item3 == false && Model.Item4 == false ? "" : "hidden")>Join</button>
+                        <button type="button" class="post-abandon" id="post-abandon" @(Model.Item3 == true && Model.Item4 == false ? "" : "hidden")>Leave</button>
+                        @if (Model.Item4 == true)
+                        {
+                            <button type="button" class="edit-post" id="edit-post">Edit post</button>
+                        }
                     </div>
                 </div>
             </section>
@@ -94,60 +97,54 @@
         const post_signup_btn = document.getElementById("post-signup")
         const post_abandon_btn = document.getElementById("post-abandon")
         post_signup_btn.addEventListener("click",()=>{
-            @* fetch("@Url.Action("Enroll","Post")", {method: "Post", headers: { "Content-Type": "application/json" }, body: JSON.stringify({PostId: @Model.Item2.Id})}) *@
-            fetch("@Url.Action("Enroll","Post", new { PostId = @Model.Item2.Id })")
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error(response.status);
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    let json = JSON.parse(xhttp.response);
+                    if (json.enroll_successful == true) {
+                        post_signup_btn.style.display = "none";
+                        post_abandon_btn.style.display = "block";
+                        const enroll_counter = document.getElementById("enroll-counter");
+                        enroll_counter.innerText = json.enroll_count;
+                    }   
+                    else {
+                        window.location.href = "@Url.Action("Login", "Account")";
+                    }
                 }
-            })
-            .then(json => {
-                console.log(json);
-                if (json.enroll_successful == true) {
-                    @* post_signup_btn.style.display = "none";
-                    post_abandon_btn.style.display = "block"; *@
-                }
-                else {
-                    window.location.href = "@Url.Action("Login", "Account")";
-                }
-            })
-            .catch(error => {console.error("enroll post error:", error);});
+            };
+            xhttp.open("GET", "@Url.Action("Enroll","Post", new { PostId = @Model.Item2.Id })", true);
+            xhttp.send();
         });
 
         post_abandon_btn.addEventListener("click",()=>{
-            @* fetch("@Url.Action("Unroll","Post")", {method: "Post", headers: { "Content-Type": "application/json" }, body: JSON.stringify({PostId: @Model.Item2.Id})}) *@
-            fetch("@Url.Action("Unroll","Post", new { PostId = @Model.Item2.Id })")
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error(response.status);
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    let json = JSON.parse(xhttp.response);
+                    if (json.unroll_successful == true) {
+                        post_signup_btn.style.display = "block";
+                        post_abandon_btn.style.display = "none";
+                        const enroll_counter = document.getElementById("enroll-counter");
+                        enroll_counter.innerText = json.enroll_count;
+                    }
+                    else {
+                        window.location.href = "@Url.Action("Login", "Account")";
+                    }
                 }
-            })
-            .then(json => {
-                console.log(json);
-                if (json.unroll_successful == true) {
-                    @* post_signup_btn.style.display = "block";
-                    post_abandon_btn.style.display = "none"; *@
-                }
-                else {
-                    window.location.href = "@Url.Action("Login", "Account")";
-                }
-            })
-            .catch(error => {console.error("unroll post error:", error);});
+            };
+            xhttp.open("GET", "@Url.Action("Unroll","Post", new { PostId = @Model.Item2.Id })", true);
+            xhttp.send();
         });
-        post_signup_btn.style.display = "block";
-        post_abandon_btn.style.display = "block";
 
         const edit_post_button = document.getElementById("edit-post");
         const cancel_edit_post_button = document.getElementById("cancel-edit-post");
         const confirm_edit_post_button = document.getElementById("confirm-edit-post");
         const popup = document.getElementById("modal");
-        edit_post_button.addEventListener("click", () => {
-            popup.style.display = "block";
-        });
+        if (edit_post_button != null) {
+            edit_post_button.addEventListener("click", () => {
+                popup.style.display = "block";
+            });
+        }
         popup.addEventListener("click", (event) => {
             if (!event.target.closest(".modal-content")) {
                 popup.style.display = "none";
