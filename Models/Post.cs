@@ -10,7 +10,7 @@ public class Post
     [Required]
     public string Title { get; set;} = null!;
     [Required]
-    public string? Description { get; set;}
+    public string Description { get; set;} = null!;
     public string? Picture { get; set;}
     public int EnrolledCount { get; set;} = 0;
     [Required]

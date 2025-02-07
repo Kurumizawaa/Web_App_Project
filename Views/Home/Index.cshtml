@@ -94,6 +94,8 @@
 
         search_submit.addEventListener("click", () => {
             loading.innerText = "Loading...";
+            is_loading = true;
+            loading.style.display = "block";
             column_div.forEach(div => div.innerHTML = "");
             page_number = 1;
             current_buffered_post = [];
@@ -158,7 +160,7 @@
                     infinite_scrolling_handler();
                 }
             };
-            xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}&query=${search_bar.value}`, true);
+            xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}&textquery=${search_bar.value}&tagquery=`, true);
             xhttp.send();
         }
 

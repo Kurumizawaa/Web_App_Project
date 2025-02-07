@@ -18,16 +18,18 @@ public class PostController : Controller
         _Dbcontext = dbcontext;
     }
     
-    public JsonResult GetPost(int page, string query)
+    public JsonResult GetPost(int page, string textquery, string tagquery)
     {
         var page_size = 4;
-        var tag_list = _Dbcontext.Tags.ToList();
+        var tagquery_list = (tagquery != null) ? tagquery.ToLower().Split() : [];
         List<Post> Post_list;
-        if (query != null)
+        if (textquery != null || tagquery_list.Length != 0)
         {
-            var search_query = query.ToLower().Split();
             // Post_list = _Dbcontext.Posts.Where(a => a.Tags.All(b => search_query.Contains(b.Name.ToLower()))).Include(x => x.Tags).Include(y => y.Creator).ToList(); // strict search 
-            Post_list = _Dbcontext.Posts.Where(post => search_query.All(tag_query => post.Tags.Any(tag => tag.Name.ToLower() == tag_query))).Skip((page - 1) * page_size).Take(page_size).Include(x => x.Tags).Include(y => y.Creator).ToList();
+            var Post_list_query = _Dbcontext.Posts.AsQueryable();
+            Post_list_query = (textquery != null) ? Post_list_query.Where(a => a.Title.ToLower().Contains(textquery.ToLower()) || a.Description.ToLower().Contains(textquery.ToLower())) : Post_list_query;
+            Post_list_query = (tagquery_list.Length != 0) ? Post_list_query.Where(post => tagquery_list.All(tag_query => post.Tags.Any(tag => tag.Name.ToLower() == tag_query.ToLower()))) : Post_list_query;
+            Post_list = Post_list_query.Skip((page - 1) * page_size).Take(page_size).Include(x => x.Tags).Include(y => y.Creator).ToList();
         }
         else {
             Post_list = _Dbcontext.Posts.Skip((page - 1) * page_size).Take(page_size).Include(x => x.Tags).Include(y => y.Creator).ToList();
