@@ -32,7 +32,7 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(p => p.CreatorId)
             .OnDelete(DeleteBehavior.Cascade);
 
-         modelBuilder.Entity<Post>()
+        modelBuilder.Entity<Post>()
             .HasMany(p => p.Tags)
             .WithMany(t => t.Posts)
             .UsingEntity<Dictionary<string, object>>(
@@ -40,10 +40,38 @@ public class ApplicationDbContext : DbContext
                 j => j.HasOne<Tag>().WithMany().HasForeignKey("TagId"),
                 j => j.HasOne<Post>().WithMany().HasForeignKey("PostId")
             );
+
+        modelBuilder.Entity<Post>()
+            .HasMany(p => p.SelectedAccounts)
+            .WithMany(a => a.SelectedInPosts)
+            .UsingEntity<Dictionary<string, object>>(
+                "PostAccountSelection",
+                j => j.HasOne<Account>().WithMany().HasForeignKey("AccountId"),
+                j => j.HasOne<Post>().WithMany().HasForeignKey("PostId")
+            );
+
+        modelBuilder.Entity<Announcement>()
+            .HasKey(e => e.Id);
+
+        modelBuilder.Entity<Announcement>()
+            .HasOne(a => a.Post)
+            .WithMany(p => p.Announcements)
+            .HasForeignKey("PostId")
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Announcement>()
+            .HasMany(p => p.Recipients)
+            .WithMany(a => a.Announcements)
+            .UsingEntity<Dictionary<string, object>>(
+                "AccountAnnouncementRecipient",
+                j => j.HasOne<Account>().WithMany().HasForeignKey("AccountId"),
+                j => j.HasOne<Announcement>().WithMany().HasForeignKey("AnnouncementId")
+            );
     }
 
     public DbSet<Post> Posts { get; set;}
     public DbSet<Account> Accounts { get; set;}
     public DbSet<Enrollment> Enrollments { get; set;}
     public DbSet<Tag> Tags { get; set;}
+    public DbSet<Announcement> Announcements { get; set;}
 }

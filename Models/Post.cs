@@ -22,9 +22,12 @@ public class Post
     public DateTime CreateDate { get; set;}
     [Required]
     public DateTime? CloseDate { get; set;} = null;
+    public bool IsOpen { get; set;} = true;
 
     public int CreatorId { get; set;}
     public virtual Account? Creator { get; set; } = null!;
     public virtual ICollection<Tag> Tags { get; set;} = new List<Tag>();
     public virtual ICollection<Enrollment>? Enrollments { get; set; }
+    public virtual ICollection<Account>? SelectedAccounts { get; set; }
+    public virtual ICollection<Announcement>? Announcements { get; set; }
 }
