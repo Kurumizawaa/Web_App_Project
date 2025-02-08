@@ -12,10 +12,71 @@
 <section class="register-body">
     <form class="register-form" method="post" action="@Url.Action("Register","Account")" id="register-form">
         <h2 class="page-title">Sign Up</h2>
-        <input type="text" class="input-username" id="input-username" name="Username" placeholder="Username">
-        <input type="password" class="input-password" name="Password" placeholder="Password">
-        <input type="password" class="input-password-confirm" name="Password" placeholder="Password">
+        <section class="register-info">      
+            <div class="account-display">
+                <div class="pfp-preview" id="pfp-preview"><img class="account-pfp" id="account-pfp" src="~/images/no_pfp.png" alt="profile picture"></div>
+                <input type="text" class="input-pfp" id="input-pfp" name="ProfilePicture" placeholder="Display Picture">
+            </div>
+            <div class="credentials">
+                <input type="text" class="input-username" id="input-username" name="Username" placeholder="Username">
+                <input type="password" class="input-password" id="input-password" name="Password" placeholder="Password">
+                <input type="password" class="input-password-confirm" id="input-password-confirm" name="ConfirmPassword" placeholder="Confirm Password">
+            </div>
+        </section>
         <button id="register-btn" class="register-btn" type="submit">Sign Up</button>
         @Html.ValidationMessageFor(m => m.Username, "")
     </form>
 <section>
+
+@section Scripts {
+    <script>
+        const register_submit = document.getElementById('register-btn');
+        const image_input = document.getElementById('input-pfp');
+        const image_preview = document.getElementById('pfp-preview');
+        const username_input = document.getElementById('input-username');
+        const password_input = document.getElementById('input-password');
+        const password_confirm_input = document.getElementById('input-password-confirm');
+
+        function preview_image() {
+            const image_url = image_input.value;
+            if (image_url) {
+                const img = document.createElement('img');
+                img.className = 'account-pfp';
+                img.src = image_url;
+                img.alt = 'profile picture';
+                img.onload = () => {
+                    image_preview.innerHTML = '';
+                    image_preview.appendChild(img);
+                };
+                img.onerror = () => {
+                    image_preview.innerHTML = '<img class="account-pfp" id="account-pfp" src="/images/no_pfp.png" alt="profile picture">';
+                };
+            } else {
+                image_preview.innerHTML = '<img class="account-pfp" id="account-pfp" src="/images/no_pfp.png" alt="profile picture">';
+            }
+        }
+
+        function allow_signup() {
+            if (!username_input.value) {          
+                register_submit.disabled = true;
+                register_submit.innerHTML = "Username is Required!"
+            }
+            else if ((password_input.value != password_confirm_input.value)) {
+                register_submit.disabled = true;
+                register_submit.innerHTML = "Password does not Match!"
+            }
+            else {
+                register_submit.disabled = false;
+                register_submit.innerHTML = "Sign Up"
+            }
+        }
+
+        allow_signup();
+
+        image_input.addEventListener('input', preview_image);
+        image_input.addEventListener('input', allow_signup);
+        username_input.addEventListener('input', allow_signup);
+        password_input.addEventListener('input', allow_signup);
+        password_confirm_input.addEventListener('input', allow_signup);
+    </script>
+}
