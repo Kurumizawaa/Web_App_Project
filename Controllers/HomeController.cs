@@ -21,11 +21,16 @@ public class HomeController : Controller
     {
         var Tag_List = _Dbcontext.Tags.ToList();
         var Post_form = new Post();
+        var Id = HttpContext.Session.GetInt32("ID");
         if (TempData["Post"] != null)
         {
             Post_form = JsonSerializer.Deserialize<Post>(TempData["Post"]!.ToString()!);
         }
-        return View((Tag_List, Post_form));
+        if (Id == null)
+        {
+            Id = 0;
+        }
+        return View((Tag_List, Post_form, Id));
     }
 
     public IActionResult About()

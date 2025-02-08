@@ -12,21 +12,61 @@ body{
 
     color: rgba(255, 255, 255,0.75);
 }
-.register-form {
-    display: flex;
-    flex-direction: column;
-    
-    gap: 10px;
-}
+
 .page-title {
     color: aliceblue;
     font-size: 50px;
     margin-bottom: 10px;
 }
 
+.register-form, .credentials {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.register-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    width: 500px;
+}
+
+.account-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pfp-preview {
+    max-width: 100%;
+}
+
+.account-pfp {
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    position: relative;
+    max-width: 150px;
+    margin-bottom: 10px;
+}
+
+.input-pfp{
+    height: 30px;
+    width: 150px;
+    border-radius: 10px;
+    border: 2px aliceblue solid;
+    padding: 0px 5px 0px 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: aliceblue;
+
+    font-size: 16px;
+}
+
 .input-username, .input-password, .input-password-confirm {
     height: 40px;
-    width: 15vw;
+    width: 100%;
     border-radius: 10px;
     border: 2px aliceblue solid;
     padding: 0px 5px 0px 5px;
@@ -49,6 +89,7 @@ body{
     color: aliceblue;
     font-size: 20px;
     height: 36px;
+    width: 100%;
 }
 
 .register-btn {
@@ -61,6 +102,30 @@ body{
     background-color: rgba(0, 150, 0, 1);
 }
 
-.input-username::placeholder, .input-password::placeholder, .input-password-confirm::placeholder {
+.register-btn:disabled {
+    background-color: rgba(69, 69, 69, 50);
+    color: rgba(255, 255, 255, 0.25);
+    cursor: no-drop;
+}
+.register-btn:disabled:hover {
+    cursor: no-drop;
+}
+
+.input-username::placeholder, .input-password::placeholder, .input-password-confirm::placeholder, .input-pfp::placeholder{
     font-size: 16px;
+}
+
+@media only screen and (max-width: 900px) {
+    .register-info {
+        flex-direction: column;
+    }
+    .credentials {
+        align-items: center;
+    }
+    .input-username, .input-password, .input-password-confirm {
+        width: 40vw;
+    }
+    .register-btn {
+        width: 42vw;
+    }
 }
