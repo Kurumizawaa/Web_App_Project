@@ -33,13 +33,16 @@
         <div class="modal-content">
             <h2 class="edit-account">Edit profile</h2>
             <form method="post" action="@Url.Action("Account","Account")" class="edit-account-form" id="edit-account-form">
-                    <label class="account-name">Username: <input type="text" name="Username" value="@ViewBag.Account.Username"></label>
-                    <label class="profile-picture">Image: <input type="url" name="ProfilePicture" value="@ViewBag.Account.ProfilePicture" placeholder="https://example.com/image.jpg"></label>
-                    <label class="bio">Bio:<br><textarea name="Bio" rows="4" cols="40">@ViewBag.Account.Bio</textarea></label>
-                    <label class="account-password">Password: <input type="text" name="Password" value="@ViewBag.Account.Password"></label>
+                <div class="pfp-preview" id="pfp-preview"></div>
+                <label class="account-name">Username: <input type="text" name="Username" value="@ViewBag.Account.Username"></label>
+                <label class="profile-picture">Image: <input type="url" id="input-pfp" name="ProfilePicture" value="@ViewBag.Account.ProfilePicture" placeholder="https://example.com/image.jpg"></label>
+                <label class="bio">Bio:<br><textarea name="Bio" rows="4" cols="40">@ViewBag.Account.Bio</textarea></label>
+                <label class="account-password">Password: <input type="text" name="Password" value="@ViewBag.Account.Password"></label>
             </form>
-            <button type="submit" form="edit-account-form" class="confirm-edit-account" id="confirm-edit-account">Confirm</button>
-            <button type="button" class="cancel-edit-account" id="cancel-edit-account">Cancel</button>
+            <div class="edit-profile-interaction-button">
+                <button type="submit" form="edit-account-form" class="confirm-edit-account" id="confirm-edit-account">Confirm</button>
+                <button type="button" class="cancel-edit-account" id="cancel-edit-account">Cancel</button>
+            </div>
         </div>
     </div>
 </section>
@@ -82,6 +85,16 @@
 
 @section Scripts {
     <script>
+        const profile_edit_popup = document.getElementById("modal");
+        const image_input = document.getElementById('input-pfp');
+        const image_preview = document.getElementById('pfp-preview');
+
+        profile_edit_popup.addEventListener("click", (event) => {
+            if (!event.target.closest(".modal-content")) {
+                profile_edit_popup.style.display = "none";
+            }
+        });
+
         function get_account_posts(){
             fetch("@Url.Action("GetAllPostsOfAccount", "Account")")
             .then(response => {
@@ -139,7 +152,30 @@
         confirm_edit_account_button.addEventListener("click",()=>{
 
         })
+
+        function preview_image() {
+            const image_url = image_input.value;
+            if (image_url) {
+                const img = document.createElement('img');
+                img.className = 'edit-account-pfp';
+                img.src = image_url;
+                img.alt = 'profile picture';
+                img.onload = () => {
+                    image_preview.innerHTML = '';
+                    image_preview.appendChild(img);
+                };
+                img.onerror = () => {
+                    image_preview.innerHTML = '<img class="edit-account-pfp" src="/images/no_pfp.png" alt="profile picture">';
+                };
+            } else {
+                image_preview.innerHTML = '<img class="edit-account-pfp" src="/images/no_pfp.png" alt="profile picture">';
+            }
+        }
+
         get_account_posts();
-        account_bio()
+        account_bio();
+        console.log("shit", "@ViewBag.Account.ProfilePicture");
+        preview_image();      
+        image_input.addEventListener('input', preview_image);
     </script>
 }
