@@ -76,11 +76,17 @@ public class AccountController : Controller
         }
     }
 
-    public JsonResult GetAllPostsOfAccount(){
+    public JsonResult GetAccountPosts(){
         var Id = HttpContext.Session.GetInt32("ID");
-        var post_list = _Dbcontext.Posts.Where(x => x.CreatorId == Id)
-                                        .ToList();
+
+        var posts_created = _Dbcontext.Posts.Where(x => x.CreatorId == Id)
+                                            .ToList();
+
+        var enrolled_in = _Dbcontext.Enrollments.Where(x => x.AccountId == Id)
+                                                .Select(x => x.Post)
+                                                .ToList();
         
+        var post_list = new { createdPosts = posts_created, enrolledPosts = enrolled_in };
         return Json(post_list);
     }
 
