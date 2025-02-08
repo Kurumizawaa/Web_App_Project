@@ -59,14 +59,20 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey("PostId")
             .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<Announcement>()
-            .HasMany(p => p.Recipients)
+        modelBuilder.Entity<AnnouncementRecipient>()
+            .HasKey(ar => new { ar.AccountId, ar.AnnouncementId });
+
+        modelBuilder.Entity<AnnouncementRecipient>()
+            .HasOne(ar => ar.Recipient)
             .WithMany(a => a.Announcements)
-            .UsingEntity<Dictionary<string, object>>(
-                "AccountAnnouncementRecipient",
-                j => j.HasOne<Account>().WithMany().HasForeignKey("AccountId"),
-                j => j.HasOne<Announcement>().WithMany().HasForeignKey("AnnouncementId")
-            );
+            .HasForeignKey(ar => ar.AccountId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<AnnouncementRecipient>()
+            .HasOne(ar => ar.Announcement)
+            .WithMany(a => a.AnnouncementRecipients)
+            .HasForeignKey(ar => ar.AnnouncementId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
     public DbSet<Post> Posts { get; set;}
@@ -74,4 +80,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<Enrollment> Enrollments { get; set;}
     public DbSet<Tag> Tags { get; set;}
     public DbSet<Announcement> Announcements { get; set;}
+    public DbSet<AnnouncementRecipient> AnnouncementRecipients { get; set;}
 }

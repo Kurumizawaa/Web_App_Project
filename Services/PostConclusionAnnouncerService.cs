@@ -17,7 +17,9 @@ public class PostConclusionAnnouncerService : BackgroundService
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                var concludePost = dbContext.Posts.Where(p => p.CloseDate <= DateTime.Now && p.Status == PostStatus.Open).Include(x => x.Creator).ToList();
+                var concludePost = dbContext.Posts.Where(p => p.CloseDate <= DateTime.Now && p.Status == PostStatus.Open).ToList();
+                var announcements = new List<Announcement>();
+                var announcementRecipients = new List<AnnouncementRecipient>();
                 foreach (var post in concludePost)
                 {
                     post.Status = PostStatus.Conclude;
@@ -27,9 +29,20 @@ public class PostConclusionAnnouncerService : BackgroundService
                         Type = AnnouncementType.CreatorUpdate,
                         Message = $"Your post '{post.Title}' has been concluded and is now ready to announce the result!"
                     };
-                    announcement.Recipients!.Add(post.Creator!);
-                    dbContext.Announcements.Add(announcement);
+                    announcements.Add(announcement);
                 }
+                dbContext.AddRange(announcements);
+                dbContext.SaveChanges();
+                foreach (var announcement in announcements)
+                {
+                    var post = concludePost.First(p => p.Id == announcement.PostId);
+                    announcementRecipients.Add(new AnnouncementRecipient()
+                    {
+                        AnnouncementId = announcement.Id,
+                        AccountId = post.CreatorId
+                    });
+                }
+                dbContext.AddRange(announcementRecipients);
                 dbContext.SaveChanges();
                 Console.WriteLine(DateTime.Now);
             }

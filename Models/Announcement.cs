@@ -15,7 +15,7 @@ public class Announcement
 
     public int? PostId { get; set; }
     public virtual Post? Post { get; set; }
-    public virtual ICollection<Account>? Recipients { get; set; } = new List<Account>();
+    public virtual ICollection<AnnouncementRecipient>? AnnouncementRecipients { get; set; }
 }
 
 public enum AnnouncementType
