@@ -1,4 +1,4 @@
-﻿@model (List<Tag>, Post)
+﻿@model (List<Tag>, Post, int?)
 
 @{
     ViewData["Title"] = "Home page";
@@ -104,7 +104,12 @@
         });
 
         create_post_button.addEventListener("click", () => {
+            if (@Model.Item3 == 0) {
+                window.location.href = "@Url.Action("Login", "Account")";
+            }
+            else {
             popup.style.display = "block";
+            }
         });
         popup.addEventListener("click", (event) => {
             if (!event.target.closest(".modal-content")) {
@@ -113,9 +118,6 @@
         });
         cancel_post_button.addEventListener("click",()=>{
             popup.style.display = "none";
-        })
-        confirm_post_button.addEventListener("click",()=>{
-            
         })
 
         const post_display_container = document.getElementById("post-display-container");
