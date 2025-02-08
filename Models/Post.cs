@@ -22,7 +22,7 @@ public class Post
     public DateTime CreateDate { get; set;}
     [Required]
     public DateTime? CloseDate { get; set;} = null;
-    public bool IsOpen { get; set;} = true;
+    public PostStatus Status { get; set;} = PostStatus.Open;
 
     public int CreatorId { get; set;}
     public virtual Account? Creator { get; set; } = null!;
@@ -30,4 +30,11 @@ public class Post
     public virtual ICollection<Enrollment>? Enrollments { get; set; }
     public virtual ICollection<Account>? SelectedAccounts { get; set; }
     public virtual ICollection<Announcement>? Announcements { get; set; }
+}
+
+public enum PostStatus
+{
+    Open,
+    Conclude,
+    End
 }
