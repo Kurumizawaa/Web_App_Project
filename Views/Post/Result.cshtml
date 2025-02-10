@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "Result page";
+    ViewData["Page"] = "Result";
+}
+
+@model (List<Enrollment>, bool, int)
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/result.css" asp-append-version="true" />
+}
+
+<h1 class="header">Post enroll result</h1>
+<form method="post" action="@Url.Action("Result","Post", new { id = @Model.Item3 })">
+    <input name="id" value="@Model.Item3" hidden>
+    @foreach (var enrollment in Model.Item1)
+    {
+        <label>
+            <input type="checkbox" name="Selection" @(Model.Item2 == true ? "" : "onclick='return false'") value="@enrollment.AccountId" class="account-checkbox" @(Model.Item2 == true ? "" : "checked") hidden>
+            <div class="account-card">
+                <img src="@enrollment.Account!.ProfilePicture" class="profile-picture">
+                <div class="profile-detail">
+                    <h2>@enrollment.Account.Username</h2>
+                    <p>@enrollment.Account.Bio</p>
+                </div>
+                <div class="check-info"></div>
+            </div>
+        </label>
+    }
+    <button type="submit" class="button">Confirm</button>
+</form>

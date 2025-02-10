@@ -55,6 +55,50 @@ public class PostController : Controller
         }
     }
 
+    public IActionResult Result(int id)
+    {
+        var accountid = HttpContext.Session.GetInt32("ID");
+        var post = _Dbcontext.Posts.Include(x => x.Enrollments)!.ThenInclude(y => y.Account).FirstOrDefault(p => p.Id == id);
+        if (accountid != null)
+        {
+            if (post != null && post.Status == PostStatus.Conclude && accountid == post.CreatorId)
+            {
+                List<Enrollment> enrollment_result;
+                bool selectable;
+                switch (post.AcceptType)
+                {
+                    case "OnFull":
+                        enrollment_result = post.Enrollments!.OrderBy(x => x.EnrolledAt).Take(post.AmountAccept).ToList();
+                        selectable = false;
+                        break;
+                    case "OnSelect":
+                        enrollment_result = post.Enrollments!.OrderBy(x => x.EnrolledAt).ToList();
+                        selectable = true;
+                        break;
+                    case "OnRandom":
+                        enrollment_result = post.Enrollments!.OrderBy(x => Random.Shared.Next()).Take(post.AmountAccept).ToList();
+                        selectable = false;
+                        break;
+                    default:
+                        enrollment_result = new List<Enrollment>();
+                        selectable = false;
+                        break;
+                }
+                return View((enrollment_result, selectable, post.Id));
+            }
+            else
+            {
+                //handle this later
+                return RedirectToAction("Account","Account");
+            }
+        }
+        else
+        {
+            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            return RedirectToAction("Login","Account");
+        }
+    }
+
     [HttpPost]
     public IActionResult CreatePost(Post post, List<int> Tags)
     {
@@ -164,7 +208,7 @@ public class PostController : Controller
                 var post = _Dbcontext.Posts.FirstOrDefault(x => x.Id == PostId);
                 if (post != null)
                 {
-                    if (post.CreatorId == AccountId) 
+                    if (post.CreatorId == AccountId || post.Status != PostStatus.Open) 
                     {
                         return Json(new { enroll_successful = false });
                     }
@@ -196,12 +240,13 @@ public class PostController : Controller
             var enrollment = _Dbcontext.Enrollments.FirstOrDefault(x => x.AccountId == AccountId && x.PostId == PostId);
             if (enrollment != null)
             {
-                _Dbcontext.Remove(enrollment);
                 var post = _Dbcontext.Posts.FirstOrDefault(x => x.Id == PostId);
-                if (post != null)
+                if (post == null || AccountId == post.CreatorId || post.Status != PostStatus.Open)
                 {
-                    post.EnrolledCount--;
+                    return Json(new { unroll_successful = false });
                 }
+                post.EnrolledCount--;
+                _Dbcontext.Remove(enrollment);
                 _Dbcontext.SaveChanges();
                 return Json(new { unroll_successful = true, enroll_count = post?.EnrolledCount });
             }
@@ -215,6 +260,37 @@ public class PostController : Controller
         {
             TempData["Info"] = "Your session id has been expired! Login again to continue.";
             return Json(new { unroll_successful = false });
+        }
+    }
+
+    [HttpPost]
+    public IActionResult Result(int id, List<int> Selection)
+    {
+        var accountid = HttpContext.Session.GetInt32("ID");
+        if (accountid != null)
+        {
+            var post = _Dbcontext.Posts.FirstOrDefault(x => x.Id == id);
+            if (post != null && post.Status == PostStatus.Conclude && accountid == post.CreatorId)
+            {
+                post.Status = PostStatus.Selected;
+                var selected_account = _Dbcontext.Enrollments.Include(x => x.Account).Where(y => Selection.Contains(y.AccountId)).Select(z => z.Account).ToList();
+                foreach (var account in selected_account)
+                {
+                    post.SelectedAccounts!.Add(account!);
+                }
+                _Dbcontext.SaveChanges();
+                return RedirectToAction("PostResultAnnouncement","Announcement", new { postid = post.Id });
+            }
+            else
+            {
+                //handle this later
+                return RedirectToAction("Account","Account");
+            }
+        }
+        else
+        {
+            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            return RedirectToAction("Login","Account");
         }
     }
 

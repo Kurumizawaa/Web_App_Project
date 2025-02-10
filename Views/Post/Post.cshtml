@@ -67,11 +67,13 @@
                     <p class="post-time">@Model.Item2.CreateDate</p>
                     <div class="post-enroll">
                         <p><span id="enroll-counter">@Model.Item2.EnrolledCount</span>/@Model.Item2.AmountAccept Joined</p>
-                        <button type="button" class="post-signup" id="post-signup" @(Model.Item3 == false && Model.Item4 == false ? "" : "hidden")>Join</button>
-                        <button type="button" class="post-abandon" id="post-abandon" @(Model.Item3 == true && Model.Item4 == false ? "" : "hidden")>Leave</button>
+                        <button type="button" class="post-signup" id="post-signup" @(Model.Item2.Status == PostStatus.Open && Model.Item3 == false && Model.Item4 == false ? "" : "hidden")>Join</button>
+                        <button type="button" class="post-abandon" id="post-abandon" @(Model.Item2.Status == PostStatus.Open && Model.Item3 == true && Model.Item4 == false ? "" : "hidden")>Leave</button>
                         @if (Model.Item4 == true)
                         {
                             <button type="button" class="edit-post" id="edit-post">Edit post</button>
+                            <button type="button" class="edit-post" id="post-result" onclick="window.location.href = '@Url.Action("Result","Post", new { id = @Model.Item2.Id })'" @(Model.Item2.Status == PostStatus.Conclude ? "" : "hidden")>Post result</button>
+                            <button type="button" class="edit-post" id="announce-result" onclick="window.location.href = '@Url.Action("PostResultAnnouncement","Announcement", new { postid = @Model.Item2.Id })'" @(Model.Item2.Status == PostStatus.Selected ? "" : "hidden")>Announce result</button>
                         }
                     </div>
                 </div>

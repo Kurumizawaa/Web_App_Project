@@ -27,8 +27,8 @@ public class Post
     public int CreatorId { get; set;}
     public virtual Account? Creator { get; set; } = null!;
     public virtual ICollection<Tag> Tags { get; set;} = new List<Tag>();
-    public virtual ICollection<Enrollment>? Enrollments { get; set; }
-    public virtual ICollection<Account>? SelectedAccounts { get; set; }
+    public virtual ICollection<Enrollment>? Enrollments { get; set; } = new List<Enrollment>();
+    public virtual ICollection<Account>? SelectedAccounts { get; set; } = new List<Account>();
     public virtual ICollection<Announcement>? Announcements { get; set; }
 }
 
@@ -36,5 +36,6 @@ public enum PostStatus
 {
     Open,
     Conclude,
-    End
+    Selected,
+    Archive
 }
