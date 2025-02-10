@@ -15,7 +15,14 @@
     @foreach (var enrollment in Model.Item1)
     {
         <label>
-            <input type="checkbox" name="Selection" @(Model.Item2 == true ? "" : "onclick='return false'") value="@enrollment.AccountId" class="account-checkbox" @(Model.Item2 == true ? "" : "checked") hidden>
+            @if (Model.Item2 == true)
+            {
+                <input type="checkbox" name="Selection" value="@enrollment.AccountId" class="account-checkbox" @(Model.Item2 == true ? "" : "checked") hidden>
+            }
+            else
+            {
+                <input type="checkbox" name="Selection" onclick="return false" value="@enrollment.AccountId" class="account-checkbox" @(Model.Item2 == true ? "" : "checked") hidden>
+            }
             <div class="account-card">
                 <img src="@enrollment.Account!.ProfilePicture" class="profile-picture">
                 <div class="profile-detail">

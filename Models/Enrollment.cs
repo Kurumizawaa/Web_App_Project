@@ -6,9 +6,8 @@ namespace web_app_project.Models;
 public class Enrollment
 {
     [Key]
-    public int Id { get; set; }
-
     public int AccountId { get; set; }
+    [Key]
     public int PostId { get; set; }
 
     public virtual Account? Account { get; set; }
