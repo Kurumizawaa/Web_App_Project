@@ -20,7 +20,7 @@ public class Announcement
 
 public enum AnnouncementType
 {
-    SelectionResult,
+    Selection,
     Rejection,
     CreatorUpdate,
     General
