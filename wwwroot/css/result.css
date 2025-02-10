@@ -1,0 +1,90 @@
+html {
+    min-width: fit-content;
+}
+
+body {
+    padding-top: 80px;
+    min-width: fit-content;
+}
+
+.header {
+    text-align: center;
+    font-size: 50px;
+    margin: 15px 0px;
+}
+
+.account-card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    justify-items: stretch;
+    margin: 15px 15px;
+    padding: 10px 10px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    min-width: 350px;
+    background-color: lightgray;
+    opacity: 0.7;
+}
+
+.account-card:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.account-checkbox:checked ~ .account-card {
+    background-color: lightgreen;
+}
+
+.profile-picture {
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    width: 10%;
+    height: 10%;
+    flex: 0 0 100px;
+}
+
+.profile-detail {
+    flex: 1 1 70%;
+    margin-left: 20px;
+    margin-right: 20px;
+    min-width: 200px;
+}
+
+.check-info {
+    flex: 0 0 200px;
+    margin: auto auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 25px;
+}
+
+.check-info::after {
+    color: gray;
+    content: "UNSELECTED";
+}
+
+.account-checkbox:checked ~ .account-card .check-info::after {
+    color: green;
+    content: "SELECTED";
+}
+
+.button {
+    font-size: 20px;
+    color: aliceblue;
+    background-color: rgba(0, 150, 0, 0.8);
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    padding: 0px 10px 1px 10px;
+    cursor: pointer;
+    display: block;
+    margin: 15px auto;
+}
+
+.button:hover, .button:focus {
+    background-color: rgba(0, 150, 0, 1);
+    cursor: pointer;
+}
