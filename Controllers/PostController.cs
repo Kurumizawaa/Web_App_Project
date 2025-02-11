@@ -99,6 +99,31 @@ public class PostController : Controller
         }
     }
 
+    public IActionResult ConcludeEarly(int id)
+    {
+        var accountid = HttpContext.Session.GetInt32("ID");
+        var post = _Dbcontext.Posts.FirstOrDefault(x => x.Id == id);
+        if (accountid != null)
+        {
+            if (post != null && post.Status == PostStatus.Open && post.CreatorId == accountid)
+            {
+                post.Status = PostStatus.Conclude;
+                _Dbcontext.SaveChanges();
+                return RedirectToAction("Result","Post", new { id = post.Id });
+            }
+            else
+            {
+                //handle this later
+                return RedirectToAction("Account","Account");
+            }
+        }
+        else
+        {
+            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            return RedirectToAction("Login","Account");
+        }
+    }
+
     [HttpPost]
     public IActionResult CreatePost(Post post, List<int> Tags)
     {
