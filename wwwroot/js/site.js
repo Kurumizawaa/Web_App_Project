@@ -1,7 +1,15 @@
 ﻿portrait_menu = document.querySelector(".portrait-menu");
 portrait_menu.onclick = function(){
     nav_bar = document.querySelector(".nav-bar");
+    notif_box = document.querySelector(".notif-container");
+    notif_box = notif_box.classList.remove("active");
     nav_bar.classList.toggle("active");
+}
+
+notif_btn = document.querySelector(".notifications");
+notif_btn.onclick = function(){
+    notif_box = document.querySelector(".notif-container");
+    notif_box.classList.toggle("active");
 }
 
 const notification = document.getElementById("notifications");

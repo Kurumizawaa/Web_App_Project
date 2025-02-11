@@ -90,3 +90,64 @@ header{
     }
 }
 /* ---------------------------- NAV BAR ---------------------------- */
+
+/* ==== Notif Box ==== */
+.notif-container {
+    position: fixed;
+    top: 70px;
+    right: 10vw;
+
+    max-height: 0;
+    padding: 0;
+    
+    overflow: hidden;
+    
+    color: aliceblue;
+    background: linear-gradient(145deg, #333333, #000000);
+    
+    transition: none;
+}
+.notif-container.active {
+    width: 300px;
+    height: 500px;
+    max-height: 40%;
+
+    margin: 20px;
+    z-index: 1000;
+
+    padding: 10px 30px 10px 10px;
+    border: 2px solid aliceblue;
+    border-radius: 10px;
+
+    transition: max-height 0.5s, padding 0.5s;
+}
+.notif-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.notif-item {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid aliceblue;
+    border-radius: 8px;
+}
+.notif-header {
+    margin-bottom: 3%;
+}
+
+@media only screen and (max-width: 900px){
+    .notif-container {
+        top: 80px;
+        right: 0;
+        left: 0;
+        transform: translateX(0);
+    }
+    .notif-container.active {
+        top: 350px;
+        left: 50%;
+        margin: 0;
+        transform: translateX(-50%);
+    }
+}
