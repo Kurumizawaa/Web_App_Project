@@ -50,30 +50,59 @@
     gap: 1vw;
 }
 .tag-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-size: 20px;
-    width: 10vw;
     color: aliceblue;
     background-color: rgba(150, 150, 150, 0.50);
     border: none;
     border-radius: 5px;
     height: 30px;
-    padding: 0px 10px 3px 10px;
+    cursor: pointer;
 }
-.tag-btn:hover, .post-tag-btn:hover{
+.tag-btn input {
+    display: none;
+}
+.tag-btn-checkmark {
+    font-size: 20px;
+    width: 10vw;
+    color: aliceblue;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    padding: 0px 10px 3px 10px;
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    white-space: nowrap;
+}
+.tag-btn:hover{
     background-color: rgba(150, 150, 150, 0.8);
     cursor: pointer;
 }
-.tag-btn:active, .post-tag-btn:active {
+.tag-btn:has(input:checked) {
+    background-color: rgba(240, 248, 255, 0.75);
+    .tag-btn-checkmark {
+        color: black;
+    }
+}
+.post-tag-btn:hover{
+    background-color: rgba(150, 150, 150, 0.8);
+    cursor: pointer;
+}
+.post-tag-btn:active {
     background-color: rgba(110, 110, 110, 1);
 }
 @media only screen and (max-width: 900px) {
     .tagsearch{
-        display: inline-block;
+        display: block;
         text-align: center;
     }
     .tag-btn{
         width: 40vw;
         transition: 1s;
+        margin-bottom: 5px;
     }
 }
 /* ---------------------------- TOP SECTION ---------------------------- */
@@ -355,20 +384,19 @@ body{
     padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    color: black;
-    background-color: #696969;
+    color: rgba(150, 150, 150, 0.8);
+    background-color: rgba(150, 150, 150, 0.50);
 }
 
-/* .create-post-type input[type="radio"] {
+.create-post-type input[type="radio"] {
     display: none;
-} */
+}
 
 .create-post-type label:hover {
-    background-color: #ffffffb0;
+    background-color: rgba(150, 150, 150, 0.8);
 }
 
-.create-post-type input[type="radio"]:checked + label {
-    background-color: green;
+.create-post-type label:has(input[type="radio"]:checked) {
+    color: aliceblue;
 }
 /* ---------------------------- POPUP ---------------------------- */
