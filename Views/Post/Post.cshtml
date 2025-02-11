@@ -74,6 +74,8 @@
                             <button type="button" class="edit-post" id="edit-post">Edit post</button>
                             <button type="button" class="edit-post" id="post-result" onclick="window.location.href = '@Url.Action("Result","Post", new { id = @Model.Item2.Id })'" @(Model.Item2.Status == PostStatus.Conclude ? "" : "hidden")>Post result</button>
                             <button type="button" class="edit-post" id="announce-result" onclick="window.location.href = '@Url.Action("PostResultAnnouncement","Announcement", new { postid = @Model.Item2.Id })'" @(Model.Item2.Status == PostStatus.Selected ? "" : "hidden")>Announce result</button>
+                            <button type="button" class="post-abandon" id="edit-post" onclick="window.location.href = '@Url.Action("ConcludeEarly","Post", new { id = @Model.Item2.Id })'" @(Model.Item2.Status == PostStatus.Open ? "" : "hidden")>Conclude early</button>
+                            @* <button type="button" class="post-abandon" id="cancel-post">Cancel post</button> *@
                         }
                     </div>
                 </div>
