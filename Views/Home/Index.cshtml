@@ -73,8 +73,11 @@
     </section>
     <section class="tagsearch">
         @foreach (var tag in Model.Item1)
-        {
-            <button type="button" class="tag-btn">@tag.Name</button>
+        {     
+            <label class="tag-btn">
+                <input class="checkbox" type="checkbox" name="@tag.Name" value="@tag.Name">
+                <span class="tag-btn-checkmark">@tag.Name</span>
+            </label>
         }
         <form method="get" action="@Url.Action("CreateTag","Home")" id="create-tag-form" hidden></form>
         <button type="submit" form="create-tag-form" class="create-tag-button" id="create-tag-button" hidden>New tag</button>
@@ -143,6 +146,7 @@
         }
 
         function get_post() {
+            let checkedTags = Array.from(document.querySelectorAll(".tagsearch .checkbox:checked")).map(checkbox => checkbox.value).join(' ');
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
@@ -162,7 +166,7 @@
                     infinite_scrolling_handler();
                 }
             };
-            xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}&textquery=${search_bar.value}&tagquery=`, true);
+            xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}&textquery=${search_bar.value}&tagquery=${checkedTags}`, true);
             xhttp.send();
         }
 
