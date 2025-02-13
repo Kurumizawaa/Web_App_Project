@@ -71,16 +71,19 @@
             &nbsp&nbsp
         </button>
     </section>
-    <section class="tagsearch">
-        @foreach (var tag in Model.Item1)
-        {     
-            <label class="tag-btn">
-                <input class="checkbox" type="checkbox" name="@tag.Name" value="@tag.Name">
-                <span class="tag-btn-checkmark">@tag.Name</span>
-            </label>
-        }
-        <form method="get" action="@Url.Action("CreateTag","Home")" id="create-tag-form" hidden></form>
-        <button type="submit" form="create-tag-form" class="create-tag-button" id="create-tag-button" hidden>New tag</button>
+    <section class="tag-section" id="tag-section">
+        <section class="tagsearch open" id="tagsearch">
+            <form method="get" action="@Url.Action("CreateTag","Home")" id="create-tag-form" hidden></form>
+            <button type="submit" form="create-tag-form" class="create-tag-button" id="create-tag-button" hidden>New tag</button>
+        </section>
+        <button type="button" class="tag-dropdown" id="tag-dropdown">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
+            </svg>
+        </button>
+    </section>
+    <section class="all-tagsearch" id="all-tagsearch">
+        
     </section>
     <div class="row" id="post-display-container"></div>
     <div class="loading" id="loading">Loading...</div>
@@ -94,6 +97,9 @@
         const popup = document.getElementById("modal");
         const search_bar = document.getElementById("search-bar");
         const search_submit = document.getElementById("search-submit");
+        const tag_dropdown = document.getElementById("tag-dropdown");
+        const tagsearch = document.getElementById("tagsearch");
+        const all_tagsearch = document.getElementById("all-tagsearch");
 
         search_submit.addEventListener("click", () => {
             loading.innerText = "Loading...";
@@ -104,6 +110,11 @@
             current_buffered_post = [];
             get_post();
             window.addEventListener("scroll", infinite_scrolling_handler);
+        });
+
+        tag_dropdown.addEventListener("click", () => {
+            all_tagsearch.classList.toggle('open');
+            tagsearch.classList.toggle('open')
         });
 
         create_post_button.addEventListener("click", () => {
@@ -122,6 +133,32 @@
         cancel_post_button.addEventListener("click",()=>{
             popup.style.display = "none";
         })
+
+        function show_tag() {
+            let tags = @Html.Raw(Json.Serialize(Model.Item1));
+            let tag_lst = []
+            let display_tag_lst = []
+            for (const tag in tags) {
+                tag_lst.push(tags[tag].name)
+            }
+            console.log(tag_lst)
+            display_tag_lst = tag_lst.slice(0,4);
+            for (tag of display_tag_lst) {
+                tagsearch.innerHTML +=
+                    `<label class="tag-btn">
+                        <input class="checkbox" type="checkbox" name="${tag}" value="${tag}">
+                        <span class="tag-btn-checkmark">${tag}</span>
+                    </label>`;
+            }
+            for (tag of tag_lst) {
+                all_tagsearch.innerHTML += 
+                    `<label class="all-tag-btn">
+                            <input class="checkbox" type="checkbox" name="${tag}" value="${tag}">
+                            <span class="all-tag-btn-checkmark">${tag}</span>
+                    </label>`
+            }
+        }
+        show_tag();
 
         const post_display_container = document.getElementById("post-display-container");
         var current_page_width = (window.innerWidth >= 900) ? "Large" : "Small";
@@ -146,7 +183,13 @@
         }
 
         function get_post() {
-            let checkedTags = Array.from(document.querySelectorAll(".tagsearch .checkbox:checked")).map(checkbox => checkbox.value).join(' ');
+            let checkedTags
+            if (document.getElementById('all-tagsearch').classList.contains('open')) {
+                checkedTags = Array.from(document.querySelectorAll(".all-tagsearch .checkbox:checked")).map(checkbox => checkbox.value).join(' ');
+            }
+            else {
+                checkedTags = Array.from(document.querySelectorAll(".tagsearch .checkbox:checked")).map(checkbox => checkbox.value).join(' ');
+            }         
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
