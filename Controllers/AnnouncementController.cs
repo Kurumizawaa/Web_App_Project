@@ -21,14 +21,14 @@ public class AnnouncementController : Controller
         var Id = HttpContext.Session.GetInt32("ID");
         if (Id != null)
         {
-            var announcements = _Dbcontext.AnnouncementRecipients.Include(a => a.Announcement).Where(x => x.AccountId == Id).Select(y => y.Announcement).OrderByDescending(z => z!.AnnounceAt).ToList();
+            var announcements = _Dbcontext.AnnouncementRecipients.Include(a => a.Announcement).ThenInclude(b => b!.Post).ThenInclude(c => c!.Creator).Where(x => x.AccountId == Id).Select(y => y.Announcement).OrderByDescending(z => z!.AnnounceAt).ToList();
             List<object> announcement_list = new List<object>();
             foreach (var announcement in announcements)
             {
-                announcement_list.Add( new {type = announcement!.Type, message = announcement.Message, time = announcement.AnnounceAt, postid = announcement.PostId});
+                announcement_list.Add( new {type = announcement!.Type, message = announcement.Message, time = announcement.AnnounceAt, postid = announcement.PostId, title = announcement.Post?.Title ?? null, creator = announcement.Post?.Creator!.Username ?? null});
             }
 
-            return Json(announcement_list);
+            return Json( new { getannouncement_successful = true, announcement_list });
         }
         else
         {
@@ -71,7 +71,7 @@ public class AnnouncementController : Controller
                 var post = _Dbcontext.Posts.Include(a => a.SelectedAccounts).Include(b => b.Enrollments)!.ThenInclude(c => c.Account).FirstOrDefault(x => x.Id == postid);
                 if (post != null && post.Status == PostStatus.Selected && accountid == post.CreatorId)
                 {
-                    post.Status = PostStatus.Archive;
+                    post.Status = PostStatus.Archived;
                     announce_selected.PostId = post.Id;
                     announce_rejected.PostId = post.Id;
                     _Dbcontext.Announcements.AddRange(announce_selected, announce_rejected);
