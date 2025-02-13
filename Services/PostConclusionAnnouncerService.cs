@@ -22,7 +22,7 @@ public class PostConclusionAnnouncerService : BackgroundService
                 var announcementRecipients = new List<AnnouncementRecipient>();
                 foreach (var post in concludePost)
                 {
-                    post.Status = PostStatus.Conclude;
+                    post.Status = PostStatus.Concluded;
                     var announcement = new Announcement() 
                     {
                         PostId = post.Id,

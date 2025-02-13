@@ -61,7 +61,7 @@ public class PostController : Controller
         var post = _Dbcontext.Posts.Include(x => x.Enrollments)!.ThenInclude(y => y.Account).FirstOrDefault(p => p.Id == id);
         if (accountid != null)
         {
-            if (post != null && post.Status == PostStatus.Conclude && accountid == post.CreatorId)
+            if (post != null && post.Status == PostStatus.Concluded && accountid == post.CreatorId)
             {
                 List<Enrollment> enrollment_result;
                 bool selectable;
@@ -84,7 +84,7 @@ public class PostController : Controller
                         selectable = false;
                         break;
                 }
-                return View((enrollment_result, selectable, post.Id));
+                return View((enrollment_result, selectable, post.Id, post.Title, post.AmountAccept));
             }
             else
             {
@@ -107,7 +107,7 @@ public class PostController : Controller
         {
             if (post != null && post.Status == PostStatus.Open && post.CreatorId == accountid)
             {
-                post.Status = PostStatus.Conclude;
+                post.Status = PostStatus.Concluded;
                 _Dbcontext.SaveChanges();
                 return RedirectToAction("Result","Post", new { id = post.Id });
             }
@@ -177,7 +177,7 @@ public class PostController : Controller
             if (ModelState.IsValid)
             {
                 var DBpost = _Dbcontext.Posts.Include(a => a.Tags).FirstOrDefault(x => x.Id == post.Id);
-                if (DBpost != null)
+                if (DBpost != null && DBpost.Status != PostStatus.Concluded && DBpost.Status != PostStatus.Archived)
                 {
                     if (DBpost.CreatorId != Id) {return RedirectToAction("Account","Account");} //handle this later
                     var tag_list = _Dbcontext.Tags.Where(x => Tags.Contains(x.Id)).ToList();
@@ -295,7 +295,7 @@ public class PostController : Controller
         if (accountid != null)
         {
             var post = _Dbcontext.Posts.FirstOrDefault(x => x.Id == id);
-            if (post != null && post.Status == PostStatus.Conclude && accountid == post.CreatorId)
+            if (post != null && post.Status == PostStatus.Concluded && accountid == post.CreatorId)
             {
                 post.Status = PostStatus.Selected;
                 var selected_account = _Dbcontext.Enrollments.Include(x => x.Account).Where(y => Selection.Contains(y.AccountId)).Select(z => z.Account).ToList();
