@@ -85,7 +85,7 @@ public class AccountController : Controller
 
         var posts_enrolled = _Dbcontext.Enrollments
                                         .Include(e => e.Post)
-                                        .ThenInclude(p => p.SelectedAccounts) // Include SelectedAccounts
+                                        .ThenInclude(p => p!.SelectedAccounts) // Include SelectedAccounts
                                         .Where(x => x.AccountId == Id)
                                         .Select(x => x.Post)
                                         .ToList();

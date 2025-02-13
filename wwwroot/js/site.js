@@ -2,9 +2,14 @@
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            let announcement_list = JSON.parse(xhttp.response);
-            console.log(announcement_list);
-            insert_notification(announcement_list);
+            let payload = JSON.parse(xhttp.response);
+            if (payload.getannouncement_successful == true) {
+                console.log(payload.announcement_list);
+                insert_notification(payload.announcement_list);
+            }
+            else {
+                console.log(payload.message);
+            }
         }
     };
     xhttp.open("GET", "/Announcement/GetAnnouncement", true);

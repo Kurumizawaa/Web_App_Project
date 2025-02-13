@@ -35,7 +35,7 @@ public class Post
 public enum PostStatus
 {
     Open,
-    Conclude,
+    Concluded,
     Selected,
-    Archive
+    Archived
 }
