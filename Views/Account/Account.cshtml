@@ -95,6 +95,17 @@
             }
         });
 
+        function get_acceptance_status_text(post, user_id) {
+            switch (post.status) {
+                case 1:
+                    return "Pending...";
+                case 3:
+                    return post.selectedAccounts.some(account => account.id === user_id) ? "Accepted" : "Rejected";
+                default:
+                    return "Pending...";
+            }
+        }
+
         function add_my_posts(post_list){
             post_container = document.getElementById("my-post-list");
             post_list.forEach(post => {
@@ -124,6 +135,7 @@
             post_container = document.getElementById("joined-post-list");
             post_list.forEach(post => {
                 let post_card = document.createElement("div");
+                let acceptance_status = get_acceptance_status_text(post, @ViewBag.Account.Id);
                 post_card.className = "post-card";
                 post_card.innerHTML =   `<img class="post-img"
                                         src=${post.picture}
@@ -133,7 +145,20 @@
                                             <p>${post.description}</p>
                                         </div>
                                         <p class="joined_number">${post.enrolledCount}/${post.amountAccept}</p>
+                                        <p class="acceptance-status">${acceptance_status}</p>
                                         <button type="button" class="post-redirect" id="post-redirect-${post.id}">See Details</button>`
+                
+                switch (acceptance_status) {
+                    case "Accepted":
+                        post_card.style.backgroundColor = "rgba(0, 150, 0, 0.4)"; //light green
+                        break;
+                    case "Rejected":
+                        post_card.style.backgroundColor = "rgba(180, 6, 6, 0.4)"; //light red
+                        break;
+                    default:
+                        break;
+                }
+
                 post_container.appendChild(post_card);
                 const post_redirect_button = document.getElementById(`post-redirect-${post.id}`);
                 post_redirect_button.addEventListener("click",()=>{
@@ -160,6 +185,7 @@
                 console.error("Error fetching posts:", error);
             });
         }
+        
         function account_bio() {
             const bio_box = document.getElementById("account-bio");
             let bio = "@ViewBag.Account.Bio";

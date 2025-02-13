@@ -185,6 +185,14 @@ body {
     color: rgba(240, 248, 255, 0.69);
     overflow-y: hidden;
 }
+.acceptance-status {
+    position: absolute;
+    right: 10px;
+    top: 30px;
+    font-size: 15px;
+    color: rgba(240, 248, 255, 0.69);
+    overflow-y: hidden;
+}
 
 /* "see details" buttons */
 .post-redirect {

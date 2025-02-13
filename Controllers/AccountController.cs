@@ -79,14 +79,18 @@ public class AccountController : Controller
     public JsonResult GetAccountPosts(){
         var Id = HttpContext.Session.GetInt32("ID");
 
-        var posts_created = _Dbcontext.Posts.Where(x => x.CreatorId == Id)
-                                            .ToList();
+        var posts_created = _Dbcontext.Posts  
+                                      .Where(x => x.CreatorId == Id)
+                                      .ToList();
 
-        var enrolled_in = _Dbcontext.Enrollments.Where(x => x.AccountId == Id)
-                                                .Select(x => x.Post)
-                                                .ToList();
+        var posts_enrolled = _Dbcontext.Enrollments
+                                        .Include(e => e.Post)
+                                        .ThenInclude(p => p.SelectedAccounts) // Include SelectedAccounts
+                                        .Where(x => x.AccountId == Id)
+                                        .Select(x => x.Post)
+                                        .ToList();
         
-        var post_list = new { createdPosts = posts_created, enrolledPosts = enrolled_in };
+        var post_list = new { createdPosts = posts_created, enrolledPosts = posts_enrolled };
         return Json(post_list);
     }
 
