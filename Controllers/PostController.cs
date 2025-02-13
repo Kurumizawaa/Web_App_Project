@@ -18,22 +18,69 @@ public class PostController : Controller
         _Dbcontext = dbcontext;
     }
     
-    public JsonResult GetPost(int page, string textquery, string tagquery)
+    public JsonResult GetPost(int page, string textquery, string tagquery, string typequery, int[] statusquery, string orderby, bool ascending)
     {
         var page_size = 4;
+        var textquery_list = (textquery != null) ? textquery.ToLower().Split() : [];
         var tagquery_list = (tagquery != null) ? tagquery.ToLower().Split() : [];
+        var typequery_list = (typequery != null) ? typequery.Split() : ["OnFull","OnSelect","OnRandom"];
+        var statusquery_list = (statusquery.Length != 0) ? statusquery : [0,1,2,3];
         List<Post> Post_list;
-        if (textquery != null || tagquery_list.Length != 0)
+        // Post_list = _Dbcontext.Posts.Where(a => a.Tags.All(b => search_query.Contains(b.Name.ToLower()))).Include(x => x.Tags).Include(y => y.Creator).ToList(); // strict search 
+        var Post_list_query = _Dbcontext.Posts.AsQueryable();
+        Post_list_query = (textquery_list.Length != 0) ? Post_list_query.Where(post => textquery_list.Any(text_query => post.Title.ToLower().Contains(text_query.Replace("_"," ")) || post.Description.ToLower().Contains(text_query.Replace("_"," ")))) : Post_list_query;
+        Post_list_query = (tagquery_list.Length != 0) ? Post_list_query.Where(post => tagquery_list.All(tag_query => post.Tags.Any(tag => tag.Name.ToLower() == tag_query.ToLower()))) : Post_list_query;
+        Post_list_query = Post_list_query.Where(post => typequery_list.Contains(post.AcceptType));
+        Post_list_query = Post_list_query.Where(post => statusquery_list.Any(status => (int)post.Status == status));
+        if (ascending == true)
         {
-            // Post_list = _Dbcontext.Posts.Where(a => a.Tags.All(b => search_query.Contains(b.Name.ToLower()))).Include(x => x.Tags).Include(y => y.Creator).ToList(); // strict search 
-            var Post_list_query = _Dbcontext.Posts.AsQueryable();
-            Post_list_query = (textquery != null) ? Post_list_query.Where(a => a.Title.ToLower().Contains(textquery.ToLower()) || a.Description.ToLower().Contains(textquery.ToLower())) : Post_list_query;
-            Post_list_query = (tagquery_list.Length != 0) ? Post_list_query.Where(post => tagquery_list.All(tag_query => post.Tags.Any(tag => tag.Name.ToLower() == tag_query.ToLower()))) : Post_list_query;
-            Post_list = Post_list_query.Skip((page - 1) * page_size).Take(page_size).Include(x => x.Tags).Include(y => y.Creator).ToList();
+            switch (orderby)
+            {
+                case "CreateDate":
+                    Post_list_query = Post_list_query.OrderBy(post => post.Id);
+                    break;
+                case "CloseDate":
+                    Post_list_query = Post_list_query.OrderBy(post => post.CloseDate);
+                    break;
+                case "TimeUntilClose":
+                    //sqlite cannot do this directly, sadly.
+                    break;
+                case "AmountAccept":
+                    Post_list_query = Post_list_query.OrderBy(post => post.AmountAccept);
+                    break;
+                case "EnrolledCount":
+                    Post_list_query = Post_list_query.OrderBy(post => post.EnrolledCount);
+                    break;
+                default:
+                    Post_list_query = Post_list_query.OrderBy(post => post.Id);
+                    break;
+            }
         }
-        else {
-            Post_list = _Dbcontext.Posts.Skip((page - 1) * page_size).Take(page_size).Include(x => x.Tags).Include(y => y.Creator).ToList();
+        else
+        {
+            switch (orderby)
+            {
+                case "CreateDate":
+                    Post_list_query = Post_list_query.OrderByDescending(post => post.Id);
+                    break;
+                case "CloseDate":
+                    Post_list_query = Post_list_query.OrderByDescending(post => post.CloseDate);
+                    break;
+                case "TimeUntilClose":
+                    //sqlite cannot do this directly, sadly.
+                    break;
+                case "AmountAccept":
+                    Post_list_query = Post_list_query.OrderByDescending(post => post.AmountAccept);
+                    break;
+                case "EnrolledCount":
+                    Post_list_query = Post_list_query.OrderByDescending(post => post.EnrolledCount);
+                    break;
+                default:
+                    Post_list_query = Post_list_query.OrderByDescending(post => post.Id);
+                    break;
+            }
         }
+        Post_list = Post_list_query.Skip((page - 1) * page_size).Take(page_size).Include(x => x.Tags).Include(y => y.Creator).ToList();
         return Json(Post_list);
     }
 

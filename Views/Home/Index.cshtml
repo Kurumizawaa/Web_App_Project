@@ -166,7 +166,7 @@
                     infinite_scrolling_handler();
                 }
             };
-            xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}&textquery=${search_bar.value}&tagquery=${checkedTags}`, true);
+            xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}&textquery=${search_bar.value}&tagquery=${checkedTags}&typequery=&statusquery=&orderby=CreateDate&ascending=true`, true);
             xhttp.send();
         }
 
