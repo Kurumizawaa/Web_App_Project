@@ -60,6 +60,27 @@ public class AnnouncementController : Controller
         }
     }
 
+    public IActionResult GeneralAnnouncement(int? postid)
+    {
+        if (postid != null)
+        {
+            var post = _Dbcontext.Posts.FirstOrDefault(a => a.Id == postid);
+            if (post != null && post.Status != PostStatus.Archived)
+            {
+                return View(post);
+            }
+            else
+            {
+                //handle this later
+                return RedirectToAction("Account","Account");
+            }
+        }
+        else
+        {
+            return View(new Post());
+        }
+    }
+
     [HttpPost]
     public JsonResult PostResultAnnouncement(int postid, Announcement announce_selected, Announcement announce_rejected)
     {
@@ -91,8 +112,62 @@ public class AnnouncementController : Controller
                 }
                 else
                 {
-                    //handle this later
-                    return Json(null);
+                    return Json(new { announce_successful = false, reason = "invalid" });
+                }
+            }
+            else
+            {
+                //handle this later
+                return Json(null);
+            }
+        }
+        else
+        {
+            //handle this later
+            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            return Json(null);
+        }
+    }
+
+    [HttpPost]
+    public JsonResult GeneralAnnouncement(int? postid, Announcement announcement, int[] recipientid_list)
+    {
+        var accountid = HttpContext.Session.GetInt32("ID");
+        if (accountid != null)
+        {
+            if (ModelState.IsValid)
+            {
+                announcement.PostId = postid;
+                _Dbcontext.Announcements.Add(announcement);
+                _Dbcontext.SaveChanges();
+                List<AnnouncementRecipient> announcement_recipient = new List<AnnouncementRecipient>();
+                if (postid != null)
+                {
+                    var post = _Dbcontext.Posts.Include(a => a.Enrollments)!.ThenInclude(b => b.Account).FirstOrDefault(p => p.Id == postid);
+                    if (post != null && post.Status != PostStatus.Archived)
+                    {
+                        foreach (var account in post.Enrollments!.Select(a => a.Account).ToList())
+                        {
+                            announcement_recipient.Add(new AnnouncementRecipient(){ AnnouncementId = announcement.Id, AccountId = account!.Id,});
+                        }
+                        _Dbcontext.AnnouncementRecipients.AddRange(announcement_recipient);
+                        _Dbcontext.SaveChanges();
+                        return Json(new { announce_successful = true });
+                    }
+                    else
+                    {
+                        return Json(new { announce_successful = false, reason = "invalid" });
+                    }
+                }
+                else
+                {
+                    foreach (var recipientid in recipientid_list)
+                    {
+                        announcement_recipient.Add(new AnnouncementRecipient(){ AnnouncementId = announcement.Id, AccountId = recipientid,});
+                    }
+                    _Dbcontext.AnnouncementRecipients.AddRange(announcement_recipient);
+                    _Dbcontext.SaveChanges();
+                    return Json(new { announce_successful = true });
                 }
             }
             else

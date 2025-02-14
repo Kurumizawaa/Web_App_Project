@@ -5,7 +5,10 @@
 
 @model Post
 
-<br><br><br><br>
+@section Styles {
+    <link rel="stylesheet" href="~/css/result_announce.css" asp-append-version="true" />
+}
+
 <h1>Announcing result form post : @Model.Title</h1>
 <form method="post" action="@Url.Action("PostResultAnnouncement","Announcement", new { postid = @Model.Id })">
     <p>Your message for those you have selected:</p>
