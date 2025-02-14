@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using web_app_project.Data;
+using web_app_project.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddHostedService<PostConclusionAnnouncerService>();
+builder.Services.AddScoped<TagStatisticService>();
 
 var app = builder.Build();
 

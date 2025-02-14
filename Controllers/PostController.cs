@@ -6,16 +6,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using web_app_project.Data;
 using web_app_project.Models;
+using web_app_project.Services;
 
 namespace web_app_project.Controllers;
 
 public class PostController : Controller
 {
     private readonly ApplicationDbContext _Dbcontext;
+    private readonly TagStatisticService _TagStatisticService;
 
-    public PostController(ApplicationDbContext dbcontext)
+    public PostController(ApplicationDbContext dbcontext, TagStatisticService tagStatisticService)
     {
         _Dbcontext = dbcontext;
+        _TagStatisticService = tagStatisticService;
     }
     
     public JsonResult GetPost(int page, string textquery, string tagquery, string typequery, int[] statusquery, string orderby, bool ascending)
@@ -188,6 +191,7 @@ public class PostController : Controller
                 }
                 _Dbcontext.Posts.Add(post);
                 _Dbcontext.SaveChanges();
+                _TagStatisticService.UpdateCache();
                 return RedirectToAction("Index","Home");
             }
             else 
@@ -240,6 +244,7 @@ public class PostController : Controller
                     DBpost.AcceptType = post.AcceptType;
                     DBpost.CloseDate = post.CloseDate;
                     _Dbcontext.SaveChanges();
+                    _TagStatisticService.UpdateCache();
                     return RedirectToAction("Post","Post", new { id = DBpost.Id });
                 }
                 else

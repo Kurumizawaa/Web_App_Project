@@ -1,4 +1,4 @@
-﻿@model (List<Tag>, Post, int?)
+﻿@model (List<Tag>, Post, int?, List<string>)
 
 @{
     ViewData["Title"] = "Home page";
@@ -142,7 +142,8 @@
                 tag_lst.push(tags[tag].name)
             }
             console.log(tag_lst)
-            display_tag_lst = tag_lst.slice(0,4);
+            @* display_tag_lst = tag_lst.slice(0,4); *@
+            display_tag_lst = @Json.Serialize(Model.Item4);
             for (tag of display_tag_lst) {
                 tagsearch.innerHTML +=
                     `<label class="tag-btn">
