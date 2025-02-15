@@ -19,13 +19,13 @@
 function get_header_name(msg) {
     switch (msg.type) {
         case 0:
-            return "Accepted";
+            return "Accepted into";
         case 1:
-            return "Rejected";
+            return "Rejected from";
         case 2:
-            return "Creator Update";
+            return "Creator Update for";
         case 3:
-            return "General";
+            return "General Announcement for";
     }
 }
 
@@ -37,8 +37,11 @@ function insert_notification(announcement_list) {
         let header = get_header_name(announcement);
         notif.className = "notif-item";
         notif.innerHTML = `
-            <h3 class="notif-item-header">${header}</h3>
-            <p class="notif-text">${announcement.message}</p>
+            <img src="" alt="notif-img" class="notif-img">
+            <div class="notif-text-container">
+                <h3 class="notif-text-header">${header} ${announcement.title}</h3>
+                <p class="notif-text">${announcement.message}</p>
+            </div>
         `;
         notif_list.appendChild(notif);
     })
