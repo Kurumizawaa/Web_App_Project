@@ -100,7 +100,8 @@ public class PostController : Controller
         }
         else 
         {
-            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
             return RedirectToAction("Login","Account");
         }
     }
@@ -138,13 +139,13 @@ public class PostController : Controller
             }
             else
             {
-                //handle this later
-                return RedirectToAction("Account","Account");
+                return Unauthorized();
             }
         }
         else
         {
-            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
             return RedirectToAction("Login","Account");
         }
     }
@@ -159,17 +160,19 @@ public class PostController : Controller
             {
                 post.Status = PostStatus.Concluded;
                 _Dbcontext.SaveChanges();
+                TempData["snackbar-message"] = "Concluded successfully";
+                TempData["snackbar-type"] = "success";
                 return RedirectToAction("Result","Post", new { id = post.Id });
             }
             else
             {
-                //handle this later
-                return RedirectToAction("Account","Account");
+                return Unauthorized();
             }
         }
         else
         {
-            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
             return RedirectToAction("Login","Account");
         }
     }
@@ -182,7 +185,7 @@ public class PostController : Controller
         {
             post.CreateDate = DateTime.Now;
             post.CreatorId = (int)Id;
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && Tags.Count > 0)
             {
                 var tag_list = _Dbcontext.Tags.Where(x => Tags.Contains(x.Id)).ToList();
                 foreach (var tag in tag_list)
@@ -192,20 +195,15 @@ public class PostController : Controller
                 _Dbcontext.Posts.Add(post);
                 _Dbcontext.SaveChanges();
                 _TagStatisticService.UpdateCache();
+                TempData["snackbar-message"] = "Creating post successfully";
+                TempData["snackbar-type"] = "success";
                 return RedirectToAction("Index","Home");
             }
             else 
             {
-                var errors = ModelState.Values
-                            .SelectMany(v => v.Errors)
-                            .Select(e => e.ErrorMessage)
-                            .ToList();
-
-                foreach (var error in errors)
-                {
-                    Console.WriteLine(error);
-                }
-                TempData["ErrorMessage"] = "At least 1 tag is required!";
+                TempData["Post"] = JsonSerializer.Serialize(post);
+                TempData["snackbar-message"] = "At least 1 tag is required!";
+                TempData["snackbar-type"] = "error";
                 return RedirectToAction("Index","Home");
             }
         }
@@ -213,8 +211,9 @@ public class PostController : Controller
         {
             var tag_list = _Dbcontext.Tags.Where(x => Tags.Contains(x.Id)).ToList();
             post.Tags = tag_list;
-            TempData["Info"] = "Your session id has been expired! Login again to continue.";
             TempData["Post"] = JsonSerializer.Serialize(post);
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
             return RedirectToAction("Login","Account");
         }
     }
@@ -228,9 +227,8 @@ public class PostController : Controller
             if (ModelState.IsValid)
             {
                 var DBpost = _Dbcontext.Posts.Include(a => a.Tags).FirstOrDefault(x => x.Id == post.Id);
-                if (DBpost != null && DBpost.Status != PostStatus.Concluded && DBpost.Status != PostStatus.Archived)
+                if (DBpost != null && DBpost.CreatorId == Id && DBpost.Status != PostStatus.Concluded && DBpost.Status != PostStatus.Selected && DBpost.Status != PostStatus.Archived)
                 {
-                    if (DBpost.CreatorId != Id) {return RedirectToAction("Account","Account");} //handle this later
                     var tag_list = _Dbcontext.Tags.Where(x => Tags.Contains(x.Id)).ToList();
                     DBpost.Tags.Clear();
                     foreach (var tag in tag_list)
@@ -245,32 +243,26 @@ public class PostController : Controller
                     DBpost.CloseDate = post.CloseDate;
                     _Dbcontext.SaveChanges();
                     _TagStatisticService.UpdateCache();
+                    TempData["snackbar-message"] = "Post edited successfully";
+                    TempData["snackbar-type"] = "success";
                     return RedirectToAction("Post","Post", new { id = DBpost.Id });
                 }
                 else
                 {
-                    //handle this later
-                    return RedirectToAction("Index","Home");
+                    return Unauthorized();
                 }
             }
             else 
             {
-                var errors = ModelState.Values
-                            .SelectMany(v => v.Errors)
-                            .Select(e => e.ErrorMessage)
-                            .ToList();
-
-                foreach (var error in errors)
-                {
-                    Console.WriteLine(error);
-                }
-                TempData["ErrorMessage"] = "At least 1 tag is required!";
+                TempData["snackbar-message"] = "At least 1 tag is required!";
+                TempData["snackbar-type"] = "error";
                 return RedirectToAction("Index","Home");
             }
         }
         else 
         {
-            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
             return RedirectToAction("Login","Account");
         }
     }
@@ -298,13 +290,13 @@ public class PostController : Controller
             }
             else
             {
-                //handle this later
                 return Json(new { enroll_successful = false });
             }
         }
         else
         {
-            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
             return Json(new { enroll_successful = false });
         }
     }
@@ -329,13 +321,13 @@ public class PostController : Controller
             }
             else
             {
-                //handle this later
                 return Json(new { unroll_successful = false });
             }
         }
         else
         {
-            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
             return Json(new { unroll_successful = false });
         }
     }
@@ -356,17 +348,19 @@ public class PostController : Controller
                     post.SelectedAccounts!.Add(account!);
                 }
                 _Dbcontext.SaveChanges();
+                TempData["snackbar-message"] = "Saving result successfully";
+                TempData["snackbar-type"] = "success";
                 return RedirectToAction("PostResultAnnouncement","Announcement", new { postid = post.Id });
             }
             else
             {
-                //handle this later
-                return RedirectToAction("Account","Account");
+                return Unauthorized();
             }
         }
         else
         {
-            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
             return RedirectToAction("Login","Account");
         }
     }

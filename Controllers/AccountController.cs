@@ -25,7 +25,8 @@ public class AccountController : Controller
         }
         else
         {
-            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
             return RedirectToAction("Login","Account");
         }
     }
@@ -43,6 +44,8 @@ public class AccountController : Controller
     public IActionResult Logout()
     {
         HttpContext.Session.Remove("ID");
+        TempData["snackbar-message"] = "Logout successfully";
+        TempData["snackbar-type"] = "success";
         return RedirectToAction("Login","Account");
     }
 
@@ -61,17 +64,21 @@ public class AccountController : Controller
                 DBaccount.Password = account.Password;
                 _Dbcontext.SaveChanges();
                 ViewBag.Account = DBaccount;
+                TempData["snackbar-message"] = "Account edited successfully";
+                TempData["snackbar-type"] = "success";
                 return View();
             }
             else 
             {
-                TempData["Info"] = "Your session id has been expired! Login again to continue.";
+                TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+                TempData["snackbar-type"] = "error";
                 return RedirectToAction("Login","Account");
             }
         }
         else
         {
-            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
             return RedirectToAction("Login","Account");
         }
     }
@@ -105,6 +112,8 @@ public class AccountController : Controller
         }
         else
         {
+            TempData["snackbar-message"] = "User not found";
+            TempData["snackbar-type"] = "error";
             return View(account);
         }
     }
@@ -124,16 +133,21 @@ public class AccountController : Controller
             {
                 _Dbcontext.Accounts.Add(account);
                 _Dbcontext.SaveChanges();
+                TempData["snackbar-message"] = "Account registerd successfully";
+                TempData["snackbar-type"] = "success";
                 return RedirectToAction("Account","Account");
             }
             else
             {
-                ModelState.AddModelError("Username", "This name has already been used! Try something else.");
+                TempData["snackbar-message"] = "This name has already been used! Try something else.";
+                TempData["snackbar-type"] = "error";
                 return View(account);
             }
         }
         else
         {
+            TempData["snackbar-message"] = "Register fail";
+            TempData["snackbar-type"] = "error";
             return View(account);
         }
     }

@@ -50,8 +50,18 @@
         <main role="main">
             @RenderBody()
         </main>
+        <div id="snackbar"></div>
     </div>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let message = "@TempData["snackbar-message"]";
+            let type = "@TempData["snackbar-type"]";
+            if (message != "" && type != "") {
+                show_snackbar(message, type);
+            }
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

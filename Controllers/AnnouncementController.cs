@@ -32,7 +32,6 @@ public class AnnouncementController : Controller
         }
         else
         {
-            TempData["Info"] = "Your session id has been expired! Login again to continue.";
             return Json( new { getannouncement_successful = false, message = "You might wanna login first bro." });
         }
     }
@@ -49,40 +48,49 @@ public class AnnouncementController : Controller
             }
             else
             {
-                //handle this later
-                return RedirectToAction("Account","Account");
+                return Unauthorized();
             }
         }
         else
         {
-            TempData["Info"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
             return RedirectToAction("Login","Account");
         }
     }
 
     public IActionResult GeneralAnnouncement(int? postid)
     {
-        if (postid != null)
+        var accountid = HttpContext.Session.GetInt32("ID");
+        if (accountid != null)
         {
-            var post = _Dbcontext.Posts.FirstOrDefault(a => a.Id == postid);
-            if (post != null && post.Status != PostStatus.Archived)
+            if (postid != null)
             {
-                return View(post);
+                var post = _Dbcontext.Posts.FirstOrDefault(a => a.Id == postid);
+                if (post != null && post.Status != PostStatus.Archived && post.CreatorId == accountid)
+                {
+                    return View(post);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
             }
             else
             {
-                //handle this later
-                return RedirectToAction("Account","Account");
+                return View(new Post());
             }
         }
         else
         {
-            return View(new Post());
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
+            return RedirectToAction("Login","Account");
         }
     }
 
     [HttpPost]
-    public JsonResult PostResultAnnouncement(int postid, Announcement announce_selected, Announcement announce_rejected)
+    public IActionResult PostResultAnnouncement(int postid, Announcement announce_selected, Announcement announce_rejected)
     {
         var accountid = HttpContext.Session.GetInt32("ID");
         if (accountid != null)
@@ -108,40 +116,41 @@ public class AnnouncementController : Controller
                     }
                     _Dbcontext.AnnouncementRecipients.AddRange(announcement_recipient);
                     _Dbcontext.SaveChanges();
-                    return Json(new { announce_successful = true });
+                    TempData["snackbar-message"] = "announcing result successfully";
+                    TempData["snackbar-type"] = "success";
+                    return RedirectToAction("Index","Home");
                 }
                 else
                 {
-                    return Json(new { announce_successful = false, reason = "invalid" });
+                    return Unauthorized();
                 }
             }
             else
             {
-                //handle this later
-                return Json(null);
+                return RedirectToAction("PostResultAnnouncement","Announcement", new { postid });
             }
         }
         else
         {
-            //handle this later
-            TempData["Info"] = "Your session id has been expired! Login again to continue.";
-            return Json(null);
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
+            return RedirectToAction("Login","Account");
         }
     }
 
     [HttpPost]
-    public JsonResult GeneralAnnouncement(int? postid, Announcement announcement, int[] recipientid_list)
+    public IActionResult GeneralAnnouncement(int? postid, Announcement announcement, int[] recipientid_list)
     {
         var accountid = HttpContext.Session.GetInt32("ID");
         if (accountid != null)
         {
             if (ModelState.IsValid)
             {
-                announcement.PostId = postid;
+                announcement.PostId = (postid != 0) ? postid : null;
                 _Dbcontext.Announcements.Add(announcement);
                 _Dbcontext.SaveChanges();
                 List<AnnouncementRecipient> announcement_recipient = new List<AnnouncementRecipient>();
-                if (postid != null)
+                if (postid != null && postid != 0)
                 {
                     var post = _Dbcontext.Posts.Include(a => a.Enrollments)!.ThenInclude(b => b.Account).FirstOrDefault(p => p.Id == postid);
                     if (post != null && post.Status != PostStatus.Archived)
@@ -152,11 +161,13 @@ public class AnnouncementController : Controller
                         }
                         _Dbcontext.AnnouncementRecipients.AddRange(announcement_recipient);
                         _Dbcontext.SaveChanges();
-                        return Json(new { announce_successful = true });
+                        TempData["snackbar-message"] = "announcing successfully";
+                        TempData["snackbar-type"] = "success";
+                        return RedirectToAction("Index","Home");
                     }
                     else
                     {
-                        return Json(new { announce_successful = false, reason = "invalid" });
+                        return Unauthorized();
                     }
                 }
                 else
@@ -167,20 +178,21 @@ public class AnnouncementController : Controller
                     }
                     _Dbcontext.AnnouncementRecipients.AddRange(announcement_recipient);
                     _Dbcontext.SaveChanges();
-                    return Json(new { announce_successful = true });
+                    TempData["snackbar-message"] = "announcing successfully";
+                    TempData["snackbar-type"] = "success";
+                    return RedirectToAction("Index","Home");
                 }
             }
             else
             {
-                //handle this later
-                return Json(null);
+                return RedirectToAction("GeneralAnnouncement","Announcement", new { postid });
             }
         }
         else
         {
-            //handle this later
-            TempData["Info"] = "Your session id has been expired! Login again to continue.";
-            return Json(null);
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
+            return RedirectToAction("Login","Account");
         }
     }
 

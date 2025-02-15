@@ -59,3 +59,20 @@ notif_btn.onclick = function(){
     notif_box = document.querySelector(".notif-container");
     notif_box.classList.toggle("active");
 }
+
+/* snackbar */
+function show_snackbar(message, type) {
+    const snackbar = document.getElementById("snackbar");
+    snackbar.innerText = message;
+    if (type == "success") {
+        snackbar.style.backgroundColor = "lightgreen";
+    }
+    else if (type == "info") {
+        snackbar.style.backgroundColor = "lightblue";
+    }
+    else if (type == "error") {
+        snackbar.style.backgroundColor = "red";
+    }
+    snackbar.className = "show";
+    setTimeout(function(){ snackbar.classList.remove("show"); }, 3000);
+}

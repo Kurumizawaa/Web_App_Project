@@ -71,8 +71,8 @@
                         <button type="button" class="post-abandon" id="post-abandon" @(Model.Item2.Status == PostStatus.Open && Model.Item3 == true && Model.Item4 == false ? "" : "hidden")>Leave</button>
                         @if (Model.Item4 == true)
                         {
-                            <button type="button" class="edit-post" id="edit-post" @(Model.Item2.Status != PostStatus.Concluded && Model.Item2.Status != PostStatus.Archived ? "" : "hidden")>Edit post</button>
-                            <button type="button" class="edit-post" id="edit-post" onclick="window.location.href = '@Url.Action("GeneralAnnouncement","Announcement", new { postid = @Model.Item2.Id })'" @(Model.Item2.Status != PostStatus.Archived ? "" : "hidden")>announcement</button>
+                            <button type="button" class="edit-post" id="edit-post" @(Model.Item2.Status != PostStatus.Concluded && Model.Item2.Status != PostStatus.Selected && Model.Item2.Status != PostStatus.Archived ? "" : "hidden")>Edit post</button>
+                            <button type="button" class="edit-post" id="edit-post" onclick="window.location.href = '@Url.Action("GeneralAnnouncement","Announcement", new { postid = @Model.Item2.Id })'" @(Model.Item2.Status != PostStatus.Archived ? "" : "hidden")>Announcement</button>
                             <button type="button" class="edit-post" id="post-result" onclick="window.location.href = '@Url.Action("Result","Post", new { id = @Model.Item2.Id })'" @(Model.Item2.Status == PostStatus.Concluded ? "" : "hidden")>Post result</button>
                             <button type="button" class="edit-post" id="announce-result" onclick="window.location.href = '@Url.Action("PostResultAnnouncement","Announcement", new { postid = @Model.Item2.Id })'" @(Model.Item2.Status == PostStatus.Selected ? "" : "hidden")>Announce result</button>
                             <button type="button" class="post-abandon" id="edit-post" onclick="window.location.href = '@Url.Action("ConcludeEarly","Post", new { id = @Model.Item2.Id })'" @(Model.Item2.Status == PostStatus.Open ? "" : "hidden")>Conclude early</button>
@@ -111,6 +111,7 @@
                         post_abandon_btn.style.display = "block";
                         const enroll_counter = document.getElementById("enroll-counter");
                         enroll_counter.innerText = json.enroll_count;
+                        show_snackbar("Enrolled successfully","success");
                     }   
                     else {
                         window.location.href = "@Url.Action("Login", "Account")";
@@ -131,6 +132,7 @@
                         post_abandon_btn.style.display = "none";
                         const enroll_counter = document.getElementById("enroll-counter");
                         enroll_counter.innerText = json.enroll_count;
+                        show_snackbar("Unrolled successfully","success");
                     }
                     else {
                         window.location.href = "@Url.Action("Login", "Account")";
