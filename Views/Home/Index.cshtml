@@ -58,6 +58,41 @@
         <button type="button" class="cancel-post" id="cancel-post">Cancel</button>
     </div>
 </div>
+<div class="modal" id="modal2">
+    <div class="modal-content2">
+        <h2 class="create-post-header">Advance search settings</h2>
+        <p>Post accept type</p>
+        <div>
+            <label>On queue <input type="checkbox" class="typequery" name="typequery" value="OnFull" checked></label>
+            <label>On select <input type="checkbox" class="typequery" name="typequery" value="OnSelect" checked></label>
+            <label>On random <input type="checkbox" class="typequery" name="typequery" value="OnRandom" checked></label>
+        </div>
+
+        <p>Post status</p>
+        <div>
+            <label>Open <input type="checkbox" class="statusquery" name="statusquery" value="0" checked></label>
+            <label>Concluded <input type="checkbox" class="statusquery" name="statusquery" value="1" checked></label>
+            <label>Selected <input type="checkbox" class="statusquery" name="statusquery" value="2" checked></label>
+            <label>Archived <input type="checkbox" class="statusquery" name="statusquery" value="3" checked></label>
+        </div>
+
+        <p>Order by</p>
+        <div>
+            <div>
+                <label>Create date <input type="radio" class="orderby" name="orderby" value="CreateDate" checked></label>
+                <label>Close date <input type="radio" class="orderby" name="orderby" value="CloseDate"></label>
+                <label>Amount accept <input type="radio" class="orderby" name="orderby" value="AmountAccept"></label>
+                <label>Enrolled count <input type="radio" class="orderby" name="orderby" value="EnrolledCount"></label>
+            </div>
+            <div>
+                <label>Ascending <input type="radio" class="ascending" name="ascending" value="true" checked></label>
+                <label>Descending <input type="radio" class="ascending" name="ascending" value="false"></label>
+            </div>
+        </div>
+
+        <button type="button" class="confirm-post" id="close-advance">Done</button>
+    </div>
+</div>
 <section>
     <section class="search">
         <input type="text" id="search-bar" placeholder="Search title, tags or add filter">
@@ -70,6 +105,7 @@
             </svg>
             &nbsp&nbsp
         </button>
+        <button type="button" class="advance-button" id="advance-button">Advance</button>
     </section>
     <section class="tag-section" id="tag-section">
         <section class="tagsearch open" id="tagsearch">
@@ -100,6 +136,21 @@
         const tag_dropdown = document.getElementById("tag-dropdown");
         const tagsearch = document.getElementById("tagsearch");
         const all_tagsearch = document.getElementById("all-tagsearch");
+        const popup2 = document.getElementById("modal2");
+        const advance_button = document.getElementById("advance-button");
+        const close_advance = document.getElementById("close-advance");
+
+        advance_button.addEventListener("click", () => {
+            popup2.style.display = "block";
+        });
+        close_advance.addEventListener("click", () => {
+            popup2.style.display = "none";
+        })
+        popup2.addEventListener("click", (event) => {
+            if (!event.target.closest(".modal-content2")) {
+                popup2.style.display = "none";
+            }
+        });
 
         search_submit.addEventListener("click", () => {
             loading.innerText = "Loading...";
@@ -191,6 +242,12 @@
             else {
                 checkedTags = Array.from(document.querySelectorAll(".tagsearch .checkbox:checked")).map(checkbox => checkbox.value).join(' ');
             }         
+            let typequery = Array.from(document.querySelectorAll(".typequery:checked")).map(checkbox => checkbox.value).join(' ');
+            let statusquery = Array.from(document.querySelectorAll(".statusquery:checked")).map(checkbox => checkbox.value).join('&statusquery=');
+            let orderby = document.querySelector(".orderby:checked").value;
+            let ascending = document.querySelector(".ascending:checked").value;
+            console.log(typequery,statusquery,orderby,ascending);
+
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
@@ -210,7 +267,7 @@
                     infinite_scrolling_handler();
                 }
             };
-            xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}&textquery=${search_bar.value}&tagquery=${checkedTags}&typequery=&statusquery=&orderby=CreateDate&ascending=true`, true);
+            xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}&textquery=${search_bar.value}&tagquery=${checkedTags}&typequery=${typequery}&statusquery=${statusquery}&orderby=${orderby}&ascending=${ascending}`, true);
             xhttp.send();
         }
 
