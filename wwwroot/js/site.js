@@ -35,7 +35,14 @@ function insert_notification(announcement_list) {
     announcement_list.forEach(announcement => {
         const notif = document.createElement("div");
         let header = get_header_name(announcement);
+        if (announcement.message.length > 50) {
+            announcement.message = announcement.message.slice(0,50) + "...";
+        }
         notif.className = "notif-item";
+        notif.classList.add(`announcement-${announcement.type}`);
+        notif.onclick = function () {
+            window.location.href = `/Post/Post?id=${announcement.postid}`
+        };
         notif.innerHTML = `
             <img src="" alt="notif-img" class="notif-img">
             <div class="notif-text-container">
@@ -45,6 +52,10 @@ function insert_notification(announcement_list) {
         `;
         notif_list.appendChild(notif);
     })
+}
+
+function notification_redirect(postid) {
+    console.log(postid);
 }
 
 //======== Hidden UI elements ========//
