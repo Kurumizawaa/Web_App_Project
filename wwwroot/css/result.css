@@ -85,6 +85,11 @@ body {
     content: "SELECTED";
 }
 
+.selection-tracker {
+    text-align: center;
+    font-size: 30px;
+}
+
 .button {
     font-size: 20px;
     color: aliceblue;

@@ -3,14 +3,14 @@
     ViewData["Page"] = "Result";
 }
 
-@model (List<Enrollment>, bool, int)
+@model (List<Enrollment>, bool, int, string, int)
 
 @section Styles {
     <link rel="stylesheet" href="~/css/result.css" asp-append-version="true" />
 }
 
-<h1 class="header">Post enroll result</h1>
-<form method="post" action="@Url.Action("Result","Post", new { id = @Model.Item3 })">
+<h1 class="header">"@Model.Item4"<br>Post enroll result</h1>
+<form method="post" action="@Url.Action("Result","Post", new { id = @Model.Item3 })" id="result-form">
     <input name="id" value="@Model.Item3" hidden>
     @foreach (var enrollment in Model.Item1)
     {
@@ -33,5 +33,31 @@
             </div>
         </label>
     }
-    <button type="submit" class="button">Confirm</button>
+    <footer>
+        <section class="selection-tracker" id="selection-tracker">Selected <span id="selection-counter"></span> out of @Model.Item5</section>
+        <button type="submit" class="button">Confirm</button>
+    </footer>
 </form>
+
+@section Scripts {
+    <script>
+        function update_counter() {
+            var selected = document.querySelectorAll(".account-checkbox:checked").length;
+            selection_counter.innerText = selected; 
+            if (selected < @Model.Item5){
+                selection_counter.style.color = "yellow";
+            }
+            else if (selected == @Model.Item5){
+                selection_counter.style.color = "lightgreen";
+            }
+            else{
+                selection_counter.style.color = "red";
+            }
+        }
+
+        const selection_counter = document.getElementById("selection-counter");
+        const result_form = document.getElementById("result-form");
+        result_form.addEventListener("input", update_counter);
+        update_counter();
+    </script>
+}
