@@ -126,15 +126,25 @@ header{
     flex-direction: column;
     gap: 10px;
 }
+.notif-header {
+    margin-bottom: 3%;
+}
 .notif-item {
     display: flex;
-    flex-direction: column;
     padding: 10px;
     border: 1px solid aliceblue;
     border-radius: 8px;
 }
-.notif-header {
-    margin-bottom: 3%;
+.notif-img {
+    width: 25%;
+    aspect-ratio: 1/1;
+    margin-right: 4%;
+    border: 1px solid aliceblue;
+    border-radius: 10px;
+    object-fit: cover;
+}
+.notif-text {
+    color: rgb(145, 151, 157);
 }
 
 @media only screen and (max-width: 900px){
