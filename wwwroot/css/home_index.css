@@ -413,7 +413,7 @@ body{
 }
 
 .create-post-display {
-    border: 2px solid black;
+    border: 2px solid transparent;
     max-width: 300px;
     margin: auto;
     box-sizing: border-box;

@@ -22,7 +22,7 @@
             <div>
                 <div id="create-post-display" class="create-post-display"></div>
                 <label class="create-post-image">Image: <input id="image-url" type="url" name="Picture" value="@Model.Item2.Picture" placeholder="https://example.com/image.jpg"></label>
-                <label class="create-post-tags">
+                <label for="" class="create-post-tags">
                     @foreach (var tag in Model.Item1)
                     {
                         <label class="checkbox-container"><input class="checkbox" type="checkbox" name="Tags" value="@tag.Id" @(Model.Item2.Tags.Any(t => t.Name == tag.Name) ? "checked" : "")>
@@ -37,7 +37,7 @@
                 <label class="create-post-desc">Description:<br><textarea name="Description" rows="12" cols="40">@Model.Item2.Description</textarea></label>
                 <label class="create-post-amount">Amount accept: <input type="number" name="AmountAccept" value="@(Model.Item2.AmountAccept != 0 ? Model.Item2.AmountAccept : "")" required></label>
                 <label>Accept type:</label>
-                <label class="create-post-type">
+                <label for="" class="create-post-type">
                     <label>
                         Close on full queue
                         <input type="radio" name="AcceptType" value="OnFull" @(Model.Item2.AcceptType == "OnFull" ? "Checked" : "") required>
@@ -246,7 +246,6 @@
             let statusquery = Array.from(document.querySelectorAll(".statusquery:checked")).map(checkbox => checkbox.value).join('&statusquery=');
             let orderby = document.querySelector(".orderby:checked").value;
             let ascending = document.querySelector(".ascending:checked").value;
-            console.log(typequery,statusquery,orderby,ascending);
 
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {

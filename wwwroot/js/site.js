@@ -44,7 +44,7 @@ function insert_notification(announcement_list) {
             window.location.href = `/Post/Post?id=${announcement.postid}`
         };
         notif.innerHTML = `
-            <img src="" alt="notif-img" class="notif-img">
+            <img src="${announcement.picture ?? "../images/jaikere.PNG"}" alt="notif-img" class="notif-img">
             <div class="notif-text-container">
                 <h3 class="notif-text-header">${header} ${announcement.title}</h3>
                 <p class="notif-text">${announcement.message}</p>

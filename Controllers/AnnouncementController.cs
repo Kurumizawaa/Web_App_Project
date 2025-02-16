@@ -25,7 +25,7 @@ public class AnnouncementController : Controller
             List<object> announcement_list = new List<object>();
             foreach (var announcement in announcements)
             {
-                announcement_list.Add( new {type = announcement!.Type, message = announcement.Message, time = announcement.AnnounceAt, postid = announcement.PostId, title = announcement.Post?.Title ?? null, creator = announcement.Post?.Creator!.Username ?? null});
+                announcement_list.Add( new {type = announcement!.Type, message = announcement.Message, time = announcement.AnnounceAt, postid = announcement.PostId, title = announcement.Post?.Title ?? null, creator = announcement.Post?.Creator!.Username ?? null, picture = announcement.Post?.Picture ?? null});
             }
 
             return Json( new { getannouncement_successful = true, announcement_list });
