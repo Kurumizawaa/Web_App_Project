@@ -214,6 +214,32 @@
             xhttp.send();
         }
 
+        function post_tag_redirect(tagname) {
+            column_div.forEach(div => div.innerHTML = "");
+            page_number = 1;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    let post_list = JSON.parse(xhttp.response);
+                    console.log(post_list);
+                    if (post_list.length === 0) {
+                        window.removeEventListener("scroll", infinite_scrolling_handler);
+                        loading.innerText = "That's all for now!";
+                        return;
+                    }            
+                    current_buffered_post = current_buffered_post.concat(post_list);
+                    post_arrange(post_list);
+                    console.log("current page = ", page_number);
+                    page_number++;
+                    is_loading = false;
+                    loading.style.display = "none";
+                    infinite_scrolling_handler();
+                }
+            };
+            xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}&textquery=&tagquery=${tagname}&typequery=&statusquery=&orderby=CreateDate&ascending=true`, true);
+            xhttp.send();
+        }
+
         function post_arrange(post_list) {
             column_div.forEach((div, div_index) => {
                 post_list.forEach((post, post_index) => {
@@ -229,7 +255,7 @@
                         `<img class="post-img" src="${post.picture}" alt="post-img" style="width:100%">
                         <div class="container">
                             <section class="post-tag">
-                                ${post.tags.map(tag => `<button type="button" class="post-tag-btn">${tag.name}</button>`).join('')}
+                                ${post.tags.map(tag => `<button type="button" onclick="post_tag_redirect('${tag.name}')" class="post-tag-btn" id="post-tag-${tag.name}">${tag.name}</button>`).join('')}
                             </section>
                             <div class="post-header">
                                 <img class="post-pfp" src="${post.creator.profilePicture}" alt="post-pfp" style="width:15%">
