@@ -60,33 +60,66 @@
 </div>
 <div class="modal" id="modal2">
     <div class="modal-content2">
-        <h2 class="create-post-header">Advance search settings</h2>
-        <p>Post accept type</p>
+        <h2 class="create-post-header">Advanced Search Filters</h2>
+        <h2>Accept Type</h2>
         <div>
-            <label>On queue <input type="checkbox" class="typequery" name="typequery" value="OnFull" checked></label>
-            <label>On select <input type="checkbox" class="typequery" name="typequery" value="OnSelect" checked></label>
-            <label>On random <input type="checkbox" class="typequery" name="typequery" value="OnRandom" checked></label>
+            <label class="checkbox-container">
+                <input class="typequery" type="checkbox" name="typequery" value="OnFull" checked>
+                <span class="checkmark">On queue</span>
+            </label>
+            <label class="checkbox-container">
+                <input class="typequery" type="checkbox" name="typequery" value="OnSelect" checked>
+                <span class="checkmark">On Select</span>
+            </label>
+            <label class="checkbox-container">
+                <input class="typequery" type="checkbox" name="typequery" value="OnRandom" checked>
+                <span class="checkmark">On Random</span>
+            </label>
         </div>
 
-        <p>Post status</p>
+        <h2>Post status</h2>
         <div>
-            <label>Open <input type="checkbox" class="statusquery" name="statusquery" value="0" checked></label>
-            <label>Concluded <input type="checkbox" class="statusquery" name="statusquery" value="1" checked></label>
-            <label>Selected <input type="checkbox" class="statusquery" name="statusquery" value="2" checked></label>
-            <label>Archived <input type="checkbox" class="statusquery" name="statusquery" value="3" checked></label>
+            <label class="checkbox-container">
+                <input class="statusquery" type="checkbox" name="statusquery" value="0" checked>
+                <span class="checkmark">Open</span>
+            </label>
+            <label class="checkbox-container">
+                <input class="statusquery" type="checkbox" name="statusquery" value="1" checked>
+                <span class="checkmark">Concluded</span>
+            </label>
+            <label class="checkbox-container">
+                <input class="statusquery" type="checkbox" name="statusquery" value="2" checked>
+                <span class="checkmark">Selected</span>
+            </label>
+            <label class="checkbox-container">
+                <input class="statusquery" type="checkbox" name="statusquery" value="3" checked>
+                <span class="checkmark">Archived</span>
+            </label>
         </div>
 
-        <p>Order by</p>
+        <h2>Order by</h2>
         <div>
-            <div>
+            <div class="filter-orderby">
                 <label>Create date <input type="radio" class="orderby" name="orderby" value="CreateDate" checked></label>
                 <label>Close date <input type="radio" class="orderby" name="orderby" value="CloseDate"></label>
                 <label>Amount accept <input type="radio" class="orderby" name="orderby" value="AmountAccept"></label>
                 <label>Enrolled count <input type="radio" class="orderby" name="orderby" value="EnrolledCount"></label>
             </div>
-            <div>
-                <label>Ascending <input type="radio" class="ascending" name="ascending" value="true" checked></label>
-                <label>Descending <input type="radio" class="ascending" name="ascending" value="false"></label>
+            <div class="filter-orderby">
+                <label>
+                    Ascending
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
+                    </svg>
+                    <input type="radio" class="ascending" name="ascending" value="true" checked>
+                </label>
+                <label>
+                    Descending
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
+                    </svg>
+                    <input type="radio" class="ascending" name="ascending" value="false">
+                </label>
             </div>
         </div>
 
@@ -95,17 +128,19 @@
 </div>
 <section>
     <section class="search">
-        <input type="text" id="search-bar" placeholder="Search title, tags or add filter">
-        <button type="button" id="search-submit" form="search-bar">
-            &nbsp&nbsp
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
-                viewBox="0 0 16 16">
-                <path
-                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-            </svg>
-            &nbsp&nbsp
-        </button>
-        <button type="button" class="advance-button" id="advance-button">Advance</button>
+        <section class="searchbar">
+            <input type="text" id="search-bar" placeholder="Search title, tags or add filter">
+            <button type="button" id="search-submit" form="search-bar">
+                &nbsp&nbsp
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                </svg>
+                &nbsp&nbsp
+            </button>
+        </section>
+        <button type="button" class="advanced-filter" id="advanced-filter">Advanced</button>
     </section>
     <section class="tag-section" id="tag-section">
         <section class="tagsearch open" id="tagsearch">
@@ -137,10 +172,10 @@
         const tagsearch = document.getElementById("tagsearch");
         const all_tagsearch = document.getElementById("all-tagsearch");
         const popup2 = document.getElementById("modal2");
-        const advance_button = document.getElementById("advance-button");
+        const advanced_filter_button = document.getElementById("advanced-filter");
         const close_advance = document.getElementById("close-advance");
 
-        advance_button.addEventListener("click", () => {
+        advanced_filter_button.addEventListener("click", () => {
             popup2.style.display = "block";
         });
         close_advance.addEventListener("click", () => {
