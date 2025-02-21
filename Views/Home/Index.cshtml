@@ -187,7 +187,15 @@
             }
         });
 
-        search_submit.addEventListener("click", () => {
+        search_bar.addEventListener("keydown", (event) => {
+            if (event.key == "Enter") {
+                submit_search();
+            }
+        });
+
+        search_submit.addEventListener("click", submit_search);
+
+        function submit_search() {
             loading.innerText = "Loading...";
             is_loading = true;
             loading.style.display = "block";
@@ -196,12 +204,14 @@
             current_buffered_post = [];
             get_post();
             window.addEventListener("scroll", infinite_scrolling_handler);
-        });
+        }
 
-        tag_dropdown.addEventListener("click", () => {
+        tag_dropdown.addEventListener("click", toggle_tag_search_mode);
+
+        function toggle_tag_search_mode() {
             all_tagsearch.classList.toggle('open');
-            tagsearch.classList.toggle('open')
-        });
+            tagsearch.classList.toggle('open');
+        }
 
         create_post_button.addEventListener("click", () => {
             if (@Model.Item3 == 0) {
@@ -306,7 +316,14 @@
         }
 
         function post_tag_redirect(tagname) {
-            column_div.forEach(div => div.innerHTML = "");
+            const all_tag_search_container = document.getElementById("all-tagsearch")
+            if (!all_tag_search_container.classList.contains("open")) {
+                toggle_tag_search_mode();
+            }
+            let tag = all_tag_search_container.querySelector(`input[value = ${tagname}]`);
+            tag.click();
+            submit_search();
+            @* column_div.forEach(div => div.innerHTML = "");
             page_number = 1;
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
@@ -328,7 +345,7 @@
                 }
             };
             xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}&textquery=&tagquery=${tagname}&typequery=&statusquery=&orderby=CreateDate&ascending=true`, true);
-            xhttp.send();
+            xhttp.send(); *@
         }
 
         function post_arrange(post_list) {
