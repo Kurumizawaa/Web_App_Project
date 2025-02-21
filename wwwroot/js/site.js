@@ -5,7 +5,9 @@
             let payload = JSON.parse(xhttp.response);
             if (payload.getannouncement_successful == true) {
                 console.log(payload.announcement_list);
+                unread_notification = 0;
                 insert_notification(payload.announcement_list);
+                update_notification_red_dot();
             }
             else {
                 console.log(payload.message);
@@ -15,6 +17,7 @@
     xhttp.open("GET", "/Announcement/GetAnnouncement", true);
     xhttp.send();
 }
+get_notification();
 
 function get_header_name(msg) {
     switch (msg.type) {
@@ -40,15 +43,18 @@ function insert_notification(announcement_list) {
         }
         notif.className = "notif-item";
         notif.classList.add(`announcement-${announcement.type}`);
-        notif.onclick = function () {
-            window.location.href = `/Post/Post?id=${announcement.postid}`
-        };
+        // notif.onclick = function () {
+        //     window.location.href = `/Post/Post?id=${announcement.postid}`
+        // };
+        notif.dataset.postid = announcement.postid;
+        notif.dataset.announcementid = (announcement.isread == false) ? announcement.id : null;
         notif.innerHTML = `
             <img src="${announcement.picture ?? "../images/jaikere.PNG"}" alt="notif-img" class="notif-img">
             <div class="notif-text-container">
                 <h3 class="notif-text-header">${header} ${announcement.title}</h3>
                 <p class="notif-text">${announcement.message}</p>
             </div>
+            ${notification_read_checker(announcement.isread)}
         `;
         notif_list.appendChild(notif);
     })
@@ -56,6 +62,17 @@ function insert_notification(announcement_list) {
 
 function notification_redirect(postid) {
     console.log(postid);
+}
+
+var unread_notification = 0;
+function notification_read_checker(isread) {
+    if (isread == false) {
+        unread_notification++;
+        return `<div class="red-dot"></div>`;
+    }
+    else {
+        return "";
+    }
 }
 
 //======== Hidden UI elements ========//
@@ -89,4 +106,16 @@ function show_snackbar(message, type) {
     }
     snackbar.className = "show";
     setTimeout(function(){ snackbar.classList.remove("show"); }, 3000);
+}
+
+/* red dot */
+function update_notification_red_dot() {
+    const red_dot = document.getElementById("red-dot");
+    if (unread_notification > 0) {
+        red_dot.innerText = (unread_notification < 10) ? unread_notification : "9+";
+        red_dot.style.display = "block";
+    }
+    else {
+        red_dot.style.display = "none";
+    }
 }

@@ -30,6 +30,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
                             <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
                         </svg>
+                        <div class="red-dot" id="red-dot" hidden></div>
                     </a>
                 </li>
             </ul>
@@ -38,7 +39,7 @@
     <div>
         <div class="notif-container">
             <h2 class="notif-header">Notifications</h2>
-            <div class="notif-list">
+            <div class="notif-list" id="notif-list">
                 @* Notif Template *@
                 <div class="notif-item">
                     <img src="~/images/jaikere.PNG" alt="notif-img" class="notif-img">
@@ -62,6 +63,34 @@
             let type = "@TempData["snackbar-type"]";
             if (message != "" && type != "") {
                 show_snackbar(message, type);
+            }
+        });
+
+        const notif_list = document.getElementById("notif-list");
+        notif_list.addEventListener("click", (event) => {
+            let notification = event.target.closest(".notif-item");
+            if (notification != null) {
+                let announcement_id = notification.dataset.announcementid
+                if (announcement_id == "null") {
+                    window.open(`@Url.Action("Post","Post")?id=${notification.dataset.postid}`, "_blank");
+                    return
+                }
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        let response = JSON.parse(xhttp.response);
+                        if (response.read_successfully == true) {
+                            notification.dataset.announcementid = null;
+                            const red_dot = notification.querySelector(".red-dot");
+                            notification.removeChild(red_dot);
+                            unread_notification--;
+                            update_notification_red_dot();
+                            window.open(`@Url.Action("Post","Post")?id=${notification.dataset.postid}`, "_blank");
+                        }
+                    }
+                };
+                xhttp.open("GET", `@Url.Action("AckAnnouncement","Announcement")?announcementid=${announcement_id}`, true);
+                xhttp.send();
             }
         });
     </script>

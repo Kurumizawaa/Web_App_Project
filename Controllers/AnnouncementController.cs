@@ -21,11 +21,11 @@ public class AnnouncementController : Controller
         var Id = HttpContext.Session.GetInt32("ID");
         if (Id != null)
         {
-            var announcements = _Dbcontext.AnnouncementRecipients.Include(a => a.Announcement).ThenInclude(b => b!.Post).ThenInclude(c => c!.Creator).Where(x => x.AccountId == Id).Select(y => y.Announcement).OrderByDescending(z => z!.AnnounceAt).ToList();
+            var announcements = _Dbcontext.AnnouncementRecipients.Include(a => a.Announcement).ThenInclude(b => b!.Post).ThenInclude(c => c!.Creator).Where(x => x.AccountId == Id).Select(y => new {y.Announcement, y.IsRead}).OrderByDescending(z => z!.Announcement!.AnnounceAt).ToList();
             List<object> announcement_list = new List<object>();
             foreach (var announcement in announcements)
             {
-                announcement_list.Add( new {type = announcement!.Type, message = announcement.Message, time = announcement.AnnounceAt, postid = announcement.PostId, title = announcement.Post?.Title ?? null, creator = announcement.Post?.Creator!.Username ?? null, picture = announcement.Post?.Picture ?? null});
+                announcement_list.Add( new {id = announcement.Announcement!.Id, type = announcement!.Announcement!.Type, message = announcement.Announcement.Message, time = announcement.Announcement.AnnounceAt, isread = announcement.IsRead, postid = announcement.Announcement.PostId, title = announcement.Announcement.Post?.Title ?? null, creator = announcement.Announcement.Post?.Creator!.Username ?? null, picture = announcement.Announcement.Post?.Picture ?? null});
             }
 
             return Json( new { getannouncement_successful = true, announcement_list });
@@ -33,6 +33,29 @@ public class AnnouncementController : Controller
         else
         {
             return Json( new { getannouncement_successful = false, message = "You might wanna login first bro." });
+        }
+    }
+
+    public JsonResult AckAnnouncement(int announcementid)
+    {
+        var accountid = HttpContext.Session.GetInt32("ID");
+        if (accountid != null)
+        {
+            var announcement_recipient = _Dbcontext.AnnouncementRecipients.FirstOrDefault(x => x.AnnouncementId == announcementid && x.AccountId == accountid);
+            if (announcement_recipient != null)
+            {
+                announcement_recipient.IsRead = true;
+                _Dbcontext.SaveChanges();
+                return Json(new { read_successfully = true });
+            }
+            else
+            {
+                return Json(new { read_successfully = false });
+            }
+        }
+        else
+        {
+            return Json(new { read_successfully = false });
         }
     }
 

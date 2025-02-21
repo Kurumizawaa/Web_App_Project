@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews()
         options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
     });
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(
-    builder.Configuration.GetConnectionString("localDb")));
+    builder.Configuration.GetConnectionString("localDb"), sqliteOptionsAction => sqliteOptionsAction.CommandTimeout(30)));
 
 builder.Services.AddDistributedMemoryCache();
 
