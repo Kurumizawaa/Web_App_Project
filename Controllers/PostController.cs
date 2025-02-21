@@ -185,7 +185,7 @@ public class PostController : Controller
         {
             post.CreateDate = DateTime.Now;
             post.CreatorId = (int)Id;
-            if (ModelState.IsValid && Tags.Count > 0)
+            if (ModelState.IsValid && Tags.Count > 0 && post.CloseDate > DateTime.Now)
             {
                 var tag_list = _Dbcontext.Tags.Where(x => Tags.Contains(x.Id)).ToList();
                 foreach (var tag in tag_list)
@@ -201,9 +201,25 @@ public class PostController : Controller
             }
             else 
             {
+                var tag_list = _Dbcontext.Tags.Where(x => Tags.Contains(x.Id)).ToList();
+                post.Tags = tag_list;
                 TempData["Post"] = JsonSerializer.Serialize(post);
-                TempData["snackbar-message"] = "At least 1 tag is required!";
-                TempData["snackbar-type"] = "error";
+                if (ModelState.ErrorCount > 0)
+                {
+                    var error_message = ModelState.SelectMany(x => x.Value!.Errors).Select(y => y.ErrorMessage).ToList();
+                    TempData["snackbar-message"] = error_message[0];
+                    TempData["snackbar-type"] = "error";
+                }
+                else if (!(Tags.Count > 0))
+                {
+                    TempData["snackbar-message"] = "At least 1 tag is required!";
+                    TempData["snackbar-type"] = "error";
+                }
+                else if (!(post.CloseDate > DateTime.Now)) 
+                {
+                    TempData["snackbar-message"] = "Close date must be at least 1 minute from now!";
+                    TempData["snackbar-type"] = "error";
+                }
                 return RedirectToAction("Index","Home");
             }
         }
