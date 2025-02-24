@@ -55,7 +55,7 @@
 </div>
 <section>
     <section class="post-title" id="post-title">
-        <b>Post by @((Model.Item2.Creator != null) ? Model.Item2.Creator.Username : "???")<b>
+        <b>Post by @((Model.Item2.Creator != null) ? Model.Item2.Creator.Username : "???")</b>
     </section>
     <section class="post-section">
         <section class="post-card">
@@ -92,6 +92,12 @@
                 <p>@Model.Item2.Description<p>
             </section>
         </section>
+    </section>
+    <section class="post-title" id="post-title">
+        <b>Announcement regarding this post</b>
+    </section>
+    <section class="post-section">
+        <section class="post-card" id="announcement-container"></section>
     </section>
 </section>
 
@@ -190,5 +196,72 @@
 
         image_input.addEventListener('input', preview_image); 
         preview_image(); 
+
+        const announcement_container = document.getElementById("announcement-container");
+        var announcement_card_buffer = [];
+
+        function get_related_announcement() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    let json = JSON.parse(xhttp.response);
+                    if (json.get_successfully == true) {
+                        announcement_list = json.related_announcement;
+                        console.log(announcement_list);
+                        announcement_container.innerText = "";
+                        if (announcement_list.length == 0) {
+                            announcement_container.innerText = "No related announcement yet";
+                        }
+                        announcement_list.forEach(announcement => {
+                            const announcement_card = document.createElement("div");
+                            announcement_card.className = "announcement-card";
+                            var detail = translate_type(announcement);
+                            announcement_card.classList.add(detail.theme);
+                            announcement_card.innerHTML = 
+                            `${detail.icon}
+                            <div class="announcement-card-date">${new Date(announcement.announceAt).toLocaleDateString()}</div>
+                            <div class="announcement-card-info">
+                                <p class="announcement-card-info-type">${detail.type}</p>
+                                <p>${detail.message}</p>
+                            </div>`;
+                            announcement_container.appendChild(announcement_card);
+                            announcement_card_buffer.push(announcement_card)
+                        });
+                        readjust_all();
+                    }
+                }
+            };
+            xhttp.open("GET", "@Url.Action("GetRelatedAnnouncement","Announcement", new { Postid = @Model.Item2.Id })", true);
+            xhttp.send();
+        }
+        get_related_announcement();
+
+        function translate_type(announcement) {
+            switch (announcement.type) {
+                case 0:
+                    return { type : "Accepted", message : announcement.message, theme : "lightgreen", icon : `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8 12.3333L10.4615 15L16 9M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>` };
+                case 1:
+                    return { type : "Rejected", message : announcement.message, theme : "lightcoral", icon : `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 9L15 15M15 9L9 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>` };
+                case 2:
+                    return { type : "Post concluded", message : "This post was concluded automatically at the designated time", theme : "lightseagreen", icon : `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 5.5L5 3.5M21 5.5L19 3.5M9 12.5L11 14.5L15 10.5M20 12.5C20 16.9183 16.4183 20.5 12 20.5C7.58172 20.5 4 16.9183 4 12.5C4 8.08172 7.58172 4.5 12 4.5C16.4183 4.5 20 8.08172 20 12.5Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>` };
+                case 3:
+                    return { type : "General announcement", message : announcement.message, theme : "lightblue", icon : `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 8H12.01M12 11V16M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>` };
+            }
+        }
+
+        window.addEventListener("resize", readjust_all);
+
+        function readjust_all() {
+            for (let i = 0; i < announcement_card_buffer.length - 1; i++) {
+                adjust_connecting_line(announcement_card_buffer[i], announcement_card_buffer[i + 1]);
+            }
+        }
+
+        function adjust_connecting_line(before, after) {
+            var before_height = window.getComputedStyle(before).height;
+            var after_height = window.getComputedStyle(after).height;
+            var final_height = (parseInt(before_height.slice(0, -2)) / 2) + (parseInt(after_height.slice(0, -2)) / 2)
+            before.style.setProperty("--line-height", `${final_height}px`);
+        }
     </script>
 }

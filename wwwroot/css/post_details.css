@@ -5,6 +5,8 @@
     justify-content: center;
     padding-top: 10px;
     margin-bottom: 20px;
+
+    text-align: center;
 }
 body{
     padding-top: 80px;
@@ -12,6 +14,8 @@ body{
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+
+    min-width: fit-content;
 }
 .post-section {
     display: flex;
@@ -25,6 +29,8 @@ body{
     background-color: rgba(0, 0, 0, 0.75);
     color: aliceblue;
     font-size: 50px;
+
+    min-width: 500px;
 }
 .post-header {
     display: flex;
@@ -327,3 +333,128 @@ body{
     background-color: green;
 }
 /* ---------------------------- POPUP ---------------------------- */
+
+/* announcement section */
+
+#announcement-container {
+    /* background-color: transparent;
+    border-color: transparent; */
+    text-align: center;
+}
+
+#announcement-container:last-child {
+    :last-child::after {
+        display: none;
+    }
+}
+
+.announcement-card {
+    display: flex;
+    position: relative;
+    margin: 20px;
+    margin-left: 150px;
+    margin-right: 10px;
+    border-radius: 5px;
+    background-color: lightblue;
+    flex-wrap: wrap;
+    min-height: 150px;
+    text-align: start;
+
+    --line-height: 100%;
+}
+
+.announcement-card::before {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: lightblue;
+    left: -125px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+.announcement-card::after {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: var(--line-height, 100%);
+    background-color: lightcoral;
+    left: -75px;
+    top: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.announcement-card svg {
+    position: absolute;
+    left: -75px;
+    top: 50%;
+    width: 50px;
+    height: 50px;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.announcement-card-date {
+    flex: 0 0 200px;
+    font-size: 30px;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin: auto auto;
+}
+
+.announcement-card-info {
+    flex: 1 1 70%;
+    font-size: 24px;
+    padding: 10px 10px;
+    background-color: lightgray;
+    border-radius: 0px 5px 5px 0px;
+}
+
+.announcement-card-info-type {
+    font-size: 35px;
+}
+
+.lightgreen {
+    background-color: lightgreen;
+}
+.lightgreen::before {
+    background-color: lightgreen;
+}
+.lightgreen::after {
+    background-color: lightgreen;
+}
+
+.lightcoral {
+    background-color: lightcoral;
+}
+.lightcoral::before {
+    background-color: lightcoral;
+}
+.lightcoral::after {
+    background-color: lightcoral;
+}
+
+.lightseagreen {
+    background-color: lightseagreen;
+}
+.lightseagreen::before {
+    background-color: lightseagreen;
+}
+.lightseagreen::after {
+    background-color: lightseagreen;
+}
+
+.lightblue {
+    background-color: lightblue;
+}
+.lightblue::before {
+    background-color: lightblue;
+}
+.lightblue::after {
+    background-color: lightblue;
+}

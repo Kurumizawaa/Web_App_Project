@@ -112,6 +112,31 @@ public class AnnouncementController : Controller
         }
     }
 
+    public JsonResult GetRelatedAnnouncement(int postid)
+    {
+        var accountid = HttpContext.Session.GetInt32("ID");
+        if (accountid != null)
+        {
+            var account = _Dbcontext.Accounts.Include(a => a.Announcements)!.ThenInclude(b => b.Announcement).FirstOrDefault(x => x.Id == accountid);
+            var post = _Dbcontext.Posts.Include(a => a.Announcements).FirstOrDefault(x => x.Id == postid);
+            if (post != null)
+            {
+                var globally_announce = post.Announcements!.Where(x => x.Type == AnnouncementType.CreatorUpdate || x.Type == AnnouncementType.General).ToList();
+                var locally_announce = account!.Announcements!.Where(x => x.Announcement!.PostId == postid).Select(y => y.Announcement!).Except(globally_announce).ToList();
+                var related_announcement = globally_announce.Union(locally_announce).Select(a => new { a.Message, a.Type, a.AnnounceAt }).OrderByDescending(x => x.AnnounceAt).ToList();
+                return Json(new { get_successfully = true, related_announcement });
+            }
+            else
+            {
+                return Json(new { get_successfully = false });
+            }
+        }
+        else
+        {
+            return Json(new { get_successfully = false });
+        }
+    }
+
     [HttpPost]
     public IActionResult PostResultAnnouncement(int postid, Announcement announce_selected, Announcement announce_rejected)
     {
