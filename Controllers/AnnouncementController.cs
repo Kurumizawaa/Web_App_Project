@@ -151,7 +151,13 @@ public class AnnouncementController : Controller
                     post.Status = PostStatus.Archived;
                     announce_selected.PostId = post.Id;
                     announce_rejected.PostId = post.Id;
-                    _Dbcontext.Announcements.AddRange(announce_selected, announce_rejected);
+                    var creator_update_announcement = new Announcement()
+                    {
+                        PostId = post.Id,
+                        Type = AnnouncementType.CreatorUpdate,
+                        Message = $"Your post '{post.Title}' has successfully announced the result and is now kept in the archive!"
+                    };
+                    _Dbcontext.Announcements.AddRange(announce_selected, announce_rejected, creator_update_announcement);
                     _Dbcontext.SaveChanges();
                     List<AnnouncementRecipient> announcement_recipient = new List<AnnouncementRecipient>();
                     foreach (var account in post.SelectedAccounts!)
@@ -162,6 +168,7 @@ public class AnnouncementController : Controller
                     {
                         announcement_recipient.Add(new AnnouncementRecipient(){AnnouncementId = announce_rejected.Id, AccountId = account!.Id});
                     }
+                    announcement_recipient.Add(new AnnouncementRecipient(){AnnouncementId = creator_update_announcement.Id, AccountId = post.CreatorId});
                     _Dbcontext.AnnouncementRecipients.AddRange(announcement_recipient);
                     _Dbcontext.SaveChanges();
                     TempData["snackbar-message"] = "announcing result successfully";

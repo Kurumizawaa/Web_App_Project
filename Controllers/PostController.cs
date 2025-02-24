@@ -159,6 +159,20 @@ public class PostController : Controller
             if (post != null && post.Status == PostStatus.Open && post.CreatorId == accountid)
             {
                 post.Status = PostStatus.Concluded;
+                var announcement = new Announcement() 
+                {
+                    PostId = post.Id,
+                    Type = AnnouncementType.CreatorUpdate,
+                    Message = $"[EARLY] Your post '{post.Title}' has been concluded and is now ready to announce the result!"
+                };
+                _Dbcontext.Announcements.Add(announcement);
+                _Dbcontext.SaveChanges();
+                var announcement_recipient = new AnnouncementRecipient()
+                {
+                    AnnouncementId = announcement.Id,
+                    AccountId = post.CreatorId
+                };
+                _Dbcontext.AnnouncementRecipients.Add(announcement_recipient);
                 _Dbcontext.SaveChanges();
                 TempData["snackbar-message"] = "Concluded successfully";
                 TempData["snackbar-type"] = "success";
@@ -240,7 +254,7 @@ public class PostController : Controller
         var Id = HttpContext.Session.GetInt32("ID");
         if (Id != null)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && Tags.Count > 0 && post.CloseDate > DateTime.Now)
             {
                 var DBpost = _Dbcontext.Posts.Include(a => a.Tags).FirstOrDefault(x => x.Id == post.Id);
                 if (DBpost != null && DBpost.CreatorId == Id && DBpost.Status != PostStatus.Concluded && DBpost.Status != PostStatus.Selected && DBpost.Status != PostStatus.Archived)
@@ -270,9 +284,23 @@ public class PostController : Controller
             }
             else 
             {
-                TempData["snackbar-message"] = "At least 1 tag is required!";
-                TempData["snackbar-type"] = "error";
-                return RedirectToAction("Index","Home");
+                if (ModelState.ErrorCount > 0)
+                {
+                    var error_message = ModelState.SelectMany(x => x.Value!.Errors).Select(y => y.ErrorMessage).ToList();
+                    TempData["snackbar-message"] = error_message[0];
+                    TempData["snackbar-type"] = "error";
+                }
+                else if (!(Tags.Count > 0))
+                {
+                    TempData["snackbar-message"] = "At least 1 tag is required!";
+                    TempData["snackbar-type"] = "error";
+                }
+                else if (!(post.CloseDate > DateTime.Now)) 
+                {
+                    TempData["snackbar-message"] = "Close date must be at least 1 minute from now!";
+                    TempData["snackbar-type"] = "error";
+                }
+                return RedirectToAction("Post","Post", new { id = post.Id });
             }
         }
         else 
