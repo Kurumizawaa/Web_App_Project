@@ -7,6 +7,19 @@
     padding: 0;
 }
 
+html {
+    min-width: fit-content;
+}
+
+body {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/images/guy_looking_at_girl.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding-top: 80px;
+    color: aliceblue;
+}
+
 /* ---------------------------- NAV BAR ---------------------------- */
 header{
     height: 80px;

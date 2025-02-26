@@ -54,6 +54,8 @@ section {
     width: 100%;
     height: 60%;
     box-sizing: border-box;
+
+    overflow-wrap: anywhere;
 }
 .sm-account-button {
     align-items: center;
@@ -86,13 +88,13 @@ section {
 /* ---------------------------- HEADER ---------------------------- */
 
 /* ---------------------------- BODY ---------------------------- */
-body {
+/* body {
     padding-top: 80px;
     background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/images/guy_looking_at_girl.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-}
+} */
 
 .all-lists-container {
     display: flex;

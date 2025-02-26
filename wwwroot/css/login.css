@@ -1,8 +1,9 @@
 body{
-    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/images/guy_looking_at_girl.jpg');
+    /* background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/images/guy_looking_at_girl.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
+    background-attachment: fixed; */
+    padding-top: 0px;
 
     height: 100vh;
     display: flex;
@@ -15,6 +16,8 @@ body{
     flex-direction: column;
     
     gap: 10px;
+
+    min-width: 300px;
 }
 .page-title {
     color: aliceblue;
@@ -24,7 +27,7 @@ body{
 
 .input-username, .input-password {
     height: 40px;
-    width: 15vw;
+    /* width: 15vw; */
     border-radius: 10px;
     border: 2px aliceblue solid;
     padding: 0px 5px 0px 5px;
@@ -32,6 +35,9 @@ body{
     color: aliceblue;
 
     font-size: 25px;
+
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .login-btn, .register-redirect {

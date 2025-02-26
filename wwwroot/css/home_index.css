@@ -197,13 +197,13 @@
 /* ---------------------------- TOP SECTION ---------------------------- */
 
 /* ---------------------------- BODY ---------------------------- */
-body{
+/* body{
     padding-top: 80px;
     background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/images/guy_looking_at_girl.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-}
+} */
 .row {
     display: flex;
     justify-content: center;
@@ -235,6 +235,11 @@ body{
   /* Add some padding inside the card container */
   .container {
     padding: 2px 16px;
+
+    > p {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
   }
 .post-card .post-img{
     border-radius: 5px;
@@ -271,6 +276,10 @@ body{
 .post-info {
     display: flex;
     flex-direction: column; /* Stack h2 and p vertically */
+
+    h2 {
+        overflow-wrap: anywhere;
+    }
 }
 .post-join-info {
     margin-top: 10px;

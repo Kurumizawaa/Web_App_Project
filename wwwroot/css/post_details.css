@@ -8,15 +8,13 @@
 
     text-align: center;
 }
-body{
+/* body{
     padding-top: 80px;
     background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/images/guy_looking_at_girl.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-
-    min-width: fit-content;
-}
+} */
 .post-section {
     display: flex;
     justify-content: center;
@@ -31,6 +29,10 @@ body{
     font-size: 50px;
 
     min-width: 500px;
+
+    > h2 {
+        overflow-wrap: anywhere;
+    }
 }
 .post-header {
     display: flex;
@@ -48,6 +50,8 @@ body{
 .post-info {
     display: flex;
     flex-direction: column; /* Stack h2 and p vertically */
+
+    overflow-wrap: anywhere;
 }
 .post-time{
     font-size: 30px;
@@ -122,6 +126,8 @@ body{
     display: flex;
     font-weight: lighter;
     font-size: 24px;
+    
+    overflow-wrap: anywhere;
 }
 .post-image {
     border-radius: 20px;
@@ -426,6 +432,7 @@ body{
     background-color: lightgray;
     border-radius: 0px 5px 5px 0px;
     color: rgba(0, 0, 0, 0.75);
+    overflow-wrap: anywhere;
 }
 
 .announcement-card-info-type {

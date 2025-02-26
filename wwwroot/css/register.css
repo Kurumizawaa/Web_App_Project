@@ -1,8 +1,9 @@
 body{
-    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/images/guy_looking_at_girl.jpg');
+    /* background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/images/guy_looking_at_girl.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
+    background-attachment: fixed; */
+    padding-top: 0px;
 
     height: 100vh;
     display: flex;
@@ -30,7 +31,7 @@ body{
     display: flex;
     justify-content: space-between;
     gap: 10px;
-    width: 500px;
+    /* width: 500px; */
 }
 
 .account-display {
@@ -74,6 +75,8 @@ body{
     color: aliceblue;
 
     font-size: 25px;
+
+    box-sizing: border-box;
 }
 
 .register-btn, .register-redirect {
@@ -90,6 +93,8 @@ body{
     font-size: 20px;
     height: 36px;
     width: 100%;
+
+    /* box-sizing: border-box; */
 }
 
 .register-btn {
@@ -124,8 +129,12 @@ body{
     }
     .input-username, .input-password, .input-password-confirm {
         width: 40vw;
+
+        min-width: 300px;
     }
     .register-btn {
         width: 42vw;
+
+        min-width: 300px;
     }
 }
