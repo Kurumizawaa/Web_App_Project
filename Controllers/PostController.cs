@@ -409,6 +409,33 @@ public class PostController : Controller
         }
     }
 
+    public IActionResult DeletePost(int id)
+    {
+        var accountid = HttpContext.Session.GetInt32("ID");
+        if (accountid != null)
+        {
+            var post = _Dbcontext.Posts.FirstOrDefault(x => x.Id == id);
+            if (post != null && post.CreatorId == accountid && post.Status != PostStatus.Archived)
+            {
+                _Dbcontext.Posts.Remove(post);
+                _Dbcontext.SaveChanges();
+                TempData["snackbar-message"] = "Delete post successfully";
+                TempData["snackbar-type"] = "success";
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+        else
+        {
+            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
+            TempData["snackbar-type"] = "error";
+            return RedirectToAction("Login","Account");
+        }
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

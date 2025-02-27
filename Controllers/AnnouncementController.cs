@@ -173,7 +173,7 @@ public class AnnouncementController : Controller
                     _Dbcontext.SaveChanges();
                     TempData["snackbar-message"] = "announcing result successfully";
                     TempData["snackbar-type"] = "success";
-                    return RedirectToAction("Index","Home");
+                    return RedirectToAction("Post","Post", new { id = post.Id });
                 }
                 else
                 {
@@ -218,7 +218,7 @@ public class AnnouncementController : Controller
                         _Dbcontext.SaveChanges();
                         TempData["snackbar-message"] = "announcing successfully";
                         TempData["snackbar-type"] = "success";
-                        return RedirectToAction("Index","Home");
+                        return RedirectToAction("Post","Post", new { id = post.Id });
                     }
                     else
                     {
