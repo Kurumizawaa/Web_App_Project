@@ -94,6 +94,11 @@
                 <img class="post-image" src="@Model.Item2.Picture" alt="post-omage">
                 <p>@Model.Item2.Description<p>
             </section>
+            <hr>
+            <section class="post-meta">
+                <p>Accept type: @(Model.Item2.AcceptType == "OnFull" ? "On queue" : Model.Item2.AcceptType == "OnSelect" ? "On selection" : Model.Item2.AcceptType == "OnRandom" ? "On random" : "else"), Status : @(Model.Item2.Status == PostStatus.Selected ? PostStatus.Concluded : Model.Item2.Status)</p>
+                <p>Close date : @(Model.Item2.CloseDate != null ? Model.Item2.CloseDate.Value.ToString("MMMM dd, yyyy 'at' hh:mm tt") : "???")</p>
+            </section>
         </section>
     </section>
     <section class="post-title" id="post-title">
