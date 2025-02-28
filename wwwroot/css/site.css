@@ -79,7 +79,8 @@ header{
         top: 80px;
         left: 0;
         right: 0;
-        width: 100vw;
+        /* width: 100vw; */
+        width: 100%;
         background: rgba(0,0,0,0.5);
         transition: 1s;
         overflow: hidden;
@@ -114,7 +115,7 @@ header{
     padding: 0;
     
     /* overflow: hidden; */
-    overflow: scroll;
+    overflow: hidden auto;
     
     color: aliceblue;
     background-color: rgba(0, 0, 0, 0.9);

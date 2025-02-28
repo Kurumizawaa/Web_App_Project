@@ -33,11 +33,15 @@
         <div class="modal-content">
             <h2 class="edit-account">Edit profile</h2>
             <form method="post" action="@Url.Action("Account","Account")" class="edit-account-form" id="edit-account-form">
-                <div class="pfp-preview" id="pfp-preview"></div>
-                <label class="account-name">Username: <input type="text" name="Username" value="@ViewBag.Account.Username"></label>
-                <label class="profile-picture">Image: <input type="url" id="input-pfp" name="ProfilePicture" value="@ViewBag.Account.ProfilePicture" placeholder="https://example.com/image.jpg"></label>
-                <label class="bio">Bio:<br><textarea name="Bio" rows="4" cols="40">@ViewBag.Account.Bio</textarea></label>
-                <label class="account-password">Password: <input type="text" name="Password" value="@ViewBag.Account.Password"></label>
+                <div>
+                    <div class="pfp-preview" id="pfp-preview"></div>
+                    <label class="profile-picture">Image: <input type="url" id="input-pfp" name="ProfilePicture" value="@ViewBag.Account.ProfilePicture" placeholder="https://example.com/image.jpg"></label>
+                </div>
+                <div>
+                    <label class="account-name">Username: <input type="text" name="Username" value="@ViewBag.Account.Username"></label>
+                    <label class="bio">Bio:<br><textarea name="Bio" rows="4" cols="40">@ViewBag.Account.Bio</textarea></label>
+                    <label class="account-password">Password: <input type="password" name="Password" value="@ViewBag.Account.Password"></label>
+                </div>
             </form>
             <div class="edit-profile-interaction-button">
                 <button type="submit" form="edit-account-form" class="confirm-edit-account" id="confirm-edit-account">Confirm</button>

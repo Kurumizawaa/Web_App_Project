@@ -197,13 +197,15 @@
 /* ---------------------------- TOP SECTION ---------------------------- */
 
 /* ---------------------------- BODY ---------------------------- */
-/* body{
-    padding-top: 80px;
+body{
+    /* padding-top: 80px;
     background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/images/guy_looking_at_girl.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
-} */
+    background-attachment: fixed; */
+
+    min-width: 400px;
+}
 .row {
     display: flex;
     justify-content: center;
@@ -465,7 +467,8 @@
     box-sizing: border-box;
     overflow: hidden;
     img{
-        max-width: 300px;
+        /* max-width: 300px; */
+        max-width: 100%;
     }
 }
 
