@@ -1,3 +1,109 @@
-/* body {
+/* body{
     padding-top: 80px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/images/guy_looking_at_girl.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 } */
+
+.page-header {
+    color: aliceblue;
+    font-size: 72px;
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+    margin-bottom: 20px;
+
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-section {
+    display: flex;
+    justify-content: center;
+    gap: 2vw;
+    div {
+        width: 40vw;
+    }
+}
+
+p {
+    color: aliceblue;
+    font-size: 24px;
+}
+
+textarea {
+    width: 50%;
+    margin-top: 5px;
+    background-color: rgba(0, 0, 0, 0.75);
+    border-radius: 5px;
+    border: aliceblue 3px solid;
+    resize: none;
+
+    padding: 5px 5px 5px 5px;
+    color: aliceblue;
+    font-size: 20px;
+}
+
+.btn-section {
+    width: 82vw;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.confirm-btn {
+    font-size: 30px;
+    color: aliceblue;
+    background-color: rgba(0, 150, 0, 0.25);
+    border: none;
+    border-radius: 5px;
+    height: 50px;
+    padding: 0px 10px 1px 10px;
+}
+.confirm-btn:hover {
+    background-color: rgba(0, 150, 0, 0.5);
+    cursor: pointer;
+}
+.confirm-btn:active {
+    background-color: rgba(0, 150, 0, 1);
+}
+.cancel-btn {
+    font-size: 30px;
+    color: aliceblue;
+    background-color: rgba(255, 0, 0, 0.25);
+    border: none;
+    border-radius: 5px;
+    height: 50px;
+    padding: 0px 10px 1px 10px;
+}
+.cancel-btn:hover {
+    background-color: rgba(255, 0, 0, 0.5);
+    cursor: pointer;
+}
+.cancel-btn:active {
+    background-color: rgb(255, 0, 0);
+}
+
+@media only screen and (max-width: 900px) {
+    .input-section {
+        flex-direction: column;
+        align-items: center;
+        div {
+            width: 80vw;
+        }
+    }
+    textarea {
+        width: 80%;
+    }
+    .btn-section {
+        flex-direction: column;
+        align-items: center;
+    }
+}

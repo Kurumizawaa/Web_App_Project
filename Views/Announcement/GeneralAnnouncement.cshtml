@@ -11,15 +11,31 @@
 
 @if (Model.Id != 0)
 {
-    <h1>post "@Model.Title" general announcement</h1>
+    <section class="page-header" id="page-header">
+        <b>General Announcement for :<br>@Model.Title</b>
+    </section>
 }
 else
 {
-    <h1>General announcement</h1>
+    <section class="page-header" id="page-header">
+        <b>General Announcement</b>
+    </section>
 }
 <form method="post" action="@Url.Action("GeneralAnnouncement","Announcement", new { postid = @Model.Id })">
-    <p>Your message:</p>
+    <h1>Announcement:</h1>
     <input type="hidden" name="announcement.Type" value="@AnnouncementType.General">
-    <textarea name="announcement.Message" rows="10" cols="50" required></textarea><br>
-    <button type="submit">confirm</button>
+    <textarea name="announcement.Message" rows="10" cols="50" required></textarea>
+    <section class="btn-section">
+        <button type="submit" class="confirm-btn">Confirm</button>
+        <button id="cancel-btn" class="cancel-btn">Cancel</button>
+    </section>
 </form>
+
+@section Scripts {
+    <script>
+        const cancel_btn = document.getElementById("cancel-btn")
+        cancel_btn.addEventListener("click", () => {
+            window.location.href = `@Url.Action("Post", "Post")?id=${@Model.Id}`
+        })
+    </script>
+}

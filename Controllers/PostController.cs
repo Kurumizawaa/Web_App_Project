@@ -96,7 +96,8 @@ public class PostController : Controller
             var post = _Dbcontext.Posts.Include(a => a.Creator).Include(b => b.Tags).FirstOrDefault(x => x.Id == id);
             bool is_enrolled = _Dbcontext.Enrollments.FirstOrDefault(a => a.AccountId == Id && a.PostId == id) != null ? true : false;
             bool is_creator = _Dbcontext.Posts.FirstOrDefault(a => a.CreatorId == Id && a.Id == id) != null ? true : false;
-            return View((tags, post, is_enrolled, is_creator));
+            var enrollments = _Dbcontext.Enrollments.Where(a => a.PostId == id).Include(e => e.Account).ToList();
+            return View((tags, post, is_enrolled, is_creator, enrollments));
         }
         else 
         {

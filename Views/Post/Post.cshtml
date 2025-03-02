@@ -3,7 +3,7 @@
     ViewData["Page"] = "Post";
 }
 
-@model (List<Tag>, Post, bool, bool)
+@model (List<Tag>, Post, bool, bool, List<Enrollment>)
 
 @section Styles {
     <link rel="stylesheet" href="~/css/post_details.css" asp-append-version="true" />
@@ -98,6 +98,19 @@
             <section class="post-meta">
                 <p>Accept type: @(Model.Item2.AcceptType == "OnFull" ? "On queue" : Model.Item2.AcceptType == "OnSelect" ? "On selection" : Model.Item2.AcceptType == "OnRandom" ? "On random" : "else"), Status : @(Model.Item2.Status == PostStatus.Selected ? PostStatus.Concluded : Model.Item2.Status)</p>
                 <p>Close date : @(Model.Item2.CloseDate != null ? Model.Item2.CloseDate.Value.ToString("MMMM dd, yyyy 'at' hh:mm tt") : "???")</p>
+            </section>
+            <hr>
+            <section class="enrollment-list">
+                <p>Enrolled</p>
+                <section class="enrolled-acc-list">
+                    @foreach (var Acc in Model.Item5)
+                    {   
+                        <section class="enrolled-acc">
+                        <img src="@((Acc.Account != null) ? Acc.Account.ProfilePicture : "")" alt="enroll-pfp">
+                        <p>@Acc.Account.Username</p>
+                        </section>
+                    }
+                </section>
             </section>
         </section>
     </section>
