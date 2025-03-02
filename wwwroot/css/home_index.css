@@ -262,6 +262,7 @@ body{
     height: 30px;
     padding: 0px 10px 3px 10px;
     margin-right: 10px;
+    margin-bottom: 1px;
 }
 .post-pfp{
     border-radius: 50%;
@@ -284,7 +285,7 @@ body{
     }
 }
 .post-card hr {
-    margin-top: 5px;
+    margin-top: 10px;
     margin-bottom: 5px;
     opacity: 0.8;
 }

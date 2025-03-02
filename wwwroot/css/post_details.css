@@ -23,7 +23,7 @@
     border-radius: 20px;
     border: solid aliceblue;
     width: 75vw;
-    padding: 15px 30px 30px 30px;
+    padding: 15px 30px 20px 30px;
     background-color: rgba(0, 0, 0, 0.75);
     color: aliceblue;
     font-size: 50px;
@@ -365,21 +365,20 @@
     padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    color: black;
-    background-color: #696969;
+    color: rgba(150, 150, 150, 0.8);
+    background-color: rgba(150, 150, 150, 0.50);
 }
 
-/* .create-post-type input[type="radio"] {
+.edit-post-type input[type="radio"] {
     display: none;
-} */
+}
 
 .edit-post-type label:hover {
-    background-color: #ffffffb0;
+    background-color: rgba(150, 150, 150, 0.8);
 }
 
-.edit-post-type input[type="radio"]:checked + label {
-    background-color: green;
+.edit-post-type label:has(input[type="radio"]:checked) {
+    color: aliceblue;
 }
 /* ---------------------------- POPUP ---------------------------- */
 
