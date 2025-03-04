@@ -368,7 +368,7 @@
                             <div class="post-header">
                                 <img class="post-pfp" src="${post.creator.profilePicture}" alt="post-pfp" style="width:15%">
                                 <div class="post-info">
-                                    <h2>${post.title}</h2>
+                                    <h2 class="post-title-redirect" id="post-redirect-${post.id}">${post.title}</h2>
                                     <p>${post.creator.username}</p>
                                 </div>
                             </div>          
@@ -389,8 +389,8 @@
                         div.appendChild(post_card);
                         const post_redirect_button = document.getElementById(`post-redirect-${post.id}`);
                         post_redirect_button.addEventListener("click",()=>{
-                            @* window.location.href = `@Url.Action("Post", "Post")?id=${post.id}` *@
-                            window.open(`@Url.Action("Post", "Post")?id=${post.id}`, "_blank")
+                            sessionStorage.setItem('scrollPosition', window.pageYOffset);
+                            window.location.href = `@Url.Action("Post", "Post")?id=${post.id}`
                         });
                     }
                 });
