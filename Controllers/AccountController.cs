@@ -25,8 +25,11 @@ public class AccountController : Controller
         }
         else
         {
-            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
-            TempData["snackbar-type"] = "error";
+            if (TempData["snackbar-message"] == null) // Preserve previous success messages
+            {
+                TempData["snackbar-message"] = "Please Login to continue.";
+                TempData["snackbar-type"] = "error";
+            }
             return RedirectToAction("Login","Account");
         }
     }
