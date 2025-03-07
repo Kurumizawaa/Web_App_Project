@@ -53,7 +53,7 @@
 .post-tag{
     display: block;
     justify-content: center;
-    margin: 5px 0px 15px 0px;
+    margin: 15px 0px 10px 0px;
     gap: 1vw;
 }
 .post-tag-btn {
@@ -92,15 +92,22 @@
     margin-top: 10px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
 
     font-size: 25px;
 }
+.trophy {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
 .headcount {
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 10%;
+    font-size: 20px;
+    text-align: center;
 }
 .post-redirect {
     font-size: 20px;
