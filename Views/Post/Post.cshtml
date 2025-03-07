@@ -107,7 +107,7 @@
                     {   
                         <section class="enrolled-acc">
                         <img src="@((Acc.Account != null) ? Acc.Account.ProfilePicture : "")" alt="enroll-pfp">
-                        <p>@Acc.Account.Username</p>
+                        <p>@((Acc.Account != null) ? Acc.Account.Username : "")</p>
                         </section>
                     }
                 </section>
