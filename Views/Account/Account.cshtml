@@ -199,13 +199,17 @@
             bio_box.innerHTML = bio;
         }
 
-        const edit_account_button = document.getElementById("edit-account-button");
+        const edit_account_buttons = document.getElementsByClassName("edit-account-button");
         const cancel_edit_account_button = document.getElementById("cancel-edit-account");
         const confirm_edit_account_button = document.getElementById("confirm-edit-account");
         const popup = document.getElementById("modal");
-        edit_account_button.addEventListener("click",()=>{
-            popup.style.display = "block";
-        })
+
+        for (let i = 0; i < edit_account_buttons.length; i++) {
+            edit_account_buttons[i].addEventListener("click", () => {
+                popup.style.display = "block";
+            });
+        }
+
         cancel_edit_account_button.addEventListener("click",()=>{
             popup.style.display = "none";
         })
