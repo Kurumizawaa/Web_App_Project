@@ -395,7 +395,7 @@ public class PostController : Controller
                 _Dbcontext.SaveChanges();
                 TempData["snackbar-message"] = "Saving result successfully";
                 TempData["snackbar-type"] = "success";
-                return RedirectToAction("PostResultAnnouncement","Announcement", new { postid = post.Id });
+                return RedirectToAction("Post","Post", new { id = post.Id });
             }
             else
             {

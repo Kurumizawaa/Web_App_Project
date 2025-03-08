@@ -67,7 +67,7 @@ public class AnnouncementController : Controller
         {
             if (post != null && post.Status == PostStatus.Selected && accountid == post.CreatorId)
             {
-                return View(post);
+                return PartialView("_PostResultAnnouncement", post);
             }
             else
             {
@@ -76,9 +76,7 @@ public class AnnouncementController : Controller
         }
         else
         {
-            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
-            TempData["snackbar-type"] = "error";
-            return RedirectToAction("Login","Account");
+            return Unauthorized();
         }
     }
 

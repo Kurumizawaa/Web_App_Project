@@ -1,0 +1,27 @@
+@model Post
+
+<div class="modal" id="result-modal">
+    <div class="modal-content">
+        <section class="page-header" id="page-header">
+            <b>Result Announcement for :<br>@Model.Title</b>
+        </section>
+        <form method="post" action="@Url.Action("PostResultAnnouncement","Announcement", new { postid = @Model.Id })">
+            <section class="input-section">
+                <div>
+                    <p>Acception Message :</p>
+                    <input type="hidden" name="announce_selected.Type" value="@AnnouncementType.Selection">
+                    <textarea name="announce_selected.Message" rows="10" cols="50" required></textarea>
+                </div>
+                <div>
+                    <p>Rejection Message:</p>
+                    <input type="hidden" name="announce_rejected.Type" value="@AnnouncementType.Rejection">
+                    <textarea name="announce_rejected.Message" rows="10" cols="50" required></textarea><br>
+                </div>
+            </section>
+            <section class="btn-section">
+                <button type="submit" class="confirm-btn">Confirm</button>
+                <button type="button" id="cancel-btn" onclick="document.getElementById('result-modal').style.display = 'none'" class="cancel-btn">Cancel</button>
+            </section>
+        </form>
+    </div>
+</div>
