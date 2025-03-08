@@ -92,7 +92,7 @@ public class AnnouncementController : Controller
                 var post = _Dbcontext.Posts.FirstOrDefault(a => a.Id == postid);
                 if (post != null && post.Status != PostStatus.Archived && post.CreatorId == accountid)
                 {
-                    return View(post);
+                    return PartialView("_GeneralAnnouncement", post);
                 }
                 else
                 {
@@ -101,14 +101,12 @@ public class AnnouncementController : Controller
             }
             else
             {
-                return View(new Post());
+                return PartialView("_GeneralAnnouncement", new Post());
             }
         }
         else
         {
-            TempData["snackbar-message"] = "Your session id has been expired! Login again to continue.";
-            TempData["snackbar-type"] = "error";
-            return RedirectToAction("Login","Account");
+            return Unauthorized();
         }
     }
 
