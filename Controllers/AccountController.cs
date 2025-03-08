@@ -25,11 +25,8 @@ public class AccountController : Controller
         }
         else
         {
-            if (TempData["snackbar-message"] == null) // Preserve previous success messages
-            {
-                TempData["snackbar-message"] = "Please Login to continue.";
-                TempData["snackbar-type"] = "error";
-            }
+            TempData["snackbar-message"] = "Please Login to continue.";
+            TempData["snackbar-type"] = "error";
             return RedirectToAction("Login","Account");
         }
     }
@@ -138,7 +135,7 @@ public class AccountController : Controller
                 _Dbcontext.SaveChanges();
                 TempData["snackbar-message"] = "Account registerd successfully";
                 TempData["snackbar-type"] = "success";
-                return RedirectToAction("Account","Account");
+                return RedirectToAction("Login","Account");
             }
             else
             {
