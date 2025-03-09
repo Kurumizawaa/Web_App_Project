@@ -14,8 +14,9 @@ public class PostConclusionAnnouncerService : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            var second_until_next_minute = 60 - DateTime.Now.Second;
-            await Task.Delay(second_until_next_minute * 1000, stoppingToken);
+            var current_time = DateTime.Now;
+            var milisecond_until_next_minute = 60000 - ((current_time.Second * 1000) + current_time.Millisecond);
+            await Task.Delay(milisecond_until_next_minute, stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
