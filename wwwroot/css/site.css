@@ -34,10 +34,29 @@ header{
     right: 0; /* Align it to the right edge */
     z-index: 1000; /* Ensure it stays above other content */
 }
+.topleft-header {
+    display: flex;
+    align-items: center;
+    img {
+        width: 48px;
+    }
+}
+.topleft-header:hover {
+    cursor: pointer;
+    img {
+        animation: pulse 1s infinite;
+    }
+}
+@keyframes pulse {
+    0% {transform: scale(100%)}
+    50% {transform: scale(115%) rotate(10deg)}
+    100% {transform: scale(100%)}
+}
 .logo{
     font-size: 28px;
     font-weight: bold;
     color: aliceblue;
+    margin-left: 5px;
 }
 .portrait-menu{
     display: none;
