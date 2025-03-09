@@ -284,6 +284,10 @@ body{
     h2 {
         overflow-wrap: anywhere;
     }
+    h2:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
 
     p {
         overflow-wrap: anywhere;

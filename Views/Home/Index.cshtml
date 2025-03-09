@@ -285,7 +285,7 @@
             redirect = event.target.closest(".post-redirect");
             if (redirect != null) {
                 post_id = redirect.dataset.postid
-                window.open(`@Url.Action("Post", "Post")?id=${post_id}`)
+                window.location.href = `@Url.Action("Post", "Post")?id=${post_id}`
             }
         })
 

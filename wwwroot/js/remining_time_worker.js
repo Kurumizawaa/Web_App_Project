@@ -12,17 +12,17 @@ function calculate_remaining_time() {
                 let sec = (diff / 1000) % 60;
                 let min = (diff / 60000) % 60;
                 let hour = diff / 3600000;
-                calculated_list.push(`(${pad(parseInt(hour))}:${pad(parseInt(min))}:${pad(parseInt(sec))} left)`);
+                calculated_list.push(`- ${pad(parseInt(hour))}:${pad(parseInt(min))}:${pad(parseInt(sec))} left -`);
             }
             else if (close_date.getFullYear() == new Date().getFullYear() && close_date.getMonth() == new Date().getMonth()) {
                 let diff = close_date - Date.now();
-                calculated_list.push(`(${new Date(diff).toLocaleString("en-us", {day: "numeric"})} days left)`);
+                calculated_list.push(`- ${new Date(diff).toLocaleString("en-us", {day: "numeric"})} day(s) left -`);
             }
             else if (close_date.getFullYear() == new Date().getFullYear()) {
-                calculated_list.push(`(${close_date.getMonth() - new Date().getMonth()} months left)`);
+                calculated_list.push(`- ${close_date.getMonth() - new Date().getMonth()} month(s) left -`);
             }
             else {
-                calculated_list.push(`(${close_date.getFullYear() - new Date().getFullYear()} years left)`);
+                calculated_list.push(`- ${close_date.getFullYear() - new Date().getFullYear()} year(s) left -`);
             }
         }
         else {
