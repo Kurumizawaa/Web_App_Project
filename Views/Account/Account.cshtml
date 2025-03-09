@@ -125,7 +125,7 @@
                 let post_card = document.createElement("div");
                 post_card.className = "post-card";
                 post_card.innerHTML =   `<img class="post-img"
-                                        src=${post.picture}
+                                        src="${post.picture ?? ""}"
                                         alt="post-img"
                                         ${post.picture != null ? "" : "hidden"}>
                                         <div class="post-info">
@@ -135,24 +135,13 @@
                                         <p class="joined_number">${post.enrolledCount}/${post.amountAccept}</p>
                                         <button type="button" data-postid="${post.id}" class="post-redirect" id="post-redirect-${post.id}">See Details</button>`
                 post_container.appendChild(post_card);
-                @* const post_image = post_card.querySelector(".post-img");
-                if (post.picture == null) {
-                    post_image.style.display = "none";
-                } *@
                 const post_title = post_card.querySelector(".post-info h2");
                 post_title.textContent = post.title;
                 const post_description = post_card.querySelector(".post-info p");
                 post_description.textContent = post.description;
-                @* const post_redirect_button = document.getElementById(`post-redirect-${post.id}`);
-                post_redirect_button.addEventListener("click",()=>{
-                    window.open(`@Url.Action("Post", "Post")?id=${post.id}`, "_blank")
-                }); *@
             });
         }
 
-        @* Yes, I know I can merge the two functions somehow and add something to the enrolled posts later to make it different,
-           but I want to sleep. 9/2/2568, 2:17 AM *@
-        @* Tag JustSomeShit if you have any suggestions *@
         function add_enrolled_posts(post_list){
             post_container = document.getElementById("joined-post-list");
             post_list.forEach(post => {
@@ -160,7 +149,7 @@
                 let acceptance_status = get_acceptance_status_text(post, @ViewBag.Account.Id);
                 post_card.className = "post-card";
                 post_card.innerHTML =   `<img class="post-img"
-                                        src=${post.picture}
+                                        src="${post.picture ?? ""}"
                                         alt="post-img"
                                         ${post.picture != null ? "" : "hidden"}>
                                         <div class="post-info">
@@ -183,14 +172,6 @@
                 }
 
                 post_container.appendChild(post_card);
-                @* const post_image = post_card.querySelector(".post-img");
-                if (post.picture == null) {
-                    post_image.style.display = "none";
-                } *@
-                @* const post_redirect_button = document.getElementById(`post-redirect-${post.id}`);
-                post_redirect_button.addEventListener("click",()=>{
-                    window.open(`@Url.Action("Post", "Post")?id=${post.id}`, "_blank")
-                }); *@
             })
         }
 
@@ -204,7 +185,6 @@
                 }
             })
             .then(data => {
-                console.log("Parsed JSON data:", data);
                 add_my_posts(data.createdPosts);
                 add_enrolled_posts(data.enrolledPosts);
             })

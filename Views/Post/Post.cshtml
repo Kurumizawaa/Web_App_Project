@@ -243,7 +243,6 @@
                     let json = JSON.parse(xhttp.response);
                     if (json.get_successfully == true) {
                         announcement_list = json.related_announcement;
-                        console.log(announcement_list);
                         announcement_container.innerText = "";
                         if (announcement_list.length == 0) {
                             announcement_container.innerText = "No related announcement yet";

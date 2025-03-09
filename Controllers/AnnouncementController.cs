@@ -32,7 +32,7 @@ public class AnnouncementController : Controller
         }
         else
         {
-            return Json( new { getannouncement_successful = false, message = "You might wanna login first bro." });
+            return Json( new { getannouncement_successful = false, message = "Please login to see announcement." });
         }
     }
 
