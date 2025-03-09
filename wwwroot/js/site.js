@@ -51,11 +51,15 @@ function insert_notification(announcement_list) {
         notif.innerHTML = `
             <img src="${announcement.picture ?? "../images/jaikere.PNG"}" alt="notif-img" class="notif-img">
             <div class="notif-text-container">
-                <h3 class="notif-text-header">${header} ${announcement.title}</h3>
-                <p class="notif-text">${announcement.message}</p>
+                <h3 class="notif-text-header">${header} <span></span></h3>
+                <p class="notif-text"></p>
             </div>
             ${notification_read_checker(announcement.isread)}
         `;
+        const announcement_title = notif.querySelector(".notif-text-header span");
+        announcement_title.textContent = announcement.title;
+        const notification_text = notif.querySelector(".notif-text");
+        notification_text.textContent = announcement.message;
         notif_list.appendChild(notif);
     })
 }

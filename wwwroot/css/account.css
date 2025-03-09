@@ -43,6 +43,11 @@ section {
     align-items: center;
     margin-bottom: 10px;
     gap: 20px;
+    flex-wrap: wrap;
+
+    h2 {
+        overflow-wrap: anywhere;
+    }
 }
 .account-info p {
     color: rgba(240, 248, 255, 0.69);
@@ -175,7 +180,7 @@ section {
     height: 80%;
     font-size: 15px;
     color: rgba(240, 248, 255, 0.69);
-    overflow-y: hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
 }

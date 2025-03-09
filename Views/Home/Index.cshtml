@@ -180,10 +180,12 @@
         });
         close_advance.addEventListener("click", () => {
             popup2.style.display = "none";
+            submit_search();
         })
         popup2.addEventListener("click", (event) => {
             if (!event.target.closest(".modal-content2")) {
                 popup2.style.display = "none";
+                submit_search();
             }
         });
 
@@ -206,6 +208,18 @@
             get_post();
             window.addEventListener("scroll", infinite_scrolling_handler);
         }
+
+        tagsearch.addEventListener("click", (event) => {
+            if (event.target.closest(".tag-btn input")) {
+                submit_search();
+            }
+        })
+
+        all_tagsearch.addEventListener("click", (event) => {
+            if (event.target.closest(".all-tag-btn input")) {
+                submit_search();
+            }
+        })
 
         tag_dropdown.addEventListener("click", toggle_tag_search_mode);
 
@@ -271,7 +285,7 @@
             redirect = event.target.closest(".post-redirect");
             if (redirect != null) {
                 post_id = redirect.dataset.postid
-                window.open(`@Url.Action("Post", "Post")?id=${post_id}`, "_blank")
+                window.open(`@Url.Action("Post", "Post")?id=${post_id}`)
             }
         })
 
@@ -308,7 +322,13 @@
                     console.log(post_list);
                     if (post_list.length === 0) {
                         window.removeEventListener("scroll", infinite_scrolling_handler);
-                        loading.innerText = "That's all for now!";
+                        if (current_buffered_post.length != 0) {
+                            console.log(current_buffered_post)
+                            loading.innerText = "That's all for now!";
+                        }
+                        else {
+                            loading.innerText = "Nothing here yet!";
+                        }
                         return;
                     }            
                     new_post_card_list = create_post_card(post_list)
@@ -333,7 +353,6 @@
             }
             let tag = all_tag_search_container.querySelector(`input[value = ${tagname}]`);
             tag.click();
-            submit_search();
             @* column_div.forEach(div => div.innerHTML = "");
             page_number = 1;
             var xhttp = new XMLHttpRequest();
@@ -389,11 +408,11 @@
                     <div class="post-header">
                         <img class="post-pfp" src="${post.creator.profilePicture}" alt="post-pfp" style="width:15%">
                         <div class="post-info">
-                            <h2>${post.title}</h2>
-                            <p>${post.creator.username}</p>
+                            <h2></h2>
+                            <p></p>
                         </div>
                     </div>          
-                    <p>${post_description.replace(/\r\n/g,"<br>")}</p>
+                    <p></p>
                     <hr>
                     <section class="post-meta">
                         <p>${show_post_type(post.acceptType)}, ${show_post_status(post.status)}</p>
@@ -411,6 +430,13 @@
                 post_redirect_button.addEventListener("click",()=>{
                     window.open(`@Url.Action("Post", "Post")?id=${post.id}`, "_blank")
                 }); *@
+                const title = post_card.querySelector(".post-info h2");
+                title.textContent = post.title;
+                const username = post_card.querySelector(".post-info p");
+                username.textContent = post.creator.username;
+                const description = post_card.querySelector(".container > p");
+                description.textContent = post_description;
+                console.log(post.description)
                 close_date_list.push(close_date);
                 post_card_list.push(post_card);
             });

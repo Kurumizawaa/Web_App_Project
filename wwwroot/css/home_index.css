@@ -241,6 +241,7 @@ body{
     > p {
         max-width: 100%;
         overflow-wrap: anywhere;
+        white-space: pre-line;
     }
   }
 .post-card .post-img{
@@ -281,6 +282,10 @@ body{
     flex-direction: column; /* Stack h2 and p vertically */
 
     h2 {
+        overflow-wrap: anywhere;
+    }
+
+    p {
         overflow-wrap: anywhere;
     }
 }
