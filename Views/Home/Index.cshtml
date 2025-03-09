@@ -442,6 +442,10 @@
                 post_redirect_button.addEventListener("click",()=>{
                     window.open(`@Url.Action("Post", "Post")?id=${post.id}`, "_blank")
                 }); *@
+                const post_image = post_card.querySelector(".post-img");
+                if (post.picture == null) {
+                    post_image.style.display = "none";
+                }
                 const title = post_card.querySelector(".post-info h2");
                 title.textContent = post.title;
                 const username = post_card.querySelector(".post-info p");

@@ -18,7 +18,7 @@
             <div>
                 <div id="edit-post-display" class="edit-post-display"></div>
                 <label class="edit-post-image">Image: <input id="image-url" type="url" name="Picture" value="@Model.Item2.Picture" placeholder="https://example.com/image.jpg"></label>
-                <label class="edit-post-tags">
+                <label for="" class="edit-post-tags">
                     @foreach (var Tag in Model.Item1)
                     {
                         <label class="checkbox-container"><input class="checkbox" type="checkbox" name="Tags" value="@Tag.Id" @(Model.Item2.Tags.Contains(Tag) ? "checked" : "")>
@@ -33,7 +33,7 @@
                 <label class="edit-post-desc">Description:<br><textarea name="Description" rows="12" cols="40">@Model.Item2.Description</textarea></label>
                 <label class="edit-post-amount">Amount accept: <input type="number" name="AmountAccept" value="@(Model.Item2.AmountAccept != 0 ? Model.Item2.AmountAccept : "")" required></label>
                 <label>Accept type:</label>
-                <label class="edit-post-type">
+                <label for="" class="edit-post-type">
                     <label>
                         On queue
                         <input type="radio" name="AcceptType" value="OnFull" @(Model.Item2.AcceptType == "OnFull" ? "Checked" : "") required>
@@ -95,7 +95,7 @@
                 }
             </section>
             <section class="post-details">
-                <img class="post-image" src="@Model.Item2.Picture" alt="post-omage">
+                <img class="post-image" src="@Model.Item2.Picture" alt="post-omage" @(Model.Item2.Picture == null ? "hidden" : "")>
                 <p>@Model.Item2.Description<p>
             </section>
             <hr>

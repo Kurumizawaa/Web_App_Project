@@ -134,6 +134,10 @@
                                         <p class="joined_number">${post.enrolledCount}/${post.amountAccept}</p>
                                         <button type="button" data-postid="${post.id}" class="post-redirect" id="post-redirect-${post.id}">See Details</button>`
                 post_container.appendChild(post_card);
+                const post_image = post_card.querySelector(".post-img");
+                if (post.picture == null) {
+                    post_image.style.display = "none";
+                }
                 const post_title = post_card.querySelector(".post-info h2");
                 post_title.textContent = post.title;
                 const post_description = post_card.querySelector(".post-info p");
@@ -177,6 +181,10 @@
                 }
 
                 post_container.appendChild(post_card);
+                const post_image = post_card.querySelector(".post-img");
+                if (post.picture == null) {
+                    post_image.style.display = "none";
+                }
                 @* const post_redirect_button = document.getElementById(`post-redirect-${post.id}`);
                 post_redirect_button.addEventListener("click",()=>{
                     window.open(`@Url.Action("Post", "Post")?id=${post.id}`, "_blank")
