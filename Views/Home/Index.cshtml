@@ -197,6 +197,7 @@
 
         search_submit.addEventListener("click", submit_search);
 
+
         function submit_search() {
             loading.innerText = "Loading...";
             is_loading = true;
@@ -536,6 +537,13 @@
                 let span = post.querySelector(".post-meta span");
                 span.innerText = event.data[index];
             });
+        }
+
+        let redirect_search_query = sessionStorage.getItem('selectedTagName');
+        if (redirect_search_query) {
+            sessionStorage.removeItem('selectedTagName');
+            redirect_search_query = redirect_search_query.split('-')[0];
+            post_tag_redirect(redirect_search_query);
         }
 
     </script>

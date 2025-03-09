@@ -91,7 +91,7 @@
             <section class="post-tag">
                 @foreach (Tag tag in Model.Item2.Tags)
                 {
-                    <button type="button" class="post-tag-btn">@tag.Name</button>
+                    <button type="button" class="post-tag-btn" onclick='tag_redirect(this)' name="@tag.Name-redirect">@tag.Name</button>
                 }
             </section>
             <section class="post-details">
@@ -107,12 +107,19 @@
             <section class="enrollment-list">
                 <p>Enrolled</p>
                 <section class="enrolled-acc-list">
-                    @foreach (var Acc in Model.Item5)
-                    {   
-                        <section class="enrolled-acc">
-                        <img src="@((Acc.Account != null) ? Acc.Account.ProfilePicture : "")" alt="enroll-pfp">
-                        <p>@((Acc.Account != null) ? Acc.Account.Username : "")</p>
-                        </section>
+                    @if (Model.Item5 != null && Model.Item5.Any())
+                    {
+                        @foreach (var Acc in Model.Item5)
+                        {   
+                            <section class="enrolled-acc">
+                            <img src="@((Acc.Account != null) ? Acc.Account.ProfilePicture : "")" alt="enroll-pfp">
+                            <p>@((Acc.Account != null) ? Acc.Account.Username : "")</p>
+                            </section>
+                        }
+                    }
+                    else
+                    {
+                        <p style="font-size: 20px;">No enrolled accounts found..</p>
                     }
                 </section>
             </section>
@@ -299,6 +306,12 @@
             var after_height = window.getComputedStyle(after).height;
             var final_height = (parseInt(before_height.slice(0, -2)) / 2) + (parseInt(after_height.slice(0, -2)) / 2)
             before.style.setProperty("--line-height", `${final_height}px`);
+        }
+
+        function tag_redirect(btn) {
+            const tagName = btn.name;
+            sessionStorage.setItem('selectedTagName', tagName);
+            window.location.href = '@Url.Action("Index", "Home")';
         }
     </script>
 }
