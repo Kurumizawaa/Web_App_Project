@@ -40,13 +40,10 @@ public class PostController : Controller
             switch (orderby)
             {
                 case "CreateDate":
-                    Post_list_query = Post_list_query.OrderBy(post => post.Id);
+                    Post_list_query = Post_list_query.OrderBy(post => post.CreateDate);
                     break;
                 case "CloseDate":
                     Post_list_query = Post_list_query.OrderBy(post => post.CloseDate);
-                    break;
-                case "TimeUntilClose":
-                    //sqlite cannot do this directly, sadly.
                     break;
                 case "AmountAccept":
                     Post_list_query = Post_list_query.OrderBy(post => post.AmountAccept);
@@ -64,13 +61,10 @@ public class PostController : Controller
             switch (orderby)
             {
                 case "CreateDate":
-                    Post_list_query = Post_list_query.OrderByDescending(post => post.Id);
+                    Post_list_query = Post_list_query.OrderByDescending(post => post.CreateDate);
                     break;
                 case "CloseDate":
                     Post_list_query = Post_list_query.OrderByDescending(post => post.CloseDate);
-                    break;
-                case "TimeUntilClose":
-                    //sqlite cannot do this directly, sadly.
                     break;
                 case "AmountAccept":
                     Post_list_query = Post_list_query.OrderByDescending(post => post.AmountAccept);
