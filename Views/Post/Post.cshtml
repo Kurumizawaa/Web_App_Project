@@ -65,7 +65,7 @@
         <section class="post-card">
             <h2>@Model.Item2.Title</h2>
             <section class="post-header">
-                <img class="post-pfp" src="@((Model.Item2.Creator != null) ? Model.Item2.Creator.ProfilePicture : "")" alt="post-pfp">
+                <img class="post-pfp" src="@((Model.Item2.Creator != null) ? Model.Item2.Creator.ProfilePicture ?? "https://upload.wikimedia.org/wikipedia/en/a/a4/Hide_the_Pain_Harold_%28Andr%C3%A1s_Arat%C3%B3%29.jpg" : "")" alt="post-pfp">
                 <div class="post-info">
                     <p>@((Model.Item2.Creator != null) ? Model.Item2.Creator.Username : "???")</p>
                     <p class="post-time">@Model.Item2.CreateDate</p>
@@ -112,7 +112,7 @@
                         @foreach (var Acc in Model.Item5)
                         {   
                             <section class="enrolled-acc">
-                            <img src="@((Acc.Account != null) ? Acc.Account.ProfilePicture : "")" alt="enroll-pfp">
+                            <img src="@((Acc.Account != null) ? Acc.Account.ProfilePicture ?? "https://upload.wikimedia.org/wikipedia/en/a/a4/Hide_the_Pain_Harold_%28Andr%C3%A1s_Arat%C3%B3%29.jpg" : "")" alt="enroll-pfp">
                             <p>@((Acc.Account != null) ? Acc.Account.Username : "")</p>
                             </section>
                         }

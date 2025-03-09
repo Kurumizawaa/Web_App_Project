@@ -412,13 +412,13 @@
                 }
                 close_date = new Date(post.closeDate);
                 post_card.innerHTML =
-                `<img class="post-img" src="${post.picture}" alt="post-img" style="width:100%">
+                `<img class="post-img" src="${post.picture}" alt="post-img" style="width:100%" ${post.picture != null ? "" : "hidden"}>
                 <div class="container">
                     <section class="post-tag">
                         ${post.tags.map(tag => `<button type="button" onclick="post_tag_redirect('${tag.name}')" class="post-tag-btn" id="post-tag-${tag.name}">${tag.name}</button>`).join('')}
                     </section>
                     <div class="post-header">
-                        <img class="post-pfp" src="${post.creator.profilePicture}" alt="post-pfp" style="width:15%">
+                        <img class="post-pfp" src="${post.creator.profilePicture ?? "https://upload.wikimedia.org/wikipedia/en/a/a4/Hide_the_Pain_Harold_%28Andr%C3%A1s_Arat%C3%B3%29.jpg"}" alt="post-pfp" style="width:15%">
                         <div class="post-info">
                             <h2 data-postid="${post.id}"></h2>
                             <p></p>
@@ -442,10 +442,10 @@
                 post_redirect_button.addEventListener("click",()=>{
                     window.open(`@Url.Action("Post", "Post")?id=${post.id}`, "_blank")
                 }); *@
-                const post_image = post_card.querySelector(".post-img");
+                @* const post_image = post_card.querySelector(".post-img");
                 if (post.picture == null) {
                     post_image.style.display = "none";
-                }
+                } *@
                 const title = post_card.querySelector(".post-info h2");
                 title.textContent = post.title;
                 const username = post_card.querySelector(".post-info p");
