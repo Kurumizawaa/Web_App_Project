@@ -14,40 +14,46 @@ public class PostConclusionAnnouncerService : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            using (var scope = _serviceScopeFactory.CreateScope())
-            {
-                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                var concludePost = dbContext.Posts.Where(p => p.CloseDate <= DateTime.Now && p.Status == PostStatus.Open).ToList();
-                var announcements = new List<Announcement>();
-                var announcementRecipients = new List<AnnouncementRecipient>();
-                foreach (var post in concludePost)
-                {
-                    post.Status = PostStatus.Concluded;
-                    var announcement = new Announcement() 
-                    {
-                        PostId = post.Id,
-                        Type = AnnouncementType.CreatorUpdate,
-                        Message = $"Your post '{post.Title}' has been concluded and is now ready to announce the result!"
-                    };
-                    announcements.Add(announcement);
-                }
-                dbContext.AddRange(announcements);
-                dbContext.SaveChanges();
-                foreach (var announcement in announcements)
-                {
-                    var post = concludePost.First(p => p.Id == announcement.PostId);
-                    announcementRecipients.Add(new AnnouncementRecipient()
-                    {
-                        AnnouncementId = announcement.Id,
-                        AccountId = post.CreatorId
-                    });
-                }
-                dbContext.AddRange(announcementRecipients);
-                dbContext.SaveChanges();
-                Console.WriteLine(DateTime.Now);
-            }
+            var second_until_next_minute = 60 - DateTime.Now.Second;
+            await Task.Delay(second_until_next_minute * 1000, stoppingToken);
 
-            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                using (var scope = _serviceScopeFactory.CreateScope())
+                {
+                    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                    var concludePost = dbContext.Posts.Where(p => p.CloseDate <= DateTime.Now && p.Status == PostStatus.Open).ToList();
+                    var announcements = new List<Announcement>();
+                    var announcementRecipients = new List<AnnouncementRecipient>();
+                    foreach (var post in concludePost)
+                    {
+                        post.Status = PostStatus.Concluded;
+                        var announcement = new Announcement() 
+                        {
+                            PostId = post.Id,
+                            Type = AnnouncementType.CreatorUpdate,
+                            Message = $"Your post '{post.Title}' has been concluded and is now ready to announce the result!"
+                        };
+                        announcements.Add(announcement);
+                    }
+                    dbContext.AddRange(announcements);
+                    dbContext.SaveChanges();
+                    foreach (var announcement in announcements)
+                    {
+                        var post = concludePost.First(p => p.Id == announcement.PostId);
+                        announcementRecipients.Add(new AnnouncementRecipient()
+                        {
+                            AnnouncementId = announcement.Id,
+                            AccountId = post.CreatorId
+                        });
+                    }
+                    dbContext.AddRange(announcementRecipients);
+                    dbContext.SaveChanges();
+                    Console.WriteLine(DateTime.Now);
+                }
+
+                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+            }
         }
     }
 }

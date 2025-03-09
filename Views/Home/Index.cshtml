@@ -202,6 +202,7 @@
             column_div.forEach(div => div.innerHTML = "");
             page_number = 1;
             current_buffered_post = [];
+            close_date_list = [];
             get_post();
             window.addEventListener("scroll", infinite_scrolling_handler);
         }
@@ -266,6 +267,14 @@
         var is_loading = false;
         const loading = document.getElementById("loading");
 
+        post_display_container.addEventListener("click", event => {
+            redirect = event.target.closest(".post-redirect");
+            if (redirect != null) {
+                post_id = redirect.dataset.postid
+                window.open(`@Url.Action("Post", "Post")?id=${post_id}`, "_blank")
+            }
+        })
+
         function responsive_post_column() {
             let screen_width = window.innerWidth;
             number_of_column_div = (screen_width >= 900) ? 4 : 1;
@@ -302,8 +311,10 @@
                         loading.innerText = "That's all for now!";
                         return;
                     }            
-                    current_buffered_post = current_buffered_post.concat(post_list);
-                    post_arrange(post_list);
+                    new_post_card_list = create_post_card(post_list)
+                    countdown_worker.postMessage(close_date_list);
+                    current_buffered_post = current_buffered_post.concat(new_post_card_list);
+                    post_arrange(new_post_card_list);
                     console.log("current page = ", page_number);
                     page_number++;
                     is_loading = false;
@@ -352,49 +363,58 @@
             column_div.forEach((div, div_index) => {
                 post_list.forEach((post, post_index) => {
                     if (post_index % number_of_column_div == div_index) {
-                        let post_card = document.createElement("div");
-                        post_card.className = "post-card";
-                        const preview_char_limit = 500;
-                        let post_description = post.description;
-                        if (post_description.length > preview_char_limit) {
-                            post_description = `${post_description.slice(0,preview_char_limit + 1)}...`;
-                        }
-                        post_card.innerHTML =
-                        `<img class="post-img" src="${post.picture}" alt="post-img" style="width:100%">
-                        <div class="container">
-                            <section class="post-tag">
-                                ${post.tags.map(tag => `<button type="button" onclick="post_tag_redirect('${tag.name}')" class="post-tag-btn" id="post-tag-${tag.name}">${tag.name}</button>`).join('')}
-                            </section>
-                            <div class="post-header">
-                                <img class="post-pfp" src="${post.creator.profilePicture}" alt="post-pfp" style="width:15%">
-                                <div class="post-info">
-                                    <h2 class="post-title-redirect" id="post-redirect-${post.id}">${post.title}</h2>
-                                    <p>${post.creator.username}</p>
-                                </div>
-                            </div>          
-                            <p>${post_description.replace(/\r\n/g,"<br>")}</p>
-                            <hr>
-                            <section class="post-meta">
-                                <p>${show_post_type(post.acceptType)}, ${show_post_status(post.status)}</p>
-                                <p>Close : ${new Date(post.closeDate).toLocaleString("en-us", { year: 'numeric', month: 'long', day: 'numeric', hour:"numeric", minute:"numeric"})}</p>
-                            </section>
-                            <section class="post-join-info">
-                                <div class="headcount">
-                                    <h2>${post.enrolledCount}/${post.amountAccept}</h2>
-                                    <p>joined</p>
-                                </div>
-                                <button type="button" class="post-redirect" id="post-redirect-${post.id}">See Details</button>
-                            </section>
-                        </div>`;
-                        div.appendChild(post_card);
-                        const post_redirect_button = document.getElementById(`post-redirect-${post.id}`);
-                        post_redirect_button.addEventListener("click",()=>{
-                            sessionStorage.setItem('scrollPosition', window.pageYOffset);
-                            window.location.href = `@Url.Action("Post", "Post")?id=${post.id}`
-                        });
+                        div.appendChild(post)
                     }
                 });
             });
+        }
+
+        function create_post_card(post_list) {
+            let post_card_list = [];
+            post_list.forEach(post => {
+                let post_card = document.createElement("div");
+                post_card.className = "post-card";
+                const preview_char_limit = 500;
+                let post_description = post.description;
+                if (post_description.length > preview_char_limit) {
+                    post_description = `${post_description.slice(0,preview_char_limit + 1)}...`;
+                }
+                close_date = new Date(post.closeDate);
+                post_card.innerHTML =
+                `<img class="post-img" src="${post.picture}" alt="post-img" style="width:100%">
+                <div class="container">
+                    <section class="post-tag">
+                        ${post.tags.map(tag => `<button type="button" onclick="post_tag_redirect('${tag.name}')" class="post-tag-btn" id="post-tag-${tag.name}">${tag.name}</button>`).join('')}
+                    </section>
+                    <div class="post-header">
+                        <img class="post-pfp" src="${post.creator.profilePicture}" alt="post-pfp" style="width:15%">
+                        <div class="post-info">
+                            <h2>${post.title}</h2>
+                            <p>${post.creator.username}</p>
+                        </div>
+                    </div>          
+                    <p>${post_description.replace(/\r\n/g,"<br>")}</p>
+                    <hr>
+                    <section class="post-meta">
+                        <p>${show_post_type(post.acceptType)}, ${show_post_status(post.status)}</p>
+                        <p>Close : ${close_date.toLocaleString("en-us", { year: 'numeric', month: 'long', day: 'numeric', hour:"numeric", minute:"numeric"})} <span></span></p>
+                    </section>
+                    <section class="post-join-info">
+                        <div class="headcount">
+                            <h2>${post.enrolledCount}/${post.amountAccept}</h2>
+                            <p>joined</p>
+                        </div>
+                        <button type="button" data-postid="${post.id}" class="post-redirect" id="post-redirect-${post.id}">See Details</button>
+                    </section>
+                </div>`;
+                @* const post_redirect_button = post_card.getElementById(`post-redirect-${post.id}`);
+                post_redirect_button.addEventListener("click",()=>{
+                    window.open(`@Url.Action("Post", "Post")?id=${post.id}`, "_blank")
+                }); *@
+                close_date_list.push(close_date);
+                post_card_list.push(post_card);
+            });
+            return post_card_list
         }
 
         function infinite_scrolling_handler() {
@@ -471,6 +491,15 @@
             else if (status == 3) {
                 return "Archived";
             }
+        }
+
+        var close_date_list = [];
+        var countdown_worker = new Worker("/js/remining_time_worker.js");
+        countdown_worker.onmessage = (event) => {
+            current_buffered_post.forEach((post, index) => {
+                let span = post.querySelector(".post-meta span");
+                span.innerText = event.data[index];
+            });
         }
 
     </script>

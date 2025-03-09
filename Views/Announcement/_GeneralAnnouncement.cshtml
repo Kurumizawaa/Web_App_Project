@@ -1,0 +1,27 @@
+@model Post
+
+<div class="modal" id="general-modal">
+    <div class="modal-content">
+        @if (Model.Id != 0)
+        {
+            <section class="page-header" id="page-header">
+                <b>General Announcement for :<br>@Model.Title</b>
+            </section>
+        }
+        else
+        {
+            <section class="page-header" id="page-header">
+                <b>General Announcement</b>
+            </section>
+        }
+        <form method="post" action="@Url.Action("GeneralAnnouncement","Announcement", new { postid = @Model.Id })">
+            <h1>Announcement:</h1>
+            <input type="hidden" name="announcement.Type" value="@AnnouncementType.General">
+            <textarea name="announcement.Message" rows="10" cols="50" required></textarea>
+            <section class="btn-section">
+                <button type="submit" class="confirm-btn">Confirm</button>
+                <button type="button" onclick="document.getElementById('general-modal').style.display = 'none'" id="cancel-btn" class="cancel-btn">Cancel</button>
+            </section>
+        </form>
+    </div>
+</div>
