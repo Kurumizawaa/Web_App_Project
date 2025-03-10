@@ -224,9 +224,12 @@
 
         tag_dropdown.addEventListener("click", toggle_tag_search_mode);
 
-        function toggle_tag_search_mode() {
+        function toggle_tag_search_mode(event, submit = true) {
             all_tagsearch.classList.toggle('open');
             tagsearch.classList.toggle('open');
+            if (submit == true) {
+                submit_search();
+            }
         }
 
         create_post_button.addEventListener("click", () => {
@@ -353,7 +356,7 @@
         function post_tag_redirect(tagname) {
             const all_tag_search_container = document.getElementById("all-tagsearch")
             if (!all_tag_search_container.classList.contains("open")) {
-                toggle_tag_search_mode();
+                toggle_tag_search_mode(null, false);
             }
             let all_tag = Array.from(document.querySelectorAll(".all-tag-btn input"));
             all_tag.forEach(tag => {

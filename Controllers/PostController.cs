@@ -31,7 +31,7 @@ public class PostController : Controller
         List<Post> Post_list;
         // Post_list = _Dbcontext.Posts.Where(a => a.Tags.All(b => search_query.Contains(b.Name.ToLower()))).Include(x => x.Tags).Include(y => y.Creator).ToList(); // strict search 
         var Post_list_query = _Dbcontext.Posts.AsQueryable();
-        Post_list_query = (textquery_list.Length != 0) ? Post_list_query.Where(post => textquery_list.Any(text_query => post.Title.ToLower().Contains(text_query.Replace("_"," ")) || post.Description.ToLower().Contains(text_query.Replace("_"," ")))) : Post_list_query;
+        Post_list_query = (textquery_list.Length != 0) ? Post_list_query.Where(post => textquery_list.Any(text_query => post.Title.ToLower().Contains(text_query.Replace("_"," ")) || post.Description.ToLower().Contains(text_query.Replace("_"," ")) || post.Creator!.Username!.ToLower().Contains(text_query.Replace("_"," ")))) : Post_list_query;
         Post_list_query = (tagquery_list.Length != 0) ? Post_list_query.Where(post => tagquery_list.All(tag_query => post.Tags.Any(tag => tag.Name.ToLower() == tag_query.ToLower()))) : Post_list_query;
         Post_list_query = Post_list_query.Where(post => typequery_list.Contains(post.AcceptType));
         Post_list_query = Post_list_query.Where(post => statusquery_list.Any(status => (int)post.Status == status));
