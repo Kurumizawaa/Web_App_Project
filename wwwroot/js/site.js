@@ -4,7 +4,6 @@
         if (this.readyState == 4 && this.status == 200) {
             let payload = JSON.parse(xhttp.response);
             if (payload.getannouncement_successful == true) {
-                console.log(payload.announcement_list);
                 unread_notification = 0;
                 insert_notification(payload.announcement_list);
                 update_notification_red_dot();
@@ -43,13 +42,10 @@ function insert_notification(announcement_list) {
         }
         notif.className = "notif-item";
         notif.classList.add(`announcement-${announcement.type}`);
-        // notif.onclick = function () {
-        //     window.location.href = `/Post/Post?id=${announcement.postid}`
-        // };
         notif.dataset.postid = announcement.postid;
         notif.dataset.announcementid = (announcement.isread == false) ? announcement.id : null;
         notif.innerHTML = `
-            <img src="${announcement.picture ?? "../images/jaikere.PNG"}" alt="notif-img" class="notif-img">
+            <img src="${announcement.type != 3 ? announcement.picture ?? "" : "/images/jaikere.PNG"}" alt="notif-img" class="notif-img" ${announcement.picture != null ? "" : "hidden"}>
             <div class="notif-text-container">
                 <h3 class="notif-text-header">${header} <span></span></h3>
                 <p class="notif-text"></p>
@@ -62,10 +58,6 @@ function insert_notification(announcement_list) {
         notification_text.textContent = announcement.message;
         notif_list.appendChild(notif);
     })
-}
-
-function notification_redirect(postid) {
-    console.log(postid);
 }
 
 var unread_notification = 0;

@@ -24,10 +24,10 @@
                 <input type="checkbox" name="Selection" onclick="return false" value="@enrollment.AccountId" class="account-checkbox" @(Model.Item2 == true ? "" : "checked") hidden>
             }
             <div class="account-card">
-                <img src="@enrollment.Account!.ProfilePicture" class="profile-picture">
+                <img src="@(enrollment.Account!.ProfilePicture ?? "https://upload.wikimedia.org/wikipedia/en/a/a4/Hide_the_Pain_Harold_%28Andr%C3%A1s_Arat%C3%B3%29.jpg")" alt="profile-picture" class="profile-picture">
                 <div class="profile-detail">
-                    <h2>@enrollment.Account.Username</h2>
-                    <p>@enrollment.Account.Bio</p>
+                    <h2>@enrollment.Account!.Username</h2>
+                    <p>@enrollment.Account!.Bio</p>
                 </div>
                 <div class="check-info"></div>
             </div>

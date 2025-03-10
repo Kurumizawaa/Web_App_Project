@@ -253,8 +253,6 @@
             for (const tag in tags) {
                 tag_lst.push(tags[tag].name)
             }
-            console.log(tag_lst)
-            @* display_tag_lst = tag_lst.slice(0,4); *@
             display_tag_lst = @Json.Serialize(Model.Item4);
             for (tag of display_tag_lst) {
                 tagsearch.innerHTML +=
@@ -327,11 +325,9 @@
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     let post_list = JSON.parse(xhttp.response);
-                    console.log(post_list);
                     if (post_list.length === 0) {
                         window.removeEventListener("scroll", infinite_scrolling_handler);
                         if (current_buffered_post.length != 0) {
-                            console.log(current_buffered_post)
                             loading.innerText = "That's all for now!";
                         }
                         else {
@@ -343,7 +339,6 @@
                     countdown_worker.postMessage(close_date_list);
                     current_buffered_post = current_buffered_post.concat(new_post_card_list);
                     post_arrange(new_post_card_list);
-                    console.log("current page = ", page_number);
                     page_number++;
                     is_loading = false;
                     loading.style.display = "none";
@@ -365,29 +360,6 @@
             });
             let tag = all_tag_search_container.querySelector(`input[value = ${tagname}]`);
             tag.click();
-            @* column_div.forEach(div => div.innerHTML = "");
-            page_number = 1;
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    let post_list = JSON.parse(xhttp.response);
-                    console.log(post_list);
-                    if (post_list.length === 0) {
-                        window.removeEventListener("scroll", infinite_scrolling_handler);
-                        loading.innerText = "That's all for now!";
-                        return;
-                    }            
-                    current_buffered_post = current_buffered_post.concat(post_list);
-                    post_arrange(post_list);
-                    console.log("current page = ", page_number);
-                    page_number++;
-                    is_loading = false;
-                    loading.style.display = "none";
-                    infinite_scrolling_handler();
-                }
-            };
-            xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}&textquery=&tagquery=${tagname}&typequery=&statusquery=&orderby=CreateDate&ascending=true`, true);
-            xhttp.send(); *@
         }
 
         function post_arrange(post_list) {
@@ -412,13 +384,13 @@
                 }
                 close_date = new Date(post.closeDate);
                 post_card.innerHTML =
-                `<img class="post-img" src="${post.picture}" alt="post-img" style="width:100%">
+                `<img class="post-img" src="${post.picture ?? ""}" alt="post-img" style="width:100%" ${post.picture != null ? "" : "hidden"}>
                 <div class="container">
                     <section class="post-tag">
                         ${post.tags.map(tag => `<button type="button" onclick="post_tag_redirect('${tag.name}')" class="post-tag-btn" id="post-tag-${tag.name}">${tag.name}</button>`).join('')}
                     </section>
                     <div class="post-header">
-                        <img class="post-pfp" src="${post.creator.profilePicture}" alt="post-pfp" style="width:15%">
+                        <img class="post-pfp" src="${post.creator.profilePicture ?? "https://upload.wikimedia.org/wikipedia/en/a/a4/Hide_the_Pain_Harold_%28Andr%C3%A1s_Arat%C3%B3%29.jpg"}" alt="post-pfp" style="width:15%">
                         <div class="post-info">
                             <h2 data-postid="${post.id}"></h2>
                             <p></p>
@@ -438,10 +410,6 @@
                         <button type="button" data-postid="${post.id}" class="post-redirect" id="post-redirect-${post.id}">See Details</button>
                     </section>
                 </div>`;
-                @* const post_redirect_button = post_card.getElementById(`post-redirect-${post.id}`);
-                post_redirect_button.addEventListener("click",()=>{
-                    window.open(`@Url.Action("Post", "Post")?id=${post.id}`, "_blank")
-                }); *@
                 const title = post_card.querySelector(".post-info h2");
                 title.textContent = post.title;
                 const username = post_card.querySelector(".post-info p");

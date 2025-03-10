@@ -18,7 +18,7 @@
             <div>
                 <div id="edit-post-display" class="edit-post-display"></div>
                 <label class="edit-post-image">Image: <input id="image-url" type="url" name="Picture" value="@Model.Item2.Picture" placeholder="https://example.com/image.jpg"></label>
-                <label class="edit-post-tags">
+                <label for="" class="edit-post-tags">
                     @foreach (var Tag in Model.Item1)
                     {
                         <label class="checkbox-container"><input class="checkbox" type="checkbox" name="Tags" value="@Tag.Id" @(Model.Item2.Tags.Contains(Tag) ? "checked" : "")>
@@ -33,7 +33,7 @@
                 <label class="edit-post-desc">Description:<br><textarea name="Description" rows="12" cols="40">@Model.Item2.Description</textarea></label>
                 <label class="edit-post-amount">Amount accept: <input type="number" name="AmountAccept" value="@(Model.Item2.AmountAccept != 0 ? Model.Item2.AmountAccept : "")" required></label>
                 <label>Accept type:</label>
-                <label class="edit-post-type">
+                <label for="" class="edit-post-type">
                     <label>
                         On queue
                         <input type="radio" name="AcceptType" value="OnFull" @(Model.Item2.AcceptType == "OnFull" ? "Checked" : "") required>
@@ -65,10 +65,10 @@
         <section class="post-card">
             <h2>@Model.Item2.Title</h2>
             <section class="post-header">
-                <img class="post-pfp" src="@((Model.Item2.Creator != null) ? Model.Item2.Creator.ProfilePicture : "")" alt="post-pfp">
+                <img class="post-pfp" src="@((Model.Item2.Creator != null) ? Model.Item2.Creator.ProfilePicture ?? "https://upload.wikimedia.org/wikipedia/en/a/a4/Hide_the_Pain_Harold_%28Andr%C3%A1s_Arat%C3%B3%29.jpg" : "")" alt="post-pfp">
                 <div class="post-info">
                     <p>@((Model.Item2.Creator != null) ? Model.Item2.Creator.Username : "???")</p>
-                    <p class="post-time">@Model.Item2.CreateDate</p>
+                    <p class="post-time">@Model.Item2.CreateDate.ToString("MMMM dd, yyyy 'at' hh:mm tt")</p>
                     <p><span id="enroll-counter">@Model.Item2.EnrolledCount</span>/@Model.Item2.AmountAccept Joined</p>
                 </div>
             </section>
@@ -95,7 +95,7 @@
                 }
             </section>
             <section class="post-details">
-                <img class="post-image" src="@Model.Item2.Picture" alt="post-omage">
+                <img class="post-image" src="@Model.Item2.Picture" alt="post-omage" @(Model.Item2.Picture == null ? "hidden" : "")>
                 <p>@Model.Item2.Description<p>
             </section>
             <hr>
@@ -112,7 +112,7 @@
                         @foreach (var Acc in Model.Item5)
                         {   
                             <section class="enrolled-acc">
-                            <img src="@((Acc.Account != null) ? Acc.Account.ProfilePicture : "")" alt="enroll-pfp">
+                            <img src="@((Acc.Account != null) ? Acc.Account.ProfilePicture ?? "https://upload.wikimedia.org/wikipedia/en/a/a4/Hide_the_Pain_Harold_%28Andr%C3%A1s_Arat%C3%B3%29.jpg" : "")" alt="enroll-pfp">
                             <p>@((Acc.Account != null) ? Acc.Account.Username : "")</p>
                             </section>
                         }
@@ -243,7 +243,6 @@
                     let json = JSON.parse(xhttp.response);
                     if (json.get_successfully == true) {
                         announcement_list = json.related_announcement;
-                        console.log(announcement_list);
                         announcement_container.innerText = "";
                         if (announcement_list.length == 0) {
                             announcement_container.innerText = "No related announcement yet";
@@ -255,7 +254,7 @@
                             announcement_card.classList.add(detail.theme);
                             announcement_card.innerHTML = 
                             `${detail.icon}
-                            <div class="announcement-card-date">${new Date(announcement.announceAt).toLocaleDateString()}</div>
+                            <div class="announcement-card-date">${new Date(announcement.announceAt).toLocaleDateString("en-US")}</div>
                             <div class="announcement-card-info">
                                 <p class="announcement-card-info-type">${detail.type}</p>
                                 <p>${detail.message}</p>
