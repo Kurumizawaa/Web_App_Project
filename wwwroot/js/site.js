@@ -45,7 +45,7 @@ function insert_notification(announcement_list) {
         notif.dataset.postid = announcement.postid;
         notif.dataset.announcementid = (announcement.isread == false) ? announcement.id : null;
         notif.innerHTML = `
-            <img src="${announcement.type != 3 ? announcement.picture ?? "" : "/images/jaikere.PNG"}" alt="notif-img" class="notif-img" ${announcement.picture != null ? "" : "hidden"}>
+            <img src="${announcement.type != 2 ? announcement.picture ?? "" : "/images/bitnut_icon.png"}" alt="notif-img" class="notif-img" ${announcement.picture != null ? "" : "hidden"}>
             <div class="notif-text-container">
                 <h3 class="notif-text-header">${header} <span></span></h3>
                 <p class="notif-text"></p>
