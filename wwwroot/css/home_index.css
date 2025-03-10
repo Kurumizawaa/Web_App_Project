@@ -250,7 +250,7 @@ body{
 }
 .post-tag{
     display: block;
-    margin: 5px 0px 15px 0px;
+    margin: 5px 0px 10px 0px;
     gap: 1vw;
 }
 .post-tag-btn {
