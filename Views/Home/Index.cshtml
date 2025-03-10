@@ -343,6 +343,7 @@
                     is_loading = false;
                     loading.style.display = "none";
                     infinite_scrolling_handler();
+                    process_session_storage_query();
                 }
             };
             xhttp.open("GET", `@Url.Action("GetPost","Post")?page=${page_number}&textquery=${search_bar.value}&tagquery=${checkedTags}&typequery=${typequery}&statusquery=${statusquery}&orderby=${orderby}&ascending=${ascending}`, true);
@@ -507,11 +508,13 @@
             });
         }
 
-        let redirect_search_query = sessionStorage.getItem('selectedTagName');
-        if (redirect_search_query) {
-            sessionStorage.removeItem('selectedTagName');
-            redirect_search_query = redirect_search_query.split('-')[0];
-            post_tag_redirect(redirect_search_query);
+        function process_session_storage_query() {
+            let redirect_search_query = sessionStorage.getItem('selectedTagName');
+            if (redirect_search_query) {
+                sessionStorage.removeItem('selectedTagName');
+                redirect_search_query = redirect_search_query.split('-')[0];
+                post_tag_redirect(redirect_search_query);
+            }
         }
 
     </script>
