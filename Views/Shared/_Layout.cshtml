@@ -75,7 +75,7 @@
             if (notification != null) {
                 let announcement_id = notification.dataset.announcementid
                 if (announcement_id == "null") {
-                    window.open(`@Url.Action("Post","Post")?id=${notification.dataset.postid}`, "_blank");
+                    window.location.href = `@Url.Action("Post","Post")?id=${notification.dataset.postid}`;
                     return
                 }
                 var xhttp = new XMLHttpRequest();
@@ -88,7 +88,7 @@
                             notification.removeChild(red_dot);
                             unread_notification--;
                             update_notification_red_dot();
-                            window.open(`@Url.Action("Post","Post")?id=${notification.dataset.postid}`, "_blank");
+                            window.location.href = `@Url.Action("Post","Post")?id=${notification.dataset.postid}`;
                         }
                     }
                 };
